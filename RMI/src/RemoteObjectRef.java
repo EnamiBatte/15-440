@@ -17,6 +17,7 @@ public class RemoteObjectRef
     // 
     Object localise()
     {
+    	
 	// Implement this as you like: essentially you should 
 	// create a new stub object and returns it.
 	// Assume the stub class has the name e.g.
@@ -34,6 +35,18 @@ public class RemoteObjectRef
 	// arguments etc., in a marshalled form, and CM (yourRMI) sends it out to 
 	// another place. 
 	// Here let it return null.
-	return null;
+    	
+    	String Skeleton_Name = Remote_Interface_Name + "_stub";
+    	Class c;
+		try {
+			c = Class.forName(Skeleton_Name);
+			Object o = c.newInstance();
+			return o;
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	
     }
 }
