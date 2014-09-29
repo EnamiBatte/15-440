@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class RemoteObjectRef
 {
     String IP_adr;
@@ -55,10 +57,12 @@ public class RemoteObjectRef
     	
     	String Skeleton_Name = Remote_Interface_Name + "Impl";
     	Class c;
-		try {
+    	try {
+			Class r = Class.forName("Remote440");
 			c = Class.forName(Skeleton_Name);
 			Object o = c.newInstance();
-			((Remote440) o).setRemoteObjectRef(this);
+			if(Arrays.asList(c.getInterfaces()).contains(r))
+				((Remote440) o).setRemoteObjectRef(this);
 			return o;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
