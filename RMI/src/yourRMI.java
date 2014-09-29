@@ -65,6 +65,7 @@ public class yourRMI
 	// For design, consider well.
 	while (true)
 	    {
+		SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
 		// (1) receives an invocation request.
 		// (2) creates a socket and input/output streams.
 		// (3) gets the invocation, in martiallled form.

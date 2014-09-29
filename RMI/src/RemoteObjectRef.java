@@ -7,10 +7,27 @@ public class RemoteObjectRef
 
     public RemoteObjectRef(String ip, int port, int obj_key, String riname) 
     {
-	IP_adr=ip;
-	Port=port;
-	Obj_Key=obj_key;
-	Remote_Interface_Name=riname;
+    	IP_adr=ip;
+    	Port=port;
+    	Obj_Key=obj_key;
+    	Remote_Interface_Name=riname;
+    }
+    
+    public String getIP()
+    {
+    	return IP_adr;
+    }
+    public int getPort()
+    {
+    	return Port;
+    }
+    public int getObjKey()
+    {
+    	return Obj_Key;
+    }
+    public String getRemoteInterfaceName()
+    {
+    	return Remote_Interface_Name;
     }
 
     // this method is important, since it is a stub creator.
@@ -36,17 +53,17 @@ public class RemoteObjectRef
 	// another place. 
 	// Here let it return null.
     	
-    	String Skeleton_Name = Remote_Interface_Name + "_stub";
+    	String Skeleton_Name = Remote_Interface_Name + "Impl";
     	Class c;
 		try {
 			c = Class.forName(Skeleton_Name);
 			Object o = c.newInstance();
+			
 			return o;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-	
     }
 }
