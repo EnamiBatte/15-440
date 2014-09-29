@@ -58,7 +58,7 @@ public class RemoteObjectRef
 		try {
 			c = Class.forName(Skeleton_Name);
 			Object o = c.newInstance();
-			
+			((Remote440) o).setRemoteObjectRef(this);
 			return o;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block

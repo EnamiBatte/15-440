@@ -36,4 +36,14 @@ public class NameServerImpl
     {
 	return next;
     }
+
+	@Override
+	public void setRemoteObjectRef(RemoteObjectRef r) {
+		ro = r;
+	}
+
+	@Override
+	public RemoteObjectRef getRemoteObjectRef() {
+		return ro;
+	}
 }
