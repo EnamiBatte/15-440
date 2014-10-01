@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class RemoteObjectRef
+public class RemoteObjectRef implements Serializable
 {
     String IP_adr;
     int Port;
