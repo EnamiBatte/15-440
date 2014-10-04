@@ -15,6 +15,11 @@
    own simpleness and complexity.
 */
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.*;
 
 public class yourRMI
@@ -67,19 +72,31 @@ public class yourRMI
 	    {
 		SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
 		// (1) receives an invocation request.
+		Socket sock = serverSoc.accept();
 		// (2) creates a socket and input/output streams.
+		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+		ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
 		// (3) gets the invocation, in martiallled form.
+		RemoteObjectRef obj = (RemoteObjectRef) in.readObject();
 		// (4) gets the real object reference from tbl.
+		Object realObj = tbl.findObj(obj);
 		// (5) Either:
 		//      -- using the interface name, asks the skeleton,
 		//         together with the object reference, to unmartial
 		//         and invoke the real object.
 		//      -- or do unmarshalling directly and involkes that
 		//         object directly.
+		RMIMessage info = (RMIMessage) in.readObject();
+		String method = info.getMethod();
+		System.out.println("invoking " + method);
+		info.invoke(realObj);
 		// (6) receives the return value, which (if not marshalled
 		//     you should marshal it here) and send it out to the 
 		//     the source of the invoker.
+		System.out.println("got" + info.getReturnValue().toString());
+		out.writeObject(realObj);
 		// (7) closes the socket.
+		sock.close();
 	    }
     }
 }

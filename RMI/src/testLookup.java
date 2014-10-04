@@ -8,6 +8,14 @@ public class testLookup
     public static void main(String args[])    
 	throws IOException
     {
+    	System.out.println(args);
+    	if(args.length<3)
+    	{
+    		args = new String[3];
+    		args[0] = "localhost";
+    		args[1] = "15440";
+    		args[2] = "NameServer";
+    	}
 	// it takes three arguments.
 	// these are it wishes to connect to.
 	String host = args[0];
