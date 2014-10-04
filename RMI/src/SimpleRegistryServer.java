@@ -4,16 +4,25 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class SimpleRegistryServer {
 	
 	
-	//TODO: Implement Table features and populate initial table
 	
 	public static void main(String args[])
 	{
-		int port = Integer.parseInt(args[0]);
+		int port;
+		HashMap<String,RemoteObjectRef> map = new HashMap<String,RemoteObjectRef>();
+		if(args.length > 0)
+		{
+			port = Integer.parseInt(args[0]);
+		}
+		else
+		{
+			port = 15440;
+		}
 		try {
 			ServerSocket servSock = new ServerSocket(port);
 			while(true)
@@ -29,10 +38,18 @@ public class SimpleRegistryServer {
 				{
 					String serviceName = in.readLine();
 					System.out.println("lookup of "+ serviceName);
-					//lookup RemoteObject ref based on serviceName
-					//Send found
-					//Send line by line the IP_adr,port,Obj_Key,Remote_Interface_Name
-					out.println("not found");
+					if(map.containsKey(serviceName))
+					{
+						RemoteObjectRef value = map.get(serviceName);
+						out.println("found");
+						out.println(value.getIP());
+						out.println(Integer.toString(value.getPort()));
+						out.println(Integer.toString(value.getObjKey()));
+						out.println(value.getRemoteInterfaceName());
+					}
+					else{
+						out.println("not found");
+					}
 				}
 				else if(arg.equals("rebind"))
 				{
@@ -43,8 +60,9 @@ public class SimpleRegistryServer {
 					int Obj_Key = Integer.parseInt(in.readLine());
 					String Remote_Interface_Name = in.readLine();
 					RemoteObjectRef ror = new RemoteObjectRef(ROR_IP_adr,ROR_port,Obj_Key,Remote_Interface_Name);
+					map.put(serviceName, ror);
 					//Actually bind it to table
-					out.println("Not Bound");
+					out.println("Bound");
 				}
 				else if(arg.equals("who are you?"))
 				{
