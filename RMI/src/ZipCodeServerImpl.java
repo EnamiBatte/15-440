@@ -13,6 +13,7 @@ public class ZipCodeServerImpl
     implements ZipCodeServer
 {
     ZipCodeList l;
+    RemoteObjectRef ror;
 	
     // this is a constructor.
     public ZipCodeServerImpl()
@@ -62,4 +63,14 @@ public class ZipCodeServerImpl
 		temp = temp.next;                        
 	    }
     }
+
+	@Override
+	public void setRemoteObjectRef(RemoteObjectRef r) {
+		this.ror = r;
+	}
+
+	@Override
+	public RemoteObjectRef getRemoteObjectRef() {
+		return ror;
+	}
 }

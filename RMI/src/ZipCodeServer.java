@@ -1,4 +1,4 @@
-public interface ZipCodeServer // extends YourRemote or whatever
+public interface ZipCodeServer extends Remote440 // extends YourRemote or whatever
 {
     public void initialise(ZipCodeList newlist);
     public String find(String city);

@@ -33,6 +33,10 @@ public class yourRMI
     public static void main(String args[])    
 	throws Exception
     {
+    	if(args.length < 3)
+    	{
+    		args = new String[] {"ZipCodeServerImpl","localhost","15440","service"};
+    	}
 	String InitialClassName = args[0];
 	String registryHost = args[1];
 	int registryPort = Integer.parseInt(args[2]);	
@@ -46,7 +50,7 @@ public class yourRMI
 	// (1) the class itself (say ZipCpdeServerImpl) and
 	// (2) its skeleton.
 	Class initialclass = Class.forName(InitialClassName);
-	Class initialskeleton = Class.forName(InitialClassName+"_skel");
+	//Class initialskeleton = Class.forName(InitialClassName+"_skel");
 	
 	// you should also create a remote object table here.
 	// it is a table of a ROR and a skeleton.
@@ -57,8 +61,10 @@ public class yourRMI
 	Object o = initialclass.newInstance();
 	
 	// then register it into the table.
-	tbl.addObj(host, port, o);
-
+	RemoteObjectRef initial = tbl.addObj(host, port, o);
+	SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
+	sr.rebind(serviceName, initial);
+	
 	// create a socket.
 	ServerSocket serverSoc = new ServerSocket(port);
 
@@ -68,9 +74,9 @@ public class yourRMI
 	// Actually you should use multiple threads, or this easily
 	// deadlocks. But for your implementation I do not ask it.
 	// For design, consider well.
+	
 	while (true)
 	    {
-		SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
 		// (1) receives an invocation request.
 		Socket sock = serverSoc.accept();
 		// (2) creates a socket and input/output streams.
