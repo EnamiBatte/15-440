@@ -14,7 +14,37 @@ public class SimpleRegistry
 	Host = IPAdr;
 	Port = PortNum;
     }
+    
+    //  Binds a remote reference to the specified name in this registry.
+    public void bind(String serviceName, RemoteObjectRef ror) 
+    throws IOException
+    {
+    // open socket.
+    Socket soc = new Socket(Host, Port);
+    
+    System.out.println("socket made.");
+    
+    // get TCP streams and wrap them. 
+ 	BufferedReader in = 
+ 	    new BufferedReader(new InputStreamReader (soc.getInputStream()));
+ 	PrintWriter out = 
+ 	    new PrintWriter(soc.getOutputStream(), true);
 
+ 	// it is a bind request, with a service name and ROR.
+ 	out.println("bind");
+ 	out.println(serviceName);
+ 	out.println(ror.IP_adr);
+ 	out.println(ror.Port); 
+ 	out.println(ror.Obj_Key);
+ 	out.println(ror.Remote_Interface_Name);
+
+ 	// it also gets an ack, but this is not used.
+ 	String ack = in.readLine();
+
+ 	// close the socket.
+ 	soc.close();
+    }
+    
     // returns the ROR (if found) or null (if else)
     public RemoteObjectRef lookup(String serviceName) 
 	throws IOException
@@ -78,6 +108,9 @@ public class SimpleRegistry
 	    }
 
 	// close the socket.
+	in.close();
+	out.flush();
+	out.close();
 	soc.close();
 		
 	// return ROR.
@@ -111,5 +144,35 @@ public class SimpleRegistry
 
 	// close the socket.
 	soc.close();
+    }
+    
+    // Removes the binding for the specified name in this registry.
+    public void unbind(String serviceName) 
+    throws IOException
+    {
+    // open socket.
+    Socket soc = new Socket(Host, Port);
+
+    System.out.println("socket made.");
+    	    
+    // get TCP streams and wrap them. 
+    BufferedReader in = 
+    	new BufferedReader(new InputStreamReader (soc.getInputStream()));
+    PrintWriter out = 
+    	new PrintWriter(soc.getOutputStream(), true);
+
+    System.out.println("stream made.");
+
+    // it is locate request, with a service name.
+    out.println("unbind");
+    out.println(serviceName);
+
+    System.out.println("command and service name sent.");   
+    
+    // it also gets an ack, but this is not used.
+ 	String ack = in.readLine();
+    
+    // close the socket.
+ 	soc.close();
     }
 } 
