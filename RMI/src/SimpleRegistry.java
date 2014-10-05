@@ -175,4 +175,4 @@ public class SimpleRegistry
     // close the socket.
  	soc.close();
     }
-} 
+}

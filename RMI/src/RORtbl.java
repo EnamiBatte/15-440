@@ -24,7 +24,8 @@ public class RORtbl
     public void addObj(String host, int port, Object o)
     {
         
-        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter++, o.getClass().toString());
+        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter++, 
+        		o.getClass().toString());
         RORtable.put(ror, o);
         
     }
