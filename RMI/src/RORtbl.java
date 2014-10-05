@@ -38,5 +38,4 @@ public class RORtbl
         // if you use a hash table this is easy.
         return null;
     }
-     
 }
