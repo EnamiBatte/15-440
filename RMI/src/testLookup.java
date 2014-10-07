@@ -14,7 +14,7 @@ public class testLookup
     		args = new String[3];
     		args[0] = "localhost";
     		args[1] = "15440";
-    		args[2] = "NameServer";
+    		args[2] = "NameServerImpl";
     	}
 	// it takes three arguments.
 	// these are it wishes to connect to.
