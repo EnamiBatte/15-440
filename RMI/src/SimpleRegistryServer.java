@@ -18,18 +18,16 @@ public class SimpleRegistryServer {
 	}
 	
 	public static void main(String args[]) {
-		//int port = Integer.parseInt(args[0]);
 		int port = 15440;
+    	nameTable();
 		try {
-			ServerSocket servSock = new ServerSocket(port);
 			
+			ServerSocket servSock = new ServerSocket(port);
 			while(true) {
 				
 				Socket sock = servSock.accept();
-				System.out.println("aaa");
 				BufferedReader in = new BufferedReader(new InputStreamReader (sock.getInputStream()));
 				PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
-				
 				String arg = in.readLine();
 				int argi = 0;
 				if (arg.equals("bind")) {
@@ -55,11 +53,13 @@ public class SimpleRegistryServer {
 								Remote_Interface_Name);
 						//bind the service name and ror
 						nameTable.put(serviceName, ror);
+						break;
 					}
 					case 2:  { // lookup
 						String serviceName = in.readLine();
 						System.out.println("lookup of "+ serviceName);
 						//lookup RemoteObject ref based on serviceName
+						System.out.println("serviceName = " + serviceName);
 						if (nameTable.containsKey(serviceName)) {
 							RemoteObjectRef ror = nameTable.get(serviceName);
 							//Send found
@@ -72,6 +72,7 @@ public class SimpleRegistryServer {
 						} else {
 							out.println("not found");
 						}
+						break;
 					}
 					case 3: { // rebind
 						String serviceName = in.readLine();
@@ -88,6 +89,7 @@ public class SimpleRegistryServer {
 						}
 						nameTable.put(serviceName, ror);
 						out.println("Not Bound");
+						break;
 					}
 					case 4: { // unbind
 						String serviceName = in.readLine();
@@ -95,9 +97,12 @@ public class SimpleRegistryServer {
 						if (nameTable.containsKey(serviceName)) {
 							nameTable.remove(serviceName);
 						}
+						break;
 					}
 					case 5: { // who are you?
+						System.out.println("I am a simple registry.");
 						out.println("I am a simple registry.");
+						break;
 					}
 					default: {
 						System.out.println("Not valid request");
@@ -107,7 +112,6 @@ public class SimpleRegistryServer {
 				out.flush();
 				out.close();
 				sock.close();
-				servSock.close();
 			}
 			
 		} catch (IOException e) {
