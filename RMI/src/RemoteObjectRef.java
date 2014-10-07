@@ -56,7 +56,7 @@ public class RemoteObjectRef implements Serializable
 	// another place. 
 	// Here let it return null.
     	
-    	String Skeleton_Name = Remote_Interface_Name + "Impl";
+    	String Skeleton_Name = Remote_Interface_Name + "_stub";
     	Class c;
     	try {
 			Class r = Class.forName("Remote440");

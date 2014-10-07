@@ -22,6 +22,10 @@ public class ZipCodeClient {
     public static void main(String[] args) 
 	throws IOException
     {
+    	if(args.length<3)
+    	{
+    		args = new String[]{ "localhost","15440","service","a.txt"};
+    	}
 	String host = args[0];
 	int port = Integer.parseInt(args[1]);
 	String serviceName = args[2];
