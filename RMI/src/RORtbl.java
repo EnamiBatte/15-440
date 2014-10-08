@@ -23,8 +23,7 @@ public class RORtbl
     // In any way, it is better to have it for uniformity.
     public RemoteObjectRef addObj(String host, int port, Object o)
     {
-        
-        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter++, o.getClass().toString());
+        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter++, o.getClass().getName() );
         RORtable.put(ror, o);
         return ror;
     }

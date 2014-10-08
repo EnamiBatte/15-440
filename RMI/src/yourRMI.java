@@ -35,45 +35,45 @@ public class yourRMI
     {
     	if(args.length < 3)
     	{
-    		args = new String[] {"ZipCodeServerImpl","localhost","15440","service"};
+    		args = new String[] {"NameServerImpl","localhost","15440","service"};
     	}
-	String InitialClassName = args[0];
-	String registryHost = args[1];
-	int registryPort = Integer.parseInt(args[2]);	
-	String serviceName = args[3];
+		String InitialClassName = args[0];
+		String registryHost = args[1];
+		int registryPort = Integer.parseInt(args[2]);	
+		String serviceName = args[3];
 
-	// it should have its own port. assume you hardwire it.
-	host = (InetAddress.getLocalHost()).getHostName();
-	port = 12345;
-
-	// it now have two classes from MainClassName: 
-	// (1) the class itself (say ZipCpdeServerImpl) and
-	// (2) its skeleton.
-	Class initialclass = Class.forName(InitialClassName);
-	//Class initialskeleton = Class.forName(InitialClassName+"_skel");
+		// it should have its own port. assume you hardwire it.
+		host = (InetAddress.getLocalHost()).getHostName();
+		port = 12345;
 	
-	// you should also create a remote object table here.
-	// it is a table of a ROR and a skeleton.
-	// as a hint, I give such a table's interface as RORtbl.java. 
-	RORtbl tbl = new RORtbl();
+		// it now have two classes from MainClassName: 
+		// (1) the class itself (say ZipCpdeServerImpl) and
+		// (2) its skeleton.
+		Class initialclass = Class.forName(InitialClassName);
+		//Class initialskeleton = Class.forName(InitialClassName+"_skel");
+		
+		// you should also create a remote object table here.
+		// it is a table of a ROR and a skeleton.
+		// as a hint, I give such a table's interface as RORtbl.java. 
+		RORtbl tbl = new RORtbl();
+		
+		// after that, you create one remote object of initialclass.
+		Object o = initialclass.newInstance();
+		
+		// then register it into the table.
+		RemoteObjectRef initial = tbl.addObj(host, port, o);
+		SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
+		sr.bind(serviceName, initial);
+		
+		// create a socket.
+		ServerSocket serverSoc = new ServerSocket(port);
 	
-	// after that, you create one remote object of initialclass.
-	Object o = initialclass.newInstance();
-	
-	// then register it into the table.
-	RemoteObjectRef initial = tbl.addObj(host, port, o);
-	SimpleRegistry sr = LocateSimpleRegistry.getRegistry(registryHost, registryPort);
-	sr.rebind(serviceName, initial);
-	
-	// create a socket.
-	ServerSocket serverSoc = new ServerSocket(port);
-
-	// Now we go into a loop.
-	// Look at rmiregistry.java for a simple server programming.
-	// The code is far from optimal but in any way you can get basics.
-	// Actually you should use multiple threads, or this easily
-	// deadlocks. But for your implementation I do not ask it.
-	// For design, consider well.
+		// Now we go into a loop.
+		// Look at rmiregistry.java for a simple server programming.
+		// The code is far from optimal but in any way you can get basics.
+		// Actually you should use multiple threads, or this easily
+		// deadlocks. But for your implementation I do not ask it.
+		// For design, consider well.
 	
 	while (true)
 	    {

@@ -1,6 +1,8 @@
 import java.io.Serializable;
 import java.util.Arrays;
 
+
+
 public class RemoteObjectRef implements Serializable
 {
     String IP_adr;
@@ -56,11 +58,20 @@ public class RemoteObjectRef implements Serializable
 	// another place. 
 	// Here let it return null.
     	
-    	String Skeleton_Name = Remote_Interface_Name + "_stub";
+    	String Stub_Name = Remote_Interface_Name;
     	Class c;
     	try {
+    		String a = "NameServer";
+    		String b = "NameServerImpl";
+    		System.out.println(Stub_Name);
+    		System.out.println(b);
+    		System.out.flush();
+    		b = Stub_Name;
+        	Class p = Class.forName(a);
+    		Class d = Class.forName(b);
+        	System.out.println("reached");
 			Class r = Class.forName("Remote440");
-			c = Class.forName(Skeleton_Name);
+			c = Class.forName(Stub_Name);
 			Object o = c.newInstance();
 			if(Arrays.asList(c.getInterfaces()).contains(r))
 				((Remote440) o).setRemoteObjectRef(this);

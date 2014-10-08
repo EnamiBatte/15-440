@@ -11,8 +11,8 @@ public class SimpleRegistry
     // ultra simple constructor.
     public SimpleRegistry(String IPAdr, int PortNum)
     {
-	Host = IPAdr;
-	Port = PortNum;
+		Host = IPAdr;
+		Port = PortNum;
     }
     
     //  Binds a remote reference to the specified name in this registry.
