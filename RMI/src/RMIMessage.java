@@ -45,7 +45,18 @@ public class RMIMessage implements Serializable {
 	{
 		Method m;
 		try {
-			m = callee.getClass().getMethod(methodName);
+			if(args != null){
+				Class[] argTypes = new Class[args.length];
+				int count = 0;
+				for(Object arg: args)
+				{
+					argTypes[count++] = arg.getClass();
+				}
+				m = callee.getClass().getMethod(methodName,argTypes);
+			}
+			else {
+				m = callee.getClass().getMethod(methodName);
+			}
 			System.out.println("RMIMessage invoking "+methodName);
 			returnValue = m.invoke(callee, args);
 			return true;

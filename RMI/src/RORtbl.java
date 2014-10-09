@@ -9,11 +9,11 @@ public class RORtbl
     // I omit all instance variables. you can use hash table, for example.
     // The table would have a key by ROR.
     private int counter = 0;
-    private Hashtable<RemoteObjectRef, Object> RORtable;
+    private Hashtable<Integer, Object> RORtable;
     // make a new table. 
     public RORtbl()
     {
-        RORtable = new Hashtable<RemoteObjectRef, Object>();
+        RORtable = new Hashtable<Integer, Object>();
     }
 
     // add a remote object to the table. 
@@ -23,16 +23,16 @@ public class RORtbl
     // In any way, it is better to have it for uniformity.
     public RemoteObjectRef addObj(String host, int port, Object o)
     {
-        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter++, o.getClass().getName() );
-        RORtable.put(ror, o);
+        RemoteObjectRef ror = new RemoteObjectRef(host, port, counter, o.getClass().getName() );
+        RORtable.put(new Integer(counter++), o);
         return ror;
     }
 
     // given ror, find the corresponding object.
     public Object findObj(RemoteObjectRef ror)
     {
-        if (RORtable.containsKey(ror)){
-            return RORtable.get(ror);
+        if (RORtable.containsKey(ror.getObjKey())){
+            return RORtable.get(ror.getObjKey());
         }
         // if you use a hash table this is easy.
         return null;

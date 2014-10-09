@@ -88,9 +88,10 @@ public class yourRMI
 		// (3) gets the invocation, in martiallled form.
 		System.out.println("created input/output Streams");
 		RemoteObjectRef obj = (RemoteObjectRef) in.readObject();
-		System.out.println(obj.getIP());
 		// (4) gets the real object reference from tbl.
 		Object realObj = tbl.findObj(obj);
+		Object actObj = tbl.findObj(initial);
+		System.out.println(actObj.toString());
 		System.out.println(realObj.getClass().toString());
 		// (5) Either:
 		//      -- using the interface name, asks the skeleton,
@@ -105,8 +106,8 @@ public class yourRMI
 		// (6) receives the return value, which (if not marshalled
 		//     you should marshal it here) and send it out to the 
 		//     the source of the invoker.
-		System.out.println("got" + info.getReturnValue().toString());
-		out.writeObject(realObj);
+		System.out.println("got " + info.getReturnValue());
+		out.writeObject(info);
 		// (7) closes the socket.
 		sock.close();
 	    }
