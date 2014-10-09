@@ -21,8 +21,8 @@ public class Remote440Stub implements Remote440 {
 		try {
 			System.out.println("executing a command");
 			Socket sock = new Socket(ror.getIP(),ror.getPort());
-			ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 			ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 			System.out.println("writing " + rmi.getMethod());
 			System.out.flush();
 			out.writeObject(rmi);

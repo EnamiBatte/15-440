@@ -35,7 +35,7 @@ public class ZipCodeClient {
 	SimpleRegistry sr = 
 	    LocateSimpleRegistry.getRegistry(host, port);
 	RemoteObjectRef ror = sr.lookup(serviceName);
-
+	System.out.println("port num:" + ror.getPort());
 	// get (create) the stub out of ror.
  	ZipCodeServer zcs = (ZipCodeServer) ror.localise();
 

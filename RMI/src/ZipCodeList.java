@@ -6,8 +6,8 @@ public class ZipCodeList
 
     public ZipCodeList(String c, String z, ZipCodeList n)
     {
-	city=c;
-	ZipCode=z;
-	next=n;
+		city=c;
+		ZipCode=z;
+		next=n;
     }
 }

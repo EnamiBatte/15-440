@@ -79,13 +79,19 @@ public class yourRMI
 	    {
 		// (1) receives an invocation request.
 		Socket sock = serverSoc.accept();
+		System.out.println("recieved request");
 		// (2) creates a socket and input/output streams.
 		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+		System.out.println("created input Stream");
+		System.out.flush();
 		ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
 		// (3) gets the invocation, in martiallled form.
+		System.out.println("created input/output Streams");
 		RemoteObjectRef obj = (RemoteObjectRef) in.readObject();
+		System.out.println(obj.getIP());
 		// (4) gets the real object reference from tbl.
 		Object realObj = tbl.findObj(obj);
+		System.out.println(realObj.getClass().toString());
 		// (5) Either:
 		//      -- using the interface name, asks the skeleton,
 		//         together with the object reference, to unmartial
@@ -94,7 +100,7 @@ public class yourRMI
 		//         object directly.
 		RMIMessage info = (RMIMessage) in.readObject();
 		String method = info.getMethod();
-		System.out.println("invoking " + method);
+		System.out.println("RMI invoking " + method);
 		info.invoke(realObj);
 		// (6) receives the return value, which (if not marshalled
 		//     you should marshal it here) and send it out to the 
