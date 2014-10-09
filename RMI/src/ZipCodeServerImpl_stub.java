@@ -1,39 +1,28 @@
 
-public class ZipCodeServerImpl_stub implements ZipCodeServer {
-
-	private RemoteObjectRef ror;
-	@Override
-	public void setRemoteObjectRef(RemoteObjectRef r) {
-		this.ror = r;
-	}
-
-	@Override
-	public RemoteObjectRef getRemoteObjectRef() {
-		return ror;
-	}
+public class ZipCodeServerImpl_stub extends Remote440Stub implements ZipCodeServer {
 
 	@Override
 	public void initialise(ZipCodeList newlist) {
-		// TODO Auto-generated method stub
-		
+		RMIMessage temp = new RMIMessage(new Object[] {newlist},"initialise");
+		execute(temp);
 	}
 
 	@Override
 	public String find(String city) {
-		// TODO Auto-generated method stub
-		return null;
+		RMIMessage temp = new RMIMessage(new Object[] {city},"find");
+		return (String) execute(temp);
 	}
 
 	@Override
 	public ZipCodeList findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		RMIMessage temp = new RMIMessage(null,"findAll");
+		return (ZipCodeList) execute(temp);
 	}
 
 	@Override
 	public void printAll() {
-		// TODO Auto-generated method stub
-		
+		RMIMessage temp = new RMIMessage(null,"printAll");
+		execute(temp);
 	}
 
 }

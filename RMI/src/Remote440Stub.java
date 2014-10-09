@@ -19,17 +19,19 @@ public class Remote440Stub implements Remote440 {
 	public Object execute(RMIMessage rmi)
 	{
 		try {
+			System.out.println("executing a command");
 			Socket sock = new Socket(ror.getIP(),ror.getPort());
 			ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 			ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
+			System.out.println("writing " + rmi.getMethod());
+			System.out.flush();
 			out.writeObject(rmi);
 			RMIMessage response = (RMIMessage) in.readObject();
 			return response.getReturnValue();
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 		return null;
 	}
 }

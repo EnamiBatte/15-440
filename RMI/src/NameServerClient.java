@@ -16,20 +16,27 @@ public class NameServerClient {
 	SimpleRegistry sr =  LocateSimpleRegistry.getRegistry(host, port);
 	RemoteObjectRef ror = sr.lookup(serviceName);
 	
+	RORtbl tbl = new RORtbl();
+	
+	
 	NameServer ns = (NameServer) ror.localise();
-	ns.add("service", ror, null);
-	
-	System.out.println("Checking service");
-	RemoteObjectRef temp = ns.match(serviceName);
-	System.out.println(temp.getIP());
-	System.out.println(temp.getRemoteInterfaceName());
-	
-	System.out.println("checking next");
-	ns = ns.next();
-	System.out.println(ns.match("service"));
+	Object o;
+	try {
+		o = Class.forName("NameServer").newInstance();
+		ns.add("service2", null, null);
 		
-	
-	
+		System.out.println("Checking service");
+		RemoteObjectRef temp = ns.match(serviceName);
+		System.out.println(temp.getIP());
+		System.out.println(temp.getRemoteInterfaceName());
+		
+		System.out.println("checking next");
+		ns = ns.next();
+		System.out.println(ns.match("service"));
+	} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}		
     }
 }
 

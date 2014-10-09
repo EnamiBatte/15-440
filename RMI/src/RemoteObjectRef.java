@@ -58,23 +58,18 @@ public class RemoteObjectRef implements Serializable
 	// another place. 
 	// Here let it return null.
     	
-    	String Stub_Name = Remote_Interface_Name;
+    	String Stub_Name = Remote_Interface_Name+"_stub";
     	Class c;
     	try {
-    		String a = "NameServer";
-    		String b = "NameServerImpl";
-    		System.out.println(Stub_Name);
-    		System.out.println(b);
-    		System.out.flush();
-    		b = Stub_Name;
-        	Class p = Class.forName(a);
-    		Class d = Class.forName(b);
-        	System.out.println("reached");
+    		System.out.println("invoking " +Stub_Name);
 			Class r = Class.forName("Remote440");
 			c = Class.forName(Stub_Name);
 			Object o = c.newInstance();
-			if(Arrays.asList(c.getInterfaces()).contains(r))
+			if(Arrays.asList(c.getInterfaces()[0].getInterfaces()).contains(r))
+			{
+				System.out.println("implements Remote440");
 				((Remote440) o).setRemoteObjectRef(this);
+			}
 			return o;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block

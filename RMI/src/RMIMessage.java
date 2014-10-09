@@ -46,6 +46,7 @@ public class RMIMessage implements Serializable {
 		Method m;
 		try {
 			m = callee.getClass().getMethod(methodName);
+			System.out.println("RMIMessage invoking "+methodName);
 			returnValue = m.invoke(callee, args);
 			return true;
 		} catch (NoSuchMethodException e) {

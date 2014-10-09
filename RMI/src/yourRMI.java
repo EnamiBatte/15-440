@@ -35,7 +35,7 @@ public class yourRMI
     {
     	if(args.length < 3)
     	{
-    		args = new String[] {"NameServerImpl","localhost","15440","service"};
+    		args = new String[] {"ZipCodeServerImpl","localhost","15440","service"};
     	}
 		String InitialClassName = args[0];
 		String registryHost = args[1];
