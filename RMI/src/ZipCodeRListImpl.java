@@ -1,5 +1,7 @@
+import java.io.Serializable;
+
 public class ZipCodeRListImpl 
-    implements  ZipCodeRList
+    implements  ZipCodeRList,Serializable
 {
     String city;
     String zipcode;

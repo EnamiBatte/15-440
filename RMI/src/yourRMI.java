@@ -35,7 +35,7 @@ public class yourRMI
     {
     	if(args.length < 3)
     	{
-    		args = new String[] {"ZipCodeServerImpl","localhost","15440","service"};
+    		args = new String[] {"ZipCodeRListImpl","localhost","15440","service"};
     	}
 		String InitialClassName = args[0];
 		String registryHost = args[1];
@@ -45,7 +45,8 @@ public class yourRMI
 		// it should have its own port. assume you hardwire it.
 		host = (InetAddress.getLocalHost()).getHostName();
 		port = 12345;
-	
+		System.out.println("host " + host);
+		System.out.println("port " + port);
 		// it now have two classes from MainClassName: 
 		// (1) the class itself (say ZipCpdeServerImpl) and
 		// (2) its skeleton.
