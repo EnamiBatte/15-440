@@ -19,6 +19,9 @@ public class SimpleRegistryServer {
 	
 	public static void main(String args[]) {
 		int port = 15440;
+		if(args.length > 0)
+			port = Integer.parseInt(args[0]);
+		
     	nameTable();
 		try {
 			

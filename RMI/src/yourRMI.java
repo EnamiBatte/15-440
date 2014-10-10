@@ -33,10 +33,6 @@ public class yourRMI
     public static void main(String args[])    
 	throws Exception
     {
-    	if(args.length < 3)
-    	{
-    		args = new String[] {"ZipCodeRListImpl","localhost","15440","service"};
-    	}
 		String InitialClassName = args[0];
 		String registryHost = args[1];
 		int registryPort = Integer.parseInt(args[2]);	
