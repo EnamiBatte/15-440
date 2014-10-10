@@ -41,8 +41,6 @@ public class yourRMI
 		// it should have its own port. assume you hardwire it.
 		host = (InetAddress.getLocalHost()).getHostName();
 		port = 12345;
-		System.out.println("host " + host);
-		System.out.println("port " + port);
 		// it now have two classes from MainClassName: 
 		// (1) the class itself (say ZipCpdeServerImpl) and
 		// (2) its skeleton.
@@ -105,5 +103,6 @@ public class yourRMI
 		// (7) closes the socket.
 		sock.close();
 	    }
+		
     }
 }
