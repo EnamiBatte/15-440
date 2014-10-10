@@ -9,18 +9,10 @@ public class testUnbind {
 		int port;
 		// it takes one argument.
 		// these are it wishes to connect to
-		if(args.length < 3)
-		{
-			host = "localhost";
-			port = 15440;
-			ServiceName = "NameServerImpl";
-		} else {
 		// these are data.
-			host = args[0];
-			port = Integer.parseInt(args[1]);
-			ServiceName = args[2];
-		}
-
+		host = args[0];
+		port = Integer.parseInt(args[1]);
+		ServiceName = args[2];
 		// locate.
 		SimpleRegistry sr = LocateSimpleRegistry.getRegistry(host, port);
 

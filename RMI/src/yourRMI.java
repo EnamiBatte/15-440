@@ -47,7 +47,6 @@ public class yourRMI
 		// (1) the class itself (say ZipCpdeServerImpl) and
 		// (2) its skeleton.
 		Class initialclass = Class.forName(InitialClassName);
-		//Class initialskeleton = Class.forName(InitialClassName+"_skel");
 		
 		// you should also create a remote object table here.
 		// it is a table of a ROR and a skeleton.

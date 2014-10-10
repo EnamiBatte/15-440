@@ -1,0 +1,50 @@
+To test our code first start SimpleRegistryServer.
+
+SimpleRegistryServer:
+	java SimpleRegistryServer port
+
+If no port is provided SimpleRegistryServer defaults to 15440
+
+Then run yourRMI with the testProgram of choice, 
+	the host and port of SimpleRegistryServer, 
+	and an initial Service Name.
+	
+yourRMI:
+	java yourRMI testProgram host port serviceName
+
+(Note this has no defaults)
+Our two provided test programs for yourRMI are ZipCodeServerImpl or ZipCodeRListImpl
+
+Then run the client of that testProgram with the host and port of SimpleRegistryServer, 
+	and the service name from yourRMI
+	and an input file.
+
+ZipCodeServerImpl:
+	java ZipCodeClient host port serviceName file
+ZipCodeRListImpl:
+	java ZipCodeRListClient host port serviceName file
+
+we have provided an input file ../a.txt for those 2 test programs.
+
+We also have 4 files to test our SRS on its own.
+SimpleRegistryServer must be running for these to work.
+
+For Bind and Rebind you need the SRS host and port, a serviceName and the 4 arguments creating an RemoteObjectRef.
+	Host (String)
+	Port (int)
+	ObjKey (int)
+	Interface_Name (String)
+testBind:
+	java testBind host port serviceName IPAdr PortNum ObjKey InterfaceName
+testRebind:
+	java testRebind host port serviceName IPAdr PortNum ObjKey InterfaceName
+(Note unless bind was applied to the serviceName these operate the same).
+
+For Lookup and Unbind you need the SRS host and port, and a serviceName.
+This serviceName should have already been bound (using one of the above).
+testLookup:
+	java testLookup host port serviceName
+testUnbind:
+	java testUnbind host port serviceName
+
+

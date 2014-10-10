@@ -10,26 +10,17 @@ public class testRebind
     {
 	// it takes seven arguments.
 	// these are it wishes to connect to.
-    String host = "localhost";
-    int port = 15440;
-    String ServiceName = "NameServerImpl";
-    String IPAdr = "localhost";
-    int PortNum = 15640;
-    int ObjKey = 1;
-    String InterfaceName = "NameServer";
-	if(args.length>6)
-	{
-    host = args[0];
-	port = Integer.parseInt(args[1]);
+   
+    String host = args[0];
+	int port = Integer.parseInt(args[1]);
 
 	// these are data.
-	ServiceName = args[2];
-	IPAdr = args[3];
-	PortNum = Integer.parseInt(args[4]);
-	ObjKey = Integer.parseInt(args[5]);
-	InterfaceName = args[6];
-	}
-
+	String ServiceName = args[2];
+	String IPAdr = args[3];
+	int PortNum = Integer.parseInt(args[4]);
+	int ObjKey = Integer.parseInt(args[5]);
+	String InterfaceName = args[6];
+	
 	// make ROR.
 	RemoteObjectRef ror = new RemoteObjectRef(IPAdr, PortNum, ObjKey, InterfaceName);
 
