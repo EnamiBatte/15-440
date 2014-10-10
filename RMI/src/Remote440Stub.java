@@ -16,14 +16,19 @@ public class Remote440Stub implements Remote440 {
 		return ror;
 	}
 
+	
+	/* This connects to yourRMI so we want to connect to it
+	* standardize order to what it expects
+	* Give it the ROR and the RMIMessage (actual method)
+	* and Return the actual value
+	*/ 
 	public Object execute(RMIMessage rmi)
 	{
 		try {
-			System.out.println("executing a command");
+			System.out.println("Remote440Stub executing a command");
 			Socket sock = new Socket(ror.getIP(),ror.getPort());
 			ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
-			System.out.println("writing the ROR");
 			out.writeObject(ror);
 			System.out.println("writing " + rmi.getMethod());
 			out.writeObject(rmi);

@@ -56,8 +56,7 @@ public class RemoteObjectRef implements Serializable
 	// all what it got (use CM's static methods), including its method name, 
 	// arguments etc., in a marshalled form, and CM (yourRMI) sends it out to 
 	// another place. 
-	// Here let it return null.
-    	
+		
     	String Stub_Name = Remote_Interface_Name+"_stub";
     	Class c;
     	try {
@@ -67,7 +66,6 @@ public class RemoteObjectRef implements Serializable
 			Object o = c.newInstance();
 			if(Arrays.asList(c.getInterfaces()[0].getInterfaces()).contains(r))
 			{
-				System.out.println("implements Remote440");
 				((Remote440) o).setRemoteObjectRef(this);
 			}
 			return o;

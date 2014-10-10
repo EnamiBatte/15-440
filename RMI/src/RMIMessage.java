@@ -2,7 +2,10 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
+/* An object to store all the information needed to invoke a method
+ * And once actually on the server to invoke that method
+ * 
+ */
 public class RMIMessage implements Serializable {
 	private Object[] args;
 	private String methodName;
@@ -41,10 +44,13 @@ public class RMIMessage implements Serializable {
 		returnValue = value;
 	}
 	
+	//Converts from our information to a method call
+	//Stores the method result
 	public boolean invoke(Object callee)
 	{
 		Method m;
 		try {
+			//Handles Arguments passed in to the method
 			if(args != null){
 				Class[] argTypes = new Class[args.length];
 				int count = 0;
@@ -58,6 +64,7 @@ public class RMIMessage implements Serializable {
 				m = callee.getClass().getMethod(methodName);
 			}
 			System.out.println("RMIMessage invoking "+methodName);
+			//Call the actual local instance of the method
 			returnValue = m.invoke(callee, args);
 			return true;
 		} catch (NoSuchMethodException e) {

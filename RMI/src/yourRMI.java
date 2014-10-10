@@ -78,8 +78,6 @@ public class yourRMI
 		System.out.println("recieved request");
 		// (2) creates a socket and input/output streams.
 		ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
-		System.out.println("created input Stream");
-		System.out.flush();
 		ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
 		// (3) gets the invocation, in martiallled form.
 		System.out.println("created input/output Streams");
