@@ -44,17 +44,22 @@ public class ZipCodeRListClient {
 	// again no error check!
 	ZipCodeList l = null;
 	boolean flag = true;
+	System.out.println("testing add.");
 	while (flag)
-	    {
+	{
 		String city = in.readLine();
 		String code = in.readLine();
 		if (city == null)
 		    flag = false;
 		else
+		{
 		    l = new ZipCodeList(city.trim(), code.trim(), l);
-	    }
+		    rl=rl.add(city.trim(), code.trim());
+		}
+	}
 	// the final value of l should be the initial head of 
 	// the list.
+	System.out.println("add tested.");
 	
 	// we print out the local zipcodelist.
 	System.out.println("This is the original list.");
@@ -66,24 +71,13 @@ public class ZipCodeRListClient {
 		     "code: "+temp.ZipCode);       
 		temp = temp.next;                        
 	    }
-	
-	// test "add".
-	System.out.println("testing add.");
-	temp = l;
-	ZipCodeRList rtemp = rl;
-	while (temp !=null)            
-	    {
-		rl=rl.add(temp.city, temp.ZipCode);
-		temp = temp.next;                        
-	    }
-	System.out.println("add tested.");
 	// rl should contain the initial head of the list.
 
 	// test "find" and "next" by printing all. 
 	// This is also the test that "add" performed all right.
 	System.out.println("\n This is the remote list, printed using find/next.");
 	temp = l;
-	rtemp = rl;
+	ZipCodeRList rtemp = rl;
 	while (temp !=null)
 	    {
 		// here is a test.
