@@ -5,7 +5,8 @@ public class Configuration {
 	public static final int port = 4451;
 	public static final int timeout = 500;
 	//Need size of each map
-	//Number of maps/Per Host
+	//Unix3 has 6 cores
+	public static final int maxMapsPerHost = 6;
 	//Number of Reduces/Per Host
 	//Other constants as needed
 }
