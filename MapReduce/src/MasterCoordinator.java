@@ -3,11 +3,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class MasterCoordinator {
 
-	public Map<Integer,InetAddress> slaveToAddress;
+	public Map<Integer,String> slaveToAddress;
 	public Map<Integer,List<Tasks>> slaveToTasks;
 	public Map<Integer,Jobs> jobIDtoJobs;
 	public List<Jobs> runningJobs;
@@ -15,16 +16,20 @@ public class MasterCoordinator {
 	public List<Jobs> finishedJobs;
 	public List<Tasks> queueTasks;
 	public boolean SystemUp = false;
+	public List<MasterConnection> connections;
 
 	public MasterCoordinator()
 	{
-		slaveToAddress = new HashMap<Integer,InetAddress>();
+		slaveToAddress = new HashMap<Integer,String>();
 		slaveToTasks = new HashMap<Integer,List<Tasks>>();
 		jobIDtoJobs = new HashMap<Integer,Jobs>();
 		runningJobs = new LinkedList<Jobs>();
 		queueJobs = new LinkedList<Jobs>();
 		finishedJobs = new LinkedList<Jobs>();
 		queueTasks = new LinkedList<Tasks>();
+		connections = new LinkedList<MasterConnection>();
+		
+		
 	}
 	
 	public void printQueue()
@@ -60,6 +65,15 @@ public class MasterCoordinator {
 		}
 		else
 		{
+			if(slaveToAddress.isEmpty())
+			{
+				int length = Configuration.Slave_Addresses.length;
+				for(int i = 0; i < length; i++)
+				{
+					slaveToAddress.put(i, Configuration.Slave_Addresses[i]);
+					startNode(i);
+				}
+			}
 			//For each Slave Node startNode
 			SystemUp = true;
 		}
@@ -67,7 +81,10 @@ public class MasterCoordinator {
 	}
 	public void startNode(int nodeID)
 	{
-		
+		int listenPort = Configuration.masterListenPorts[nodeID];
+		MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort);
+		newCon.start();
+		connections.add(newCon);
 	}
 	
 	public void stopSystem()

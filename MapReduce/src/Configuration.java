@@ -2,8 +2,9 @@
 public class Configuration {
 	public static final String Master_Address = "unix1.andrew.cmu.edu";
 	public static final String[] Slave_Addresses = {"unix2.andrew.cmu.edu","unix3.andrew.cmu.edu"};
-	public static final int port = 4451;
-	public static final int timeout = 500;
+	public static final int slaveListenPort = 4451;
+	public static final int[] masterListenPorts = {4651,6451};
+	public static final int timeout = 600;
 	//Need size of each map
 	//Unix3 has 6 cores
 	public static final int maxMapsPerHost = 6;
