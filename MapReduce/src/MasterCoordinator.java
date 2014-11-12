@@ -28,8 +28,6 @@ public class MasterCoordinator {
 		finishedJobs = new LinkedList<Jobs>();
 		queueTasks = new LinkedList<Tasks>();
 		connections = new LinkedList<MasterConnection>();
-		
-		
 	}
 	
 	public void printQueue()
@@ -82,7 +80,7 @@ public class MasterCoordinator {
 	public void startNode(int nodeID)
 	{
 		int listenPort = Configuration.masterListenPorts[nodeID];
-		MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort);
+		MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort,this);
 		newCon.start();
 		connections.add(newCon);
 	}
@@ -109,7 +107,6 @@ public class MasterCoordinator {
 	{
 		
 	}
-	
 	public void addTask()
 	{
 		
@@ -120,14 +117,35 @@ public class MasterCoordinator {
 		
 	}
 	
-	public void acknowledgeRunningTask()
+	public void acknowledgeRunningTask(Tasks t)
 	{
-		
+		int JobID = t.getJobID();
+		Jobs job = jobIDtoJobs.get(JobID);
+		int check = job.updateTasks(t);
+		if(check == 2)
+		{
+			queueJobs.remove(job);
+			runningJobs.add(job);		
+		}
+		int SlaveID = t.getSlaveID();
+		slaveToTasks.get(SlaveID).add(t);
 	}
 	
-	public void acknowledgeFinishedTask()
+	public void acknowledgeFinishedTask(Tasks t)
 	{
+		int SlaveID = t.getSlaveID();
+		slaveToTasks.get(SlaveID).remove(t);
 		
+		int JobID = t.getJobID();
+		Jobs job = jobIDtoJobs.get(JobID);
+		int check = job.updateTasks(t);
+		if(check == 0)
+		{
+			runningJobs.remove(job);
+			finishedJobs.add(job);		
+		}
+		
+		issueNextTask();
 	}
 	
 }

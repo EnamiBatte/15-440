@@ -7,7 +7,7 @@ public interface Jobs {
 	public List<Tasks> getTasks();
 	public void setTasks(List<Tasks> taskList);
 	public List<Tasks> getQueueTasks();
-	public void updateTasks(Tasks task);
+	public int updateTasks(Tasks task);
 	public Integer getID();
 	public void setID(int ID);
 }
