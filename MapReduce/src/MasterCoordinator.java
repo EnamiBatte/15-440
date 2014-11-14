@@ -79,22 +79,41 @@ public class MasterCoordinator {
 	}
 	public void startNode(int nodeID)
 	{
-		int listenPort = Configuration.masterListenPorts[nodeID];
-		MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort,this);
-		newCon.start();
-		connections.put(nodeID, newCon);
+		if(connections.containsKey(nodeID))
+		{
+			MasterConnection con = connections.get(nodeID);
+			con.start();
+		}
+		else{
+			int listenPort = Configuration.masterListenPorts[nodeID];
+			MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort,this);
+			newCon.start();
+			connections.put(nodeID, newCon);
+		}
 	}
 	
 	public void stopSystem()
 	{
-		
 		//For each Job processKill
+		queueJobs = null;
+		for(Jobs j: runningJobs)
+		{
+			processKill(j.getID());
+		}
 		//Close each node
+		Set<Integer> nodes = connections.keySet();
+		for(Integer i : nodes)
+		{
+			closeNode(i);
+		}
 	}
-	//Called by stopSystem or in case of timeout
+	//Called by stopSystem
 	public void closeNode(int nodeID)
 	{
-		
+		MasterConnection con = connections.get(nodeID);
+		Message msg = new Message();
+		msg.setType('c');
+		con.sendMessage(msg);
 	}
 	
 	public void processKill(int id)

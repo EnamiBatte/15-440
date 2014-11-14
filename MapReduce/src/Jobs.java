@@ -9,6 +9,11 @@ public abstract class Jobs {
 	private List<Tasks> queueTasks;
 	private List<Tasks> runningTasks;
 	
+	//Status = 3 means it started
+	//Status = 2 means it is running
+	//Status = 1 means it finished successfully
+	//Status = 0 means it finished due to a kill
+	
 	public Jobs()
 	{
 		allTasks = new LinkedList<Tasks>();
