@@ -10,6 +10,7 @@ public class MasterConnection {
 	public int port;
 	public ServerSocket serverSoc;
 	public MasterCoordinator coord;
+	public boolean run;
 	
 	public MasterConnection(String sladdr, int masterListenPort, MasterCoordinator coordinator)
 	{
@@ -33,7 +34,7 @@ public class MasterConnection {
 	
 	public void run()
 	{
-		boolean run = true;
+		run = true;
 		while(run)
 		{
 			Socket s;
@@ -57,6 +58,12 @@ public class MasterConnection {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		try {
+			serverSoc.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -95,7 +102,7 @@ public class MasterConnection {
 	{
 		if(msg.getType()=='a')
 		{
-			//Response to a timeout check
+			//Response to an acknowledgement
 			return null;
 		}
 		else if(msg.getType()=='f')
@@ -112,11 +119,14 @@ public class MasterConnection {
 		}
 		else if(msg.getType()=='c')
 		{
-			return sendAck();
+			//Node is cleaned
+			run = false;
+			return null;
 		}
 		else if(msg.getType()=='n')
 		{
 			//New Job issued
+			coord.addJob(msg.getJob());
 			return sendAck();
 		}
 		else{
@@ -124,8 +134,4 @@ public class MasterConnection {
 		}
 		
 	}
-	
-	
-	
-	
 }

@@ -9,6 +9,7 @@ public class SlaveCoordinator {
 	public String MasterAddr;
 	public int port;
 	public ServerSocket serverSoc;
+	public boolean run;
 	
 	public SlaveCoordinator(int masterListenPort)
 	{
@@ -31,7 +32,7 @@ public class SlaveCoordinator {
 	
 	public void run()
 	{
-		boolean run = true;
+		run = true;
 		while(run)
 		{
 			Socket s;
@@ -53,6 +54,12 @@ public class SlaveCoordinator {
 				e.printStackTrace();
 			}
 		}
+		try {
+			serverSoc.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 	}
 	//Handles Messages
@@ -61,11 +68,26 @@ public class SlaveCoordinator {
 	// New Task
 	public Message receiveMessage(Message msg)
 	{
+		Message resp = new Message();
+		resp.setType('a');
 		if('a' == msg.getType())
 		{
 			//Received Acknowledgement Send acknowledgement
-			Message resp = new Message();
-			resp.setType('a');
+			return resp;
+		}
+		else if('k' == msg.getType())
+		{
+			//Start Killing the Task
+			return resp;
+		}
+		else if('t'== msg.getType())
+		{
+			//Start the Task
+			return resp;
+		}
+		else if('c'== msg.getType())
+		{
+			//Clean up node
 			return resp;
 		}
 		else{

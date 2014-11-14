@@ -10,7 +10,7 @@ public class Configuration {
 	//Unix3 has 6 cores
 	public static final int maxMapsPerHost = 6;
 	public static final int mapPartitionSize = 1;
-	public static final int mapRetries = 2;
+	//public static final int mapRetries = 2;
 	//public static final int reducePartitionSize = 2000;
 	//Number of Reduces/Per Host
 	//Other constants as needed

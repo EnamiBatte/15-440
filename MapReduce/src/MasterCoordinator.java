@@ -16,18 +16,18 @@ public class MasterCoordinator {
 	public List<Jobs> finishedJobs;
 	public List<Tasks> queueTasks;
 	public boolean SystemUp = false;
-	public List<MasterConnection> connections;
+	public Map<Integer,MasterConnection> connections;
 
 	public MasterCoordinator()
 	{
 		slaveToAddress = new HashMap<Integer,String>();
 		slaveToTasks = new HashMap<Integer,List<Tasks>>();
+		connections = new HashMap<Integer,MasterConnection>();
 		jobIDtoJobs = new HashMap<Integer,Jobs>();
 		runningJobs = new LinkedList<Jobs>();
 		queueJobs = new LinkedList<Jobs>();
 		finishedJobs = new LinkedList<Jobs>();
 		queueTasks = new LinkedList<Tasks>();
-		connections = new LinkedList<MasterConnection>();
 	}
 	
 	public void printQueue()
@@ -82,7 +82,7 @@ public class MasterCoordinator {
 		int listenPort = Configuration.masterListenPorts[nodeID];
 		MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort,this);
 		newCon.start();
-		connections.add(newCon);
+		connections.put(nodeID, newCon);
 	}
 	
 	public void stopSystem()
@@ -100,10 +100,21 @@ public class MasterCoordinator {
 	public void processKill(int id)
 	{
 		Jobs toKill = jobIDtoJobs.get(id);
-		//Work
+		List<Tasks> removeTasks = toKill.getQueueTasks();
+		queueTasks.removeAll(removeTasks);
+		List<Tasks> toKillTasks = toKill.runningTasks();
+		for(Tasks t: toKillTasks)
+		{
+			Integer i = t.getSlaveID();
+			MasterConnection con = connections.get(i);
+			Message msg = new Message();
+			msg.setTask(t);
+			msg.setType('k');
+			con.sendMessage(msg);
+		}
 	}
 	
-	public void addJob()
+	public void addJob(Jobs j)
 	{
 		
 	}
@@ -114,7 +125,9 @@ public class MasterCoordinator {
 	
 	public void issueNextTask()
 	{
-		
+		//Check work load of slaves
+		//If one is free, send next task in queue to it.
+		//Should check that node has the necessary file if possible.
 	}
 	
 	public void acknowledgeRunningTask(Tasks t)
@@ -144,7 +157,14 @@ public class MasterCoordinator {
 			runningJobs.remove(job);
 			finishedJobs.add(job);		
 		}
-		
+		if(check == -1)
+		{
+			queueTasks.add(t);
+		}
+		if(check == -2)
+		{
+			processKill(JobID);
+		}
 		issueNextTask();
 	}
 	
