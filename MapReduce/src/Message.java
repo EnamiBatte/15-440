@@ -1,4 +1,7 @@
+package dfs;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class Message implements Serializable {
@@ -6,6 +9,12 @@ public class Message implements Serializable {
 	private char type;
 	private Tasks task;
 	private Jobs job;
+	
+	private String filename;
+	private int lines;
+	private String addr;
+	private int partition;
+	private ArrayList<String> addrList;
 	
 	public char getType()
 	{
@@ -30,6 +39,46 @@ public class Message implements Serializable {
 	public void setJob(Jobs j)
 	{
 		job = j;
+	}
+	public void setFileName(String f)
+	{
+		filename = f;
+	}
+	public String getFileName()
+	{
+		return filename;
+	}
+	public void setAddr(String a)
+	{
+		addr = a;
+	}
+	public String getAddr()
+	{
+		return addr;
+	}
+	public void setLines(int l)
+	{
+		lines = l;
+	}
+	public int getLines()
+	{
+		return lines;
+	}
+	public void setPartition(int p) 
+	{
+		partition = p;
+	}
+	public int getPartition() 
+	{
+		return partition;
+	}	
+	public void setAddrList(ArrayList<String> s)
+	{
+		addrList = s;
+	}
+	public ArrayList<String> getAddrList()
+	{
+		return addrList;
 	}
 
 }
