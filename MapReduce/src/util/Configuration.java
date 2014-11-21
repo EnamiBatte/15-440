@@ -9,6 +9,7 @@ public class Configuration {
 	public static final int length = 1000;
 	//Need size of each map
 	//Unix3 has 6 cores
+	public static final int replication = 2;
 	public static final int numberOfLines = 5;
 	public static final int numberOfReducers = 2;
 	public static final int maxTasksPerHost = 6;
