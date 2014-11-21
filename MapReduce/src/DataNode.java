@@ -1,5 +1,3 @@
-package dfs;
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -8,17 +6,89 @@ public class DataNode {
 	
 	public DataNode() {	
 	}
-	public ArrayList<String> createLocalInputPartition(String filename, int numberOfLines) {
-		return new ArrayList<String>();
+	
+	public int hash(String key, int num) {
+		return key.hashCode() % num;
 	}
-	public ArrayList<String> createLocalOutputPartition(String filename, int numberOfReducers) {
-		return new ArrayList<String>();
+	
+	public ArrayList<String> createLocalInputPartition(String filename, int numberOfLines) throws Exception {
+		BufferedReader dr=new BufferedReader(new FileReader(filename));
+		int lines = 0;
+		String line = dr.readLine();
+		while (line != "") {
+			lines++;
+		}
+		dr.close();
+		int numberOfFiles = (lines - 1) / numberOfLines + 1;
+		ArrayList<String> files = new ArrayList<String>();
+		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
+		for (int i = 0; i < numberOfFiles; i++) {
+			String name = "m" + numberOfFiles + "_" + filename;
+			files.add(name);
+			File myFile = new File(name);
+			myFile.createNewFile();
+			dw.add(new BufferedWriter(new FileWriter(name)));
+		}
+		dr=new BufferedReader(new FileReader(filename));
+		lines = 0;
+		int i = 0;
+		line = dr.readLine();
+		while (line != "") {
+			lines++;
+			dw.get(i).write(line);
+			dw.get(i).newLine();
+			if (lines == numberOfLines) {
+				i++;
+				lines = 0;
+			}
+		}
+		while (lines < numberOfLines) {
+			dw.get(i).newLine();
+			lines++;
+		}
+		ArrayList<String> ret = new ArrayList<String>();
+		for (String name : files) {
+			ret.add(numberOfLines + "_" + name);
+		}
+		return ret;
 	}
-	public void addFileToDFS(String filename, boolean flag) throws Exception{
+	public ArrayList<String> createLocalOutputPartition(String filename, int numberOfReducers) throws Exception {
+		BufferedReader dr=new BufferedReader(new FileReader(filename));
+		int[] lines = new int[numberOfReducers];
+		String line = dr.readLine();
+		while (line != "") {
+			String key = line.split("|")[0];
+			int i = hash(key, numberOfReducers);
+			lines[i]++;
+		}
+		dr.close();
+		ArrayList<String> files = new ArrayList<String>();
+		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
+		for (int i = 0; i < numberOfReducers; i++) {
+			String name = "r" + filename+ "_" + numberOfReducers;
+			files.add(name);
+			File myFile = new File(name);
+			myFile.createNewFile();
+			dw.add(new BufferedWriter(new FileWriter(name)));
+		}
+		dr=new BufferedReader(new FileReader(filename));
+		line = dr.readLine();
+		while (line != "") {
+			String key = line.split("|")[0];
+			int i = hash(key, numberOfReducers);
+			dw.get(i).write(line);
+			dw.get(i).newLine();
+		}
+		ArrayList<String> ret = new ArrayList<String>();
+		for (int i = 0; i < files.size(); i++) {
+			ret.add(lines[i] + "_" + files.get(i));
+		}
+		return ret;
+	}
+	public void addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
-		int masterPort = Configuration.Master_port;
-		Socket socket = new Socket(masterIP, masterPort);
+		Socket socket = new Socket(masterIP, Master_port);
 		InputStream is = socket.getInputStream();
 		OutputStream os = socket.getOutputStream();
 		ObjectInputStream ois = new ObjectInputStream(is);
@@ -68,22 +138,33 @@ public class DataNode {
 			
 		}
 		socket.close();
-		
-		
-
-		
 	}
 	
-	public void receiveFileFromStream(String filename, InputStream is, int lines) throws Exception {
+	public void receiveFileFromStream(String filename, InputStream is, int Master_port, int lines) throws Exception {
 		BufferedReader dr=new BufferedReader(new InputStreamReader(is));
-		FileOutputStream fos = new FileOutputStream(filename);
-		BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(fos));
+		File myFile = new File(filename);
+		myFile.createNewFile();
+		BufferedWriter dw = new BufferedWriter(new FileWriter(filename));
 		for (int i = 0; i < lines; i++) {
 			dw.write(dr.readLine());
 			dw.newLine();
 		} 
 		dr.close();
 		dw.close();
+		
+		String masterIP = Configuration.Master_Address;
+		Socket socket = new Socket(masterIP, Master_port);
+		ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+		
+		InetAddress inet = InetAddress.getLocalHost();
+		String localAddr = inet.getHostAddress();
+		Message message = new Message();
+		message.setType('u');
+		message.setFileName(filename);
+		message.setAddr(localAddr);
+		oos.writeObject(message);
+		socket.close();
+		
 	}
 	
 	public void writeFileToStream(String filename, int lines, OutputStream os) throws Exception {
@@ -96,9 +177,4 @@ public class DataNode {
 		dr.close();
 		dw.close();
 	}
-	
-
-	
-	
-	
 }
