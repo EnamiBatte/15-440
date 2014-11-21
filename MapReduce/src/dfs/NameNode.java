@@ -17,7 +17,7 @@ public class NameNode {
 		current = 0;
 	}
 	
-	public Message decide(String filename, ObjectOutputStream oos) throws Exception {
+	public Message decide(String filename) throws Exception {
 		ArrayList<String> ret = new ArrayList<String>();
 		if (filename.startsWith("r")) {
 			String name = filename.substring(0, filename.lastIndexOf("_"));
