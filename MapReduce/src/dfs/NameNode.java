@@ -3,23 +3,21 @@ package dfs;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-import util.*;
 
 public class NameNode {
 	ArrayList<String> slaveaddr;
 	HashMap<String, ArrayList<String>> filenametoslaveaddr;
 	private int replication;
 	private int current;
-
+	
 	public NameNode(ArrayList<String> slaveaddr, int replication) {
 		this.slaveaddr = slaveaddr;
 		this.replication = replication;
 		this.filenametoslaveaddr = new HashMap<String, ArrayList<String>>();
 		current = 0;
 	}
-
-	public void decide(String filename, ObjectOutputStream oos)
-			throws Exception {
+	
+	public void decide(String filename, ObjectOutputStream oos) throws Exception {
 		ArrayList<String> ret = new ArrayList<String>();
 		if (filename.startsWith("r")) {
 			String name = filename.substring(0, filename.lastIndexOf("_"));
@@ -33,6 +31,7 @@ public class NameNode {
 					oos.flush();
 					return;
 				}
+				
 			}
 		}
 		for (int i = 0; i < replication; i++) {
@@ -48,21 +47,20 @@ public class NameNode {
 		oos.writeObject(response);
 		oos.flush();
 	}
-
+	
+	
 	public ArrayList<String> findFile(String filename) {
 		return filenametoslaveaddr.get(filename);
 	}
-
+	
 	public void listAll() {
 		if (filenametoslaveaddr.isEmpty()) {
 			System.out.println("No files");
 		} else {
-			Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr
-					.entrySet().iterator();
+			Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>) it
-						.next();
-				String key = entry.getKey();
+				Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
+				String key = entry.getKey(); 
 				ArrayList<String> val = entry.getValue();
 				System.out.println(key + ":");
 				for (String v : val) {
