@@ -140,7 +140,7 @@ public class DataNode {
 		socket.close();
 	}
 	
-	public void receiveFileFromStream(String filename, InputStream is, int Master_port, int lines) throws Exception {
+	public void receiveFileFromStream(String filename, InputStream is, int lines) throws Exception {
 		BufferedReader dr=new BufferedReader(new InputStreamReader(is));
 		File myFile = new File(filename);
 		myFile.createNewFile();
@@ -151,20 +151,6 @@ public class DataNode {
 		} 
 		dr.close();
 		dw.close();
-		
-		String masterIP = Configuration.Master_Address;
-		Socket socket = new Socket(masterIP, Master_port);
-		ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-		
-		InetAddress inet = InetAddress.getLocalHost();
-		String localAddr = inet.getHostAddress();
-		Message message = new Message();
-		message.setType('u');
-		message.setFileName(filename);
-		message.setAddr(localAddr);
-		oos.writeObject(message);
-		socket.close();
-		
 	}
 	
 	public void writeFileToStream(String filename, int lines, OutputStream os) throws Exception {
