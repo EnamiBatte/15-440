@@ -15,12 +15,14 @@ public class SlaveCoordinator {
 	public ServerSocket serverSoc;
 	public boolean run;
 	public HashMap<Tasks, RunTask> taskToThread;
+	public DataNode dataNode;
 
 	
 	public SlaveCoordinator()
 	{
 		taskToThread = new HashMap<Tasks, RunTask>();
 		MasterAddr = Configuration.Master_Address;
+		dataNode = new DataNode();
 	}
 	
 	public void setPort(int masterListenPort)
@@ -51,9 +53,13 @@ public class SlaveCoordinator {
 				s = serverSoc.accept();
 				ObjectInputStream in;
 				ObjectOutputStream out;
+				InputStream ins = s.getInputStream();
 				out = new ObjectOutputStream(s.getOutputStream());
-				in = new ObjectInputStream(s.getInputStream());
+				in = new ObjectInputStream(ins);
 				Message msg = (Message) in.readObject();
+				if (msg.getType == 's') {
+					dataNode.receiveFile(msg.getFileName(), ins, msg.getLines());
+				}
 				Message outMsg = receiveMessage(msg);
 				out.writeObject(outMsg);
 				in.close();
@@ -108,6 +114,10 @@ public class SlaveCoordinator {
 		if('c'== msg.getType())
 		{
 			stopServ();
+			return resp;
+		}
+		if('s'== msg.getType())
+		{
 			return resp;
 		}
 		else{
