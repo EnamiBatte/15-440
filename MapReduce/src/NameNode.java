@@ -1,13 +1,13 @@
-package dfs;
-
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class NameNode {
 	ArrayList<String> slaveaddr;
 	HashMap<String, ArrayList<String>> filenametoslaveaddr;
 	private int replication;
 	private int current;
+	
 	public NameNode(ArrayList<String> slaveaddr, int replication) {
 		this.slaveaddr = slaveaddr;
 		this.replication = replication;
@@ -15,23 +15,37 @@ public class NameNode {
 		current = 0;
 	}
 	
-	
-	
 	public void decide(String filename, ObjectOutputStream oos) throws Exception {
 		ArrayList<String> ret = new ArrayList<String>();
+		if (filename.startsWith("r")) {
+			String name = filename.substring(0, filename.lastIndexOf("_"));
+			for (String key : filenametoslaveaddr.keySet()) {
+				if (key.contains(name)) {
+					ret = filenametoslaveaddr.get(key);
+					filenametoslaveaddr.put(filename, ret);
+					Message response = new Message();
+					response.setAddrList(ret);
+					oos.writeObject(response);
+					oos.flush();
+					return;
+				}
+				
+			}
+		}
 		for (int i = 0; i < replication; i++) {
-			// Unfinished
 			ret.add(slaveaddr.get(current));
 			current += 1;
 			if (current >= slaveaddr.size()) {
 				current = 0;
 			}
 		}
+		filenametoslaveaddr.put(filename, ret);
 		Message response = new Message();
 		response.setAddrList(ret);
 		oos.writeObject(response);
 		oos.flush();
 	}
+	
 	
 	public ArrayList<String> findFile(String filename) {
 		return filenametoslaveaddr.get(filename);
@@ -41,7 +55,17 @@ public class NameNode {
 		if (filenametoslaveaddr.isEmpty()) {
 			System.out.println("No files");
 		} else {
-			// Unfinished
+			Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
+				String key = entry.getKey(); 
+				ArrayList<String> val = entry.getValue();
+				System.out.println(key + ":");
+				for (String v : val) {
+					System.out.print(v + ";");
+				}
+				System.out.print("\n");
+			}
 		}
 	}
 }
