@@ -122,7 +122,7 @@ public class DataNode {
 			ArrayList<String> addrList = response.getAddrList();
 			
 			for(String addr : addrList) {
-				int slaveport = Configuration.slaveport;
+				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
 				InputStream isDN = socketDN.getInputStream();
 				ObjectInputStream oisDN = new ObjectInStream(osDN);
