@@ -143,7 +143,12 @@ public class MasterConnection {
 			coord.addJob(msg.getJob());
 			return sendAck();
 		}
-		else{
+		else if(msg.getType()=='s')
+		{
+			//DFS file send
+			return coord.nameNode.decide(msg.setFileName());
+		} 
+		else {
 			return null;
 		}
 		
