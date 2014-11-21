@@ -124,6 +124,8 @@ public class DataNode {
 			for(String addr : addrList) {
 				int slaveport = Configuration.slaveport;
 				Socket socketDN = new Socket(addr, slaveport);
+				InputStream isDN = socketDN.getInputStream();
+				ObjectInputStream oisDN = new ObjectInStream(osDN);
 				OutputStream osDN = socketDN.getOutputStream();
 				ObjectOutputStream oosDN = new ObjectOutputStream(osDN);
 				
@@ -134,7 +136,7 @@ public class DataNode {
 				oosDN.writeObject(message);
 				writeFileToStream(partitionFilename, lines, osDN);
 				
-				Thread.sleep(100);
+				Message response = (Message)ois.readObject();
 				socketDN.close();
 			}
 			
