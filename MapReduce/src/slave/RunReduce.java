@@ -1,0 +1,83 @@
+package slave;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import util.*;
+
+
+public class RunReduce extends RunTask {
+	private ReduceTask reduce;
+	private RecordReader reader;
+	
+	
+	public RunReduce(ReduceTask r, SlaveCoordinator coordinator)
+	{
+		reduce = r;
+		task = r;
+		coord = coordinator;
+		reader = new RecordReader(reduce.in,reduce.recordlength,false);
+	}
+	@Override
+	public void run() {
+		
+		while (this.t == Thread.currentThread ())
+	    {
+			//Figure out how to read input file
+			//Evaluate it
+			Map<String,List<String>> input = reader.getKeyValuePairs();
+			OutputCollector<String,String> collect = new OutputCollector<String,String>();
+			Set<String> keySet = input.keySet();
+			for(String key: keySet)
+			{
+				List<String> values = input.get(key);
+				reduce.reduce(key, values, collect);
+			}
+			List<Pair> results = collect.getResults();
+			List<String> stringResults = new LinkedList<String>();
+			for(Pair p : results)
+			{
+				stringResults.add(p.toString());
+			}
+			FileOutputStream out;
+			
+			try {
+				Collections.sort(stringResults);
+				
+				out = new FileOutputStream(new File(reduce.fileout));
+				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
+				for(String res: stringResults)
+				{
+					dw.append(res);
+				}
+				dw.flush();
+				dw.close();
+				out.close();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				reduce.setStatus(-1);
+				Message msg = new Message();
+				msg.setTask(reduce);
+				msg.setType('f');
+				coord.sendMessage(msg);
+				return;
+			}
+			reduce.setStatus(1);
+			Message msg = new Message();
+			msg.setTask(reduce);
+			msg.setType('f');
+			coord.sendMessage(msg);
+			
+	    }
+	}
+}
