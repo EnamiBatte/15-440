@@ -17,7 +17,7 @@ public class NameNode {
 		current = 0;
 	}
 	
-	public void decide(String filename, ObjectOutputStream oos) throws Exception {
+	public Message decide(String filename, ObjectOutputStream oos) throws Exception {
 		ArrayList<String> ret = new ArrayList<String>();
 		if (filename.startsWith("r")) {
 			String name = filename.substring(0, filename.lastIndexOf("_"));
@@ -26,10 +26,8 @@ public class NameNode {
 					ret = filenametoslaveaddr.get(key);
 					filenametoslaveaddr.put(filename, ret);
 					Message response = new Message();
-					response.setAddrList(ret);
-					oos.writeObject(response);
-					oos.flush();
-					return;
+					response.setAddrList(ret);;
+					return response;
 				}
 				
 			}
@@ -44,8 +42,7 @@ public class NameNode {
 		filenametoslaveaddr.put(filename, ret);
 		Message response = new Message();
 		response.setAddrList(ret);
-		oos.writeObject(response);
-		oos.flush();
+		return response;
 	}
 	
 	
