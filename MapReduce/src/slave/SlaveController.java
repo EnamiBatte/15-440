@@ -1,3 +1,8 @@
+package slave;
+
+import master.MasterCoordinator;
+
+
 
 public class SlaveController {
 
@@ -10,8 +15,11 @@ public class SlaveController {
 	//Output
 	
 	public static void main(String[] args) {
+		SlaveCoordinator mc = new SlaveCoordinator();
+		mc.start();
 		// TODO Auto-generated method stub
-
+		String arg = args[0];
+		
 	}
 
 }
