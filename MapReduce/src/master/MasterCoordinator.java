@@ -21,6 +21,7 @@ public class MasterCoordinator {
 	public List<Tasks> queueTasks;
 	public boolean SystemUp = false;
 	public Map<Integer,MasterConnection> connections;
+	public NameNode nameNode;
 
 	public MasterCoordinator()
 	{
@@ -32,6 +33,7 @@ public class MasterCoordinator {
 		queueJobs = new LinkedList<Jobs>();
 		finishedJobs = new LinkedList<Jobs>();
 		queueTasks = new LinkedList<Tasks>();
+		nameNode = new NameNode(Configuration.Slave_Addresses, Configuration.replication);
 	}
 	
 	public void printQueue()
