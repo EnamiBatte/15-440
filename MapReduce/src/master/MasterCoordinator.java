@@ -80,6 +80,7 @@ public class MasterCoordinator {
 				for(int i = 0; i < length; i++)
 				{
 					slaveToAddress.put(i, Configuration.Slave_Addresses.get(i));
+					slaveToTasks.put(i, new LinkedList<Tasks>());
 					startNode(i);
 				}
 			}
