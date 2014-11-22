@@ -57,6 +57,10 @@ public class DataNode {
 			dw.get(i).newLine();
 			lines++;
 		}
+		dr.close();
+		for (BufferedWriter d : dw) {
+			d.close();
+		}
 		System.out.println("Files are successfully written");
 		ArrayList<String> ret = new ArrayList<String>();
 		for (String name : files) {
