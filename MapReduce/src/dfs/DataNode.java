@@ -8,7 +8,9 @@ import util.*;
 
 public class DataNode {
 	
-	public DataNode() {	
+	String addr
+	public DataNode(String addr) {	
+		this.addr = addr;
 	}
 	
 	public int hash(String key, int num) {
@@ -133,6 +135,9 @@ public class DataNode {
 			ArrayList<String> addrList = response.getAddrList();
 			
 			for(String addr : addrList) {
+				if (addr.equals(this.addr)) {
+					continue;
+				}
 				System.out.println("Addr:" + addr);
 				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
