@@ -83,6 +83,7 @@ public class MasterCoordinator {
 					startNode(i);
 				}
 			}
+		
 			//For each Slave Node startNode
 			SystemUp = true;
 		}

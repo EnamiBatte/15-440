@@ -121,6 +121,7 @@ public class SlaveCoordinator {
 		}
 		if('s'== msg.getType())
 		{
+			setPort(msg.getPort());
 			return resp;
 		}
 		if('f'== msg.getType())
