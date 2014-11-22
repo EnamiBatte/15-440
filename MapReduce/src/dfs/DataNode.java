@@ -170,7 +170,6 @@ public class DataNode {
 		System.out.println("readerok");
 		BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(os));
 		System.out.println("writerok");
-		System.out.println(line);
 		for (int i = 0; i < lines; i++) {
 			
 			String line = dr.readLine();
