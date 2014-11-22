@@ -28,15 +28,6 @@ public class SlaveConnection implements Runnable {
 		SlaveController.initSlave();
 		
 	}
-	public String getAddr() {
-		String addr;
-		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
-			if (port == Configuration.masterListenPorts[i]) {
-				addr = Configuration.slaveAddress[i];
-			}
-		}
-		return addr;
-	}
 	
 	public void run()
 	{
