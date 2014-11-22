@@ -10,11 +10,13 @@ import java.util.HashMap;
 
 import dfs.*;
 import util.*;
+import example.*;
 
 public class SlaveCoordinator {
 	public HashMap<Tasks, RunTask> taskToThread;
 	public DataNode dataNode;
 	public SlaveConnection conn;
+	private volatile Thread th;
 
 	
 	public SlaveCoordinator()
@@ -25,7 +27,8 @@ public class SlaveCoordinator {
 	
 	public void startConnection()
 	{
-		conn.run();
+		th = new Thread(conn);
+		th.start();
 	}
 	
 	public void stopServ()

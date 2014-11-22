@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import util.*;
+import example.*;
 
 
 public class RunReduce extends RunTask {

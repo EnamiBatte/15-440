@@ -12,19 +12,24 @@ import dfs.DataNode;
 import util.Configuration;
 import util.Message;
 import util.Tasks;
+import example.*;
+
 
 public class SlaveConnection implements Runnable {
 	public String MasterAddr;
 	public int port;
 	public ServerSocket serverSoc;
-	private Thread t;
+	private boolean run;
 	public SlaveCoordinator coord;
 	
 	public void setPort(int masterListenPort)
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
-		t = new Thread();
+	}
+	
+	public void run()
+	{
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(Configuration.slaveListenPort);
@@ -32,12 +37,8 @@ public class SlaveConnection implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		t.start();
-	}
-	
-	public void run()
-	{
-		while (this.t == Thread.currentThread ())
+		run = true;
+		while (run)
 		{
 			Socket s;
 			try {
@@ -151,7 +152,6 @@ public class SlaveConnection implements Runnable {
 	}
 
 	public void stop() {
-		if(t != null)
-			t = null;
+		run = false;
 	}
 }

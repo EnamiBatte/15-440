@@ -1,5 +1,6 @@
 package slave;
 import util.*;
+import example.*;
 
 
 public abstract class RunTask implements Runnable{
