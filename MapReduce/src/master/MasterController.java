@@ -47,7 +47,7 @@ public class MasterController {
 			//Error processing
 			try{
 			int arg2= Integer.parseInt(args[1]);
-			mc.processKill(arg2);
+			mc.kill(arg2);
 			}
 			catch (NumberFormatException e)
 			{

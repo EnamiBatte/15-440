@@ -1,9 +1,14 @@
 package util;
 
+import java.io.RandomAccessFile;
+import java.util.List;
+
 public abstract class Tasks {
+	public List<String> in;
+	public List<String> fileout;
 	private int stat;
 	private int slave;
-	private int job;
+	private Jobs job;
 	public int recordlength;
 	//Status = -1 means it failed due to error
 	//Status = 2 means it is running
@@ -26,13 +31,12 @@ public abstract class Tasks {
 	{
 		slave=slaveID;
 	}
-	public Integer getJobID()
+	public Jobs getJob()
 	{
 		return job;
 	}
-	public void setJobID(int jobID)
+	public void setJob(Jobs jobID)
 	{
 		job=jobID;
 	}
-	
 }

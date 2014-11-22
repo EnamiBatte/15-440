@@ -1,8 +1,12 @@
 package util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Configuration {
 	public static final String Master_Address = "unix1.andrew.cmu.edu";
-	public static final String[] Slave_Addresses = {"unix2.andrew.cmu.edu","unix3.andrew.cmu.edu"};
+	public static final String[] slaveAddress = {"unix2.andrew.cmu.edu","unix3.andrew.cmu.edu"};
+	public static final ArrayList<String> Slave_Addresses = new ArrayList(Arrays.asList(slaveAddress));
 	public static final int slaveListenPort = 4451;
 	public static final int[] masterListenPorts = {4651,6451};
 	public static final int timeout = 600;

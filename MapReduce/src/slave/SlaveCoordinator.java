@@ -1,6 +1,7 @@
 package slave;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -59,8 +60,9 @@ public class SlaveCoordinator {
 				out = new ObjectOutputStream(s.getOutputStream());
 				in = new ObjectInputStream(ins);
 				Message msg = (Message) in.readObject();
-				if (msg.getType == 's') {
-					dataNode.receiveFile(msg.getFileName(), ins, msg.getLines());
+				if (msg.getType() == 's') {
+					
+					dataNode.receiveFileFromStream(msg.getFileName(), ins, msg.getLines());
 				}
 				Message outMsg = receiveMessage(msg);
 				out.writeObject(outMsg);
@@ -68,7 +70,7 @@ public class SlaveCoordinator {
 				out.close();
 				s.close();
 				
-			} catch (IOException | ClassNotFoundException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -164,10 +166,18 @@ public class SlaveCoordinator {
 	public void addJobs(Jobs j)
 	{
 		String input = j.getInputFile();
+		int num = 0;
+		try {
+			num = dataNode.addFileToDFS(input, port, true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Apply DFS then send
 		Message msg = new Message();
 		msg.setJob(j);
 		msg.setType('n');
+		msg.setPartition(num);
 		sendMessage(msg);
 	}
 	//Sends Messages

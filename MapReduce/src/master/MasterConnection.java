@@ -140,13 +140,19 @@ public class MasterConnection {
 		else if(msg.getType()=='n')
 		{
 			//New Job issued
-			coord.addJob(msg.getJob());
+			coord.addJob(msg.getJob(),msg.getPartition());
 			return sendAck();
 		}
 		else if(msg.getType()=='s')
 		{
 			//DFS file send
-			return coord.nameNode.decide(msg.setFileName());
+			try {
+				return coord.nameNode.decide(msg.getFileName());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		} 
 		else {
 			return null;

@@ -2,9 +2,11 @@ package slave;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +26,15 @@ public class RunReduce extends RunTask {
 		reduce = r;
 		task = r;
 		coord = coordinator;
-		reader = new RecordReader(reduce.in,reduce.recordlength,false);
+		List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
+		for(String read: reduce.in)
+			try {
+				readers.add(new RandomAccessFile(read,"r"));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		reader = new RecordReader(readers,reduce.recordlength,false);
 	}
 	@Override
 	public void run() {
@@ -39,7 +49,7 @@ public class RunReduce extends RunTask {
 			for(String key: keySet)
 			{
 				List<String> values = input.get(key);
-				reduce.reduce(key, values, collect);
+				reduce.getJob().reduce(key, values, collect);
 			}
 			List<Pair> results = collect.getResults();
 			List<String> stringResults = new LinkedList<String>();
@@ -52,7 +62,7 @@ public class RunReduce extends RunTask {
 			try {
 				Collections.sort(stringResults);
 				
-				out = new FileOutputStream(new File(reduce.fileout));
+				out = new FileOutputStream(new File(reduce.fileout.get(0)));
 				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
 				for(String res: stringResults)
 				{

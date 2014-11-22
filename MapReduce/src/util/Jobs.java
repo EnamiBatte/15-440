@@ -44,10 +44,14 @@ public abstract class Jobs {
 	{
 		for(Tasks t: taskList)
 		{
-			//If queue
-			queueTasks.add(t);
-			//else
-			allTasks.add(t);
+			if(t.getStatus() < 3)
+			{
+				t.setStatus(3);
+				queueTasks.add(t);
+			}
+			else{
+				allTasks.add(t);
+			}
 		}
 	}
 	public List<Tasks> runningTasks()
@@ -88,6 +92,7 @@ public abstract class Jobs {
 						return 0;
 					}
 					queueTasks = allTasks;
+					return 3;
 				}
 				return 1;
 			}

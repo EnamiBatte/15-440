@@ -25,8 +25,17 @@ public class RunMap extends RunTask {
 	{
 		map=m;
 		coord = coordinator;
-		reader = new RecordReader(m.in,m.recordlength,true);
-		this.t = new Thread();
+		RandomAccessFile read;
+		try {
+			read = new RandomAccessFile((m.in).get(0),"r");
+			List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
+			readers.add(read);
+			reader = new RecordReader(readers,m.recordlength,true);
+			this.t = new Thread();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
@@ -53,14 +62,14 @@ public class RunMap extends RunTask {
 				List<String> values = input.get(key);
 				for(String value : values)
 				{
-					map.map(key, value, collect);
+					map.getJob().map(key, value, collect);
 				}
 			}
 			List<Pair> results = collect.getResults();
 			int length = results.size();
 			FileOutputStream out;
 			try {
-				out = new FileOutputStream(new File(map.fileout));
+				out = new FileOutputStream(new File(map.fileout.get(0)));
 				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
 				for(Pair p: results)
 				{

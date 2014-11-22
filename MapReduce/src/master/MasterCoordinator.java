@@ -1,6 +1,7 @@
 package master;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,9 +23,11 @@ public class MasterCoordinator {
 	public boolean SystemUp = false;
 	public Map<Integer,MasterConnection> connections;
 	public NameNode nameNode;
+	public int numberOfOutgoingJobs = 0;
 
 	public MasterCoordinator()
 	{
+		
 		slaveToAddress = new HashMap<Integer,String>();
 		slaveToTasks = new HashMap<Integer,List<Tasks>>();
 		connections = new HashMap<Integer,MasterConnection>();
@@ -71,10 +74,10 @@ public class MasterCoordinator {
 		{
 			if(slaveToAddress.isEmpty())
 			{
-				int length = Configuration.Slave_Addresses.length;
+				int length = Configuration.Slave_Addresses.size();
 				for(int i = 0; i < length; i++)
 				{
-					slaveToAddress.put(i, Configuration.Slave_Addresses[i]);
+					slaveToAddress.put(i, Configuration.Slave_Addresses.get(i));
 					startNode(i);
 				}
 			}
@@ -104,7 +107,7 @@ public class MasterCoordinator {
 		queueJobs = null;
 		for(Jobs j: runningJobs)
 		{
-			processKill(j.getID());
+			processKill(j);
 		}
 		//Close each node
 		Set<Integer> nodes = connections.keySet();
@@ -122,9 +125,13 @@ public class MasterCoordinator {
 		con.sendMessage(msg);
 	}
 	
-	public void processKill(int id)
+	public void kill(int jobID) {
+		Jobs j = jobIDtoJobs.get(jobID);
+		processKill(j);
+	}
+	public void processKill(Jobs j)
 	{
-		Jobs toKill = jobIDtoJobs.get(id);
+		Jobs toKill = j;
 		List<Tasks> removeTasks = toKill.getQueueTasks();
 		queueTasks.removeAll(removeTasks);
 		List<Tasks> toKillTasks = toKill.runningTasks();
@@ -139,17 +146,65 @@ public class MasterCoordinator {
 		}
 	}
 	
-	public void addJob(Jobs j)
+	public void addJob(Jobs j, int Mappers)
 	{
-		
+		int next = jobIDtoJobs.size();
+		Jobs addedJob = j;
+		String inputFile = j.getInputFile();
+		List<Tasks> tasks = new LinkedList<Tasks>();
+		List<String> outputFiles = j.getOutputFiles();
+		for(int i=0; i < Mappers; i ++)
+		{
+			Tasks t = new MapTask();
+			t.setJob(j);
+			t.recordlength = j.getRecordSize();
+			t.setStatus(1);
+			//Needs inputFile for each mapper
+			List<String> input = new LinkedList<String>();
+			String partitionFile = String.valueOf(i)+"_"+j.getInputFile();
+			String inPartitionFile = "m"+partitionFile;
+			input.add(inPartitionFile);
+			t.in = input;
+			//Needs inputFile for each mapper
+			List<String> output = new LinkedList<String>();
+			String outPartitionFile = "M"+partitionFile;
+			input.add(outPartitionFile);
+			t.in = output;
+			//Needs dfs output files
+			tasks.add(t);
+		}
+		for(int k = 0; k< Configuration.numberOfReducers; k++)
+		{
+			Tasks t = new ReduceTask();
+			t.setJob(j);
+			t.recordlength = j.getRecordSize() + 2;
+			t.setStatus(3);
+			//Needs DFS files associated with Hash
+			List<String> input = new LinkedList<String>();
+			String correctHash = "_"+j.getInputFile()+"_"+String.valueOf(k);
+			for(int i = 0; i< Mappers; i++)
+			{
+				input.add("RM"+String.valueOf(i)+correctHash);
+			}
+			t.in = input;
+			List<String> out = new LinkedList<String>();
+			out.add(outputFiles.get(k));
+			t.fileout = out;
+			tasks.add(t);
+		}
+		j.setTasks(tasks);
+		j.setID(next);
+		jobIDtoJobs.put(next,j);
+		queueJobs.add(j);
+		queueTasks.addAll(j.getQueueTasks());
+		issueNextTask();
 	}
-	public void addTask()
-	{
-		
-	}
+	
 	
 	public void issueNextTask()
 	{
+		//Check work load of slaves
+		//If one is free, send next task in queue to it.
 		int minLoad = Configuration.maxTasksPerHost;
 		int slaveNum = -1;
 		for(int i = 0; i< slaveToAddress.size(); i++)
@@ -163,15 +218,59 @@ public class MasterCoordinator {
 		}
 		if(slaveNum < 0)
 			return;
-		//Check work load of slaves
-		//If one is free, send next task in queue to it.
+		if(minLoad + numberOfOutgoingJobs > Configuration.maxTasksPerHost)
+			return;
+		Tasks assigned = null;
 		//Should check that node has the necessary file if possible.
+		for(Tasks t: queueTasks)
+		{
+			List<String> fileInputs = t.in;
+			boolean hasIt = true;
+			for(String file: fileInputs )
+			{
+				ArrayList<String> slaveNodes= nameNode.findFile(file);
+				if(!slaveNodes.contains(slaveToAddress.get(slaveNum)))
+				{
+					hasIt = false;
+					break;
+				}
+			}
+			if(hasIt)
+			{
+				assigned = t;
+				break;
+			}	
+		}
+		numberOfOutgoingJobs++;
+		if(assigned !=null)
+		{
+			
+			Message msg = new Message();
+			msg.setTask(assigned);
+			msg.setType('t');
+			MasterConnection mc = connections.get(slaveNum);
+			mc.sendMessage(msg);
+			issueNextTask();
+		}
+		else{
+			String slave = slaveToAddress.get(slaveNum);
+			assigned = queueTasks.get(0);
+			for (String file: assigned.in)
+			{
+				nameNode.requires(file,slave);
+			}
+			Message msg = new Message();
+			msg.setTask(assigned);
+			msg.setType('t');
+			MasterConnection mc = connections.get(slaveNum);
+			mc.sendMessage(msg);
+			issueNextTask();
+		}
 	}
 	
 	public void acknowledgeRunningTask(Tasks t)
 	{
-		int JobID = t.getJobID();
-		Jobs job = jobIDtoJobs.get(JobID);
+		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
 		if(check == 2)
 		{
@@ -180,6 +279,7 @@ public class MasterCoordinator {
 		}
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).add(t);
+		numberOfOutgoingJobs--;
 	}
 	
 	public void acknowledgeFinishedTask(Tasks t)
@@ -187,13 +287,17 @@ public class MasterCoordinator {
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).remove(t);
 		
-		int JobID = t.getJobID();
-		Jobs job = jobIDtoJobs.get(JobID);
+		
+		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
 		if(check == 0)
 		{
 			runningJobs.remove(job);
 			finishedJobs.add(job);		
+		}
+		if(check == 3)
+		{
+			queueTasks.addAll(job.getQueueTasks());
 		}
 		if(check == -1)
 		{
@@ -201,9 +305,8 @@ public class MasterCoordinator {
 		}
 		if(check == -2)
 		{
-			processKill(JobID);
+			processKill(job);
 		}
 		issueNextTask();
-	}
-	
+	}	
 }
