@@ -80,11 +80,14 @@ public abstract class Jobs implements Serializable {
 		else
 		{	
 			runningTasks.remove(task);
-			System.out.println("Checking a finished task");
 			if(taskStatus == 1)
 			{
+				System.out.println("Checking a finished task");
+				System.out.println(queueTasks.size());
+				System.out.println(runningTasks.size());
 				if(queueTasks.contains(task))
 				{
+					System.out.println("Task finished before run acknowledged");
 					queueTasks.remove(task);
 				}
 				if(queueTasks.isEmpty()&&runningTasks.isEmpty()){
