@@ -225,7 +225,7 @@ public class MasterCoordinator {
 				minLoad = num;
 			}
 		}
-		if(slaveNum < 0)
+		if(slaveNum < 0 || queueTasks.isEmpty())
 		{
 			return;
 		}
