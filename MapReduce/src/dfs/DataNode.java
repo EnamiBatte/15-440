@@ -166,6 +166,7 @@ public class DataNode {
 			dw.write(dr.readLine());
 			dw.newLine();
 		} 
+		dr.readLine();
 		dr.close();
 		dw.close();
 		
