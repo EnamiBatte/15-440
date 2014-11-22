@@ -22,7 +22,10 @@ public class SlaveCoordinator {
 	public SlaveCoordinator()
 	{
 		conn = new SlaveConnection();
-		dataNode = new DataNode(Configuration.masterListenPorts.indexOf(conn.port));
+		for (int i = 0; i < Configuration.masterListenPorts.size(); i++) {
+			if Configuration.masterListenPorts[i] == conn.port;
+			dataNode = new DataNode(i);
+		}
 	}
 	
 	public void startConnection()
