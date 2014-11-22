@@ -9,8 +9,8 @@ public abstract class Jobs implements Serializable {
 	private Integer stat;
 	private int id;
 	private List<Tasks> allTasks;
-	private List<Tasks> queueTasks;
-	private List<Tasks> runningTasks;
+	private volatile List<Tasks> queueTasks;
+	private volatile List<Tasks> runningTasks;
 	private int numFailures;
 	private String job;
 	private String inputFile;
