@@ -73,27 +73,9 @@ public class MasterConnection implements Runnable {
 	
 	public void sendMessage(Message msg)
 	{
-		System.out.println("Message sent");
-		try {
-			Socket s = new Socket(slaveAddr, Configuration.slaveListenPort);
-			ObjectInputStream in;
-			ObjectOutputStream out;
-			in = new ObjectInputStream(s.getInputStream());
-			out = new ObjectOutputStream(s.getOutputStream());
-			out.writeObject(msg);
-			out.flush();
-			Message inMsg = (Message)in.readObject();
-			System.out.println(inMsg.getType());
-			out.close();
-			in.close();
-			s.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		MessageSender ms = new MessageSender(slaveAddr,Configuration.slaveListenPort,msg,this);
+		Thread t = new Thread(ms);
+		t.start();
 	}
 	
 	//Sent when a new Job is received or when looking for a timeout
