@@ -165,7 +165,6 @@ public class DataNode {
 				
 				Thread.sleep(100);
 				socketDN.close();
-				}
 			}
 			Thread.sleep(100);
 			socket.close();
