@@ -9,7 +9,11 @@ import util.*;
 public class DataNode {
 	
 	String addr;
-	public DataNode(String addr) {	
+	
+	public DataNode() {	
+	}
+	
+	public setAddr(String addr) {
 		this.addr = addr;
 	}
 	
