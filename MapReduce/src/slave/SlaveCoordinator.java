@@ -21,8 +21,8 @@ public class SlaveCoordinator {
 	
 	public SlaveCoordinator()
 	{
-		dataNode = new DataNode();
 		conn = new SlaveConnection();
+		dataNode = new DataNode(Configuration.masterListenPorts.IndexOf(conn.port));
 	}
 	
 	public void startConnection()
