@@ -38,7 +38,6 @@ public class SlaveCoordinator {
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(Configuration.slaveListenPort);
-			serverSoc.setSoTimeout(Configuration.timeout);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,8 +67,7 @@ public class SlaveCoordinator {
 				out.writeObject(outMsg);
 				in.close();
 				out.close();
-				s.close();
-				
+				s.close();	
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
