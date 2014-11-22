@@ -54,6 +54,13 @@ public class SlaveCoordinator {
 		msg.setType('r');
 		msg.setTask(t);
 		conn.sendMessage(msg);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(t.getClass().equals(MapTask.class))
 		{
 			MapTask m = (MapTask) t;
