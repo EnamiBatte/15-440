@@ -24,19 +24,25 @@ public class RecordReader {
 	
 	public Map<String,List<String>> getKeyValuePairs () {
 		Map<String,List<String>> pairs = new HashMap<String,List<String>>();
-		byte[] b = new byte[recordLength]; 
 		int numLines = Configuration.mapPartitionSize;
 		try {
 			for(RandomAccessFile reader: fileReader)
 			{
 				for(int i = 0; i < numLines; i++)
-				{
-					int bytesread = reader.read(b);
-					if(bytesread < recordLength)
-						return pairs;
-					String record = new String(b);
+				{	
 					if(ismap)
 					{
+						String record;
+						if(recordLength < 20)
+						{	byte[] b = new byte[recordLength]; 
+							int bytesread = reader.read(b);
+							if(bytesread < recordLength)
+								return pairs;
+							record = new String(b);
+						}
+						else{
+							record = reader.readLine();
+						}
 						List<String> values = pairs.get(record);
 						if(values == null)
 						{
@@ -47,6 +53,7 @@ public class RecordReader {
 					}
 					else
 					{
+						String record = reader.readLine();
 						int index = record.indexOf("|");
 						String key = record.substring(0,index).trim();
 						String value = record.substring(index+1,recordLength-1).trim();

@@ -257,7 +257,7 @@ public class MasterCoordinator {
 			assigned = queueTasks.get(0);
 			for (String file: assigned.in)
 			{
-				nameNode.requires(file,slave);
+				String loc = nameNode.require(file,slave);
 			}
 			Message msg = new Message();
 			msg.setTask(assigned);
