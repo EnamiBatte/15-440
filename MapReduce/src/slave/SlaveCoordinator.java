@@ -24,6 +24,7 @@ public class SlaveCoordinator {
 	{
 		dataNode = new DataNode();
 		conn = new SlaveConnection(Configuration.Master_Address, this);
+		taskToThread = new HashMap<Tasks,RunTask>();
 	}
 	
 	public void startConnection()
