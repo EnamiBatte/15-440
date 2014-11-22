@@ -83,6 +83,7 @@ public class MasterConnection implements Runnable {
 			out.writeObject(msg);
 			out.flush();
 			Message inMsg = (Message)in.readObject();
+			System.out.println(inMsg.getType());
 			out.close();
 			in.close();
 			s.close();

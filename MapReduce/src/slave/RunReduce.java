@@ -68,6 +68,7 @@ public class RunReduce extends RunTask {
 				for(String res: stringResults)
 				{
 					dw.append(res);
+					dw.newLine();
 				}
 				dw.flush();
 				dw.close();

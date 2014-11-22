@@ -145,6 +145,7 @@ public class SlaveConnection implements Runnable {
 			out.flush();
 			System.out.println("serial?");
 			Message inMsg = (Message)in.readObject();
+			System.out.println(inMsg.getType());
 			if('f' == inMsg.getType())
 			{
 				//Remove task from local coordinator and kill the thread
