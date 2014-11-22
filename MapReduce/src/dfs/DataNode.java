@@ -136,6 +136,8 @@ public class DataNode {
 			
 			for(String addr : addrList) {
 				if (addr.equals(this.addr)) {
+					System.out.println("Addr:" + addr);
+					System.out.println("Addr:" + this.addr);
 					continue;
 				}
 				System.out.println("Addr:" + addr);
