@@ -264,7 +264,7 @@ public class MasterCoordinator {
 		numberOfOutgoingJobs++;
 		if(assigned !=null)
 		{
-			
+			queueTasks.remove(assigned);
 			Message msg = new Message();
 			msg.setTask(assigned);
 			System.out.println(assigned.in);
