@@ -40,7 +40,7 @@ public class RunMap extends RunTask {
 	
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Running a map");
 		while (run)
 	    {
 			//Figure out how to read input file
@@ -69,6 +69,7 @@ public class RunMap extends RunTask {
 			int length = results.size();
 			FileOutputStream out;
 			try {
+				System.out.println("Trying to Write to File");
 				out = new FileOutputStream(new File(map.getOutput().get(0)));
 				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
 				for(Pair p: results)
@@ -93,6 +94,7 @@ public class RunMap extends RunTask {
 			msg.setTask(map);
 			msg.setType('f');
 			coord.conn.sendMessage(msg);
+			break;
 	    }
 	}
 }

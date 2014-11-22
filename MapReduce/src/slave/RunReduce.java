@@ -88,7 +88,7 @@ public class RunReduce extends RunTask {
 			msg.setTask(reduce);
 			msg.setType('f');
 			coord.conn.sendMessage(msg);
-			
+			break;
 	    }
 	}
 }

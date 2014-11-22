@@ -67,6 +67,7 @@ public class RecordReader {
 					}
 				}
 			}
+			System.out.println("Got Key Value Pairs");
 			return pairs;
 			
 		} catch (IOException e) {
