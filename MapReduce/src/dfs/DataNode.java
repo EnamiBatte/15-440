@@ -27,7 +27,7 @@ public class DataNode {
 		ArrayList<String> files = new ArrayList<String>();
 		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
 		for (int i = 0; i < numberOfFiles; i++) {
-			String name = "m" + numberOfFiles + "_" + filename;
+			String name = "m" + i + "_" + filename;
 			files.add(name);
 			File myFile = new File(name);
 			myFile.createNewFile();
@@ -69,7 +69,7 @@ public class DataNode {
 		ArrayList<String> files = new ArrayList<String>();
 		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
 		for (int i = 0; i < numberOfReducers; i++) {
-			String name = "r" + filename+ "_" + numberOfReducers;
+			String name = "r" + filename+ "_" + i;
 			files.add(name);
 			File myFile = new File(name);
 			myFile.createNewFile();
@@ -89,7 +89,7 @@ public class DataNode {
 		}
 		return ret;
 	}
-	public void addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
+	public int addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
 		Socket socket = new Socket(masterIP, Master_port);
@@ -111,13 +111,9 @@ public class DataNode {
 			String arr[] = a.split("_", 1);
 			int lines = Integer.parseInt(arr[0]);
 			String partitionFilename = arr[1];
-			InetAddress inet = InetAddress.getLocalHost();
-			String localAddr = inet.getHostAddress();
 			Message message = new Message();
 			message.setType('s');
 			message.setFileName(partitionFilename);
-			message.setAddr(localAddr);
-			message.setPartition(i);
 			oos.writeObject(message);
 			
 			Message response = (Message)ois.readObject();
@@ -127,7 +123,7 @@ public class DataNode {
 				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
 				InputStream isDN = socketDN.getInputStream();
-				ObjectInputStream oisDN = new ObjectInStream(osDN);
+				ObjectInputStream oisDN = new ObjectInputStream(isDN);
 				OutputStream osDN = socketDN.getOutputStream();
 				ObjectOutputStream oosDN = new ObjectOutputStream(osDN);
 				
@@ -138,12 +134,13 @@ public class DataNode {
 				oosDN.writeObject(message);
 				writeFileToStream(partitionFilename, lines, osDN);
 				
-				Message response = (Message)ois.readObject();
+				Message msg = (Message)oisDN.readObject();
 				socketDN.close();
 			}
 			
 		}
 		socket.close();
+		return localPartition.size();
 	}
 	
 	public void receiveFileFromStream(String filename, InputStream is, int lines) throws Exception {
@@ -169,5 +166,32 @@ public class DataNode {
 		}
 		dr.close();
 		dw.close();
+	}
+	
+	public void sendFileToAddr(String filename, String addr) throws Exception {
+		BufferedReader dr=new BufferedReader(new FileReader(filename));
+		int lines = 0;
+		String line = dr.readLine();
+		while (line != "") {
+			lines++;
+		}
+		dr.close();
+		int slaveport = Configuration.slaveListenPort;
+		Socket socketDN = new Socket(addr, slaveport);
+		InputStream isDN = socketDN.getInputStream();
+		ObjectInputStream oisDN = new ObjectInputStream(isDN);
+		OutputStream osDN = socketDN.getOutputStream();
+		ObjectOutputStream oosDN = new ObjectOutputStream(osDN);
+		
+		Message message = new Message();
+		message.setType('s');
+		message.setFileName(filename);
+		message.setLines(lines);
+		oosDN.writeObject(message);
+		writeFileToStream(filename, lines, osDN);
+		
+		Message msg = (Message)oisDN.readObject();
+		socketDN.close();
+		
 	}
 }
