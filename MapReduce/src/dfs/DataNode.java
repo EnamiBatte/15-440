@@ -115,7 +115,7 @@ public class DataNode {
 		System.out.println("Split Called");
 		for (int i = 0; i < localPartition.size(); i++) {
 			String a = localPartition.get(i);
-			String arr[] = a.split("_", 1);
+			String arr[] = a.split("_", 2);
 			int lines = Integer.parseInt(arr[0]);
 			String partitionFilename = arr[1];
 			Message message = new Message();
