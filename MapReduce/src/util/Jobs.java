@@ -2,9 +2,10 @@ package util;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.io.*;
 
 
-public abstract class Jobs implements serializable {
+public abstract class Jobs implements Serializable {
 	private Integer stat;
 	private int id;
 	private List<Tasks> allTasks;
