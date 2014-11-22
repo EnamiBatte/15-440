@@ -12,12 +12,13 @@ import util.*;
 
 public class SlaveController {
 	public static boolean running = true;
-	public static boolean init = false;
+	public static boolean init;
 	public static BufferedReader reader;
 	
 	public static void initSlave()
 	{
 		init = true;
+		System.out.println("System is started");
 	}
 	
 	public static void stopSlave()
@@ -38,8 +39,6 @@ public class SlaveController {
 		mc.start();
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		while (running) {
-			if(init){
-				System.out.println("System is Up.");
 			try {
 				String input = reader.readLine();
 				String[] jobArgs = input.split(" ");
@@ -72,10 +71,8 @@ public class SlaveController {
 			} catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
 			}	
 		}
-		
 		
 	}
 
