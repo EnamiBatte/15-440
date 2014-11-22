@@ -37,11 +37,9 @@ public class SlaveController {
 		SlaveCoordinator mc = new SlaveCoordinator();
 		mc.start();
 		reader = new BufferedReader(new InputStreamReader(System.in));
-		while(!init){
-			
-		}
-		System.out.println("System is Up.");
 		while (running) {
+			if(init){
+				System.out.println("System is Up.");
 			try {
 				String input = reader.readLine();
 				String[] jobArgs = input.split(" ");
@@ -75,7 +73,7 @@ public class SlaveController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			}	
 		}
 		
 		
