@@ -20,7 +20,7 @@ public class DataNode {
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int lines = 0;
 		String line = dr.readLine();
-		while (line != "") {
+		while (!line.equals("")) {
 			lines++;
 			line = dr.readLine();
 		}
@@ -41,7 +41,7 @@ public class DataNode {
 		lines = 0;
 		int i = 0;
 		line = dr.readLine();
-		while (line != "") {
+		while (!line.equals("")) {
 			lines++;
 			dw.get(i).write(line);
 			dw.get(i).newLine();
@@ -66,7 +66,7 @@ public class DataNode {
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int[] lines = new int[numberOfReducers];
 		String line = dr.readLine();
-		while (line != "") {
+		while (!line.equals("")) {
 			String key = line.split("|")[0];
 			int i = hash(key, numberOfReducers);
 			lines[i]++;
@@ -83,7 +83,7 @@ public class DataNode {
 		}
 		dr=new BufferedReader(new FileReader(filename));
 		line = dr.readLine();
-		while (line != "") {
+		while (!line.equals("")) {
 			String key = line.split("|")[0];
 			int i = hash(key, numberOfReducers);
 			dw.get(i).write(line);
@@ -179,7 +179,7 @@ public class DataNode {
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int lines = 0;
 		String line = dr.readLine();
-		while (line != "") {
+		while (!line.equals("")) {
 			lines++;
 		}
 		dr.close();
