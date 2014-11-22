@@ -127,6 +127,7 @@ public class DataNode {
 			ArrayList<String> addrList = response.getAddrList();
 			
 			for(String addr : addrList) {
+				System.out.println("Addr:" + addr);
 				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
 				InputStream isDN = socketDN.getInputStream();
@@ -166,10 +167,14 @@ public class DataNode {
 	
 	public void writeFileToStream(String filename, int lines, OutputStream os) throws Exception {
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
+		System.out.println("readerok");
 		BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(os));
+		System.out.println("writerok");
+		System.out.println(line);
 		for (int i = 0; i < lines; i++) {
-			System.out.println(i);
+			
 			String line = dr.readLine();
+			System.out.println(line);
 			dw.write(line);
 			dw.newLine();
 		}
