@@ -26,7 +26,7 @@ public class SlaveConnection implements Runnable {
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
-		DataNode.setAddr("a");
+		//coord.dataNode.setAddr("a");
 	}
 	
 	public void run()
