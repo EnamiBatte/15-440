@@ -39,4 +39,20 @@ public abstract class Tasks implements Serializable {
 	{
 		job=jobID;
 	}
+	public List<String> getInput()
+	{
+		return in;
+	}
+	public void setInput(List<String> input)
+	{
+		in = input;
+	}
+	public List<String> getOutput()
+	{
+		return fileout;
+	}
+	public void setOutput(List<String> out)
+	{
+		fileout = out;
+	}
 }
