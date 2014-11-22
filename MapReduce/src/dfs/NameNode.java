@@ -45,6 +45,7 @@ public class NameNode {
 		}
 		filenametoslaveaddr.put(filename, ret);
 		Message response = new Message();
+		response.setType('a');
 		response.setAddrList(ret);
 		return response;
 	}
