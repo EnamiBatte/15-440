@@ -51,7 +51,7 @@ public class DataNode {
 			}
 			line = dr.readLine();
 		}
-		while (lines < numberOfLines) {
+		while ((lines < numberOfLines) && (lines!=0)) {
 			dw.get(i).newLine();
 			lines++;
 		}
