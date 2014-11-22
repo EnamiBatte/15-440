@@ -262,6 +262,9 @@ public class MasterCoordinator {
 		if(assigned !=null)
 		{
 			queueTasks.remove(assigned);
+			queueJobs.remove(assigned.getJob());
+			runningJobs.add(assigned.getJob());
+			assigned.getJob().setStatus(3);
 			Message msg = new Message();
 			msg.setTask(assigned);
 			System.out.println(assigned.in);
@@ -311,12 +314,6 @@ public class MasterCoordinator {
 	{
 		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
-		if(check == 2)
-		{
-			System.out.println("Acknowledge the task is running");
-			queueJobs.remove(job);
-			runningJobs.add(job);		
-		}
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).add(t);
 		numberOfOutgoingJobs--;

@@ -72,17 +72,7 @@ public abstract class Jobs implements Serializable {
 			System.out.println("Checking a running task");
 			queueTasks.remove(task);
 			runningTasks.add(task);
-			if(stat == null)
-			{
-				stat = 3;
-				System.out.println("Checking a new job");
-				
-				return 2;
-			}
-			else if(stat == 3)
-			{
-				stat = 2;
-			}
+			stat = 2;
 			return 1;
 		}
 		else
@@ -98,6 +88,7 @@ public abstract class Jobs implements Serializable {
 						stat = 1;
 						return 0;
 					}
+					System.out.println("Queue needs to update");
 					queueTasks = allTasks;
 					return 3;
 				}
