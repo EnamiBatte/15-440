@@ -16,11 +16,13 @@ public class SlaveCoordinator {
 	public HashMap<Tasks, RunTask> taskToThread;
 	public DataNode dataNode;
 	public SlaveConnection conn;
+	public String a;
 	private volatile Thread th;
 
 	
 	public SlaveCoordinator()
 	{
+		a = "1    1";
 		dataNode = new DataNode();
 		conn = new SlaveConnection();
 	}
