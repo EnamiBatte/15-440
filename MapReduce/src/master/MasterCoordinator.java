@@ -218,7 +218,7 @@ public class MasterCoordinator {
 		int slaveNum = -1;
 		for(int i = 0; i< slaveToAddress.size(); i++)
 		{
-			int num = slaveToTasks.size();
+			int num = slaveToTasks.get(i).size();
 			if(num < minLoad)
 			{
 				slaveNum = i;
@@ -230,6 +230,7 @@ public class MasterCoordinator {
 			return;
 		}
 		System.out.println(minLoad + "|" + numberOfOutgoingJobs + "|" + slaveNum);
+		
 		if(minLoad + numberOfOutgoingJobs > Configuration.maxTasksPerHost)
 		{
 			return;
@@ -308,11 +309,11 @@ public class MasterCoordinator {
 	
 	public void acknowledgeRunningTask(Tasks t)
 	{
-		System.out.println("Acknowledge the task is running");
 		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
 		if(check == 2)
 		{
+			System.out.println("Acknowledge the task is running");
 			queueJobs.remove(job);
 			runningJobs.add(job);		
 		}
@@ -326,25 +327,27 @@ public class MasterCoordinator {
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).remove(t);
 		
-		System.out.println("Acknowledge the task is finished");
-		
 		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
 		if(check == 0)
 		{
+			System.out.println("Acknowledge the task is finished");
 			runningJobs.remove(job);
 			finishedJobs.add(job);		
 		}
 		if(check == 3)
 		{
+			System.out.println("Acknowledge the queue is finished");
 			queueTasks.addAll(job.getQueueTasks());
 		}
 		if(check == -1)
 		{
+			System.out.println("Acknowledge the task failed");
 			queueTasks.add(t);
 		}
 		if(check == -2)
 		{
+			System.out.println("Acknowledge the task was killed");
 			processKill(job);
 		}
 		issueNextTask();
