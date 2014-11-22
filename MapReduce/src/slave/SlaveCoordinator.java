@@ -22,9 +22,8 @@ public class SlaveCoordinator {
 	
 	public SlaveCoordinator()
 	{
-		a = "1    1";
 		dataNode = new DataNode();
-		conn = new SlaveConnection();
+		conn = new SlaveConnection(Configuration.Master_Address, this);
 	}
 	
 	public void startConnection()
