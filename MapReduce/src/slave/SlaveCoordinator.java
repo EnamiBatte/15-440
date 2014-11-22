@@ -73,6 +73,7 @@ public class SlaveCoordinator {
 		String input = j.getInputFile();
 		int num = 0;
 		try {
+			System.out.println(input);
 			num = dataNode.addFileToDFS(input, conn.port, true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
