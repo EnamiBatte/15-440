@@ -65,6 +65,10 @@ public class SlaveCoordinator {
 			Thread th = new Thread(rr);
 			th.start();
 		}
+		Message msg = new Message();
+		msg.setType('r');
+		msg.setTask(t);
+		conn.sendMessage(msg);
 		
 	}
 
