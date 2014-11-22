@@ -94,10 +94,8 @@ public class DataNode {
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
 		Socket socket = new Socket(masterIP, Master_port);
-		OutputStream os = socket.getOutputStream();
-		InputStream is = socket.getInputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(os);
-		ObjectInputStream ois = new ObjectInputStream(is);
+		ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 		
 		System.out.println("Socket Created");
 		ArrayList<String> localPartition = new ArrayList<String>();

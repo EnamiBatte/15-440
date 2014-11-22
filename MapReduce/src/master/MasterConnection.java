@@ -49,6 +49,7 @@ public class MasterConnection implements Runnable {
 	
 	public void run()
 	{
+		System.out.println("Waiting for Connections");
 		while (this.t == Thread.currentThread ())
 		{
 			Socket s;
