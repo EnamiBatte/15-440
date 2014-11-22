@@ -210,6 +210,9 @@ public class MasterCoordinator {
 	
 	public void issueNextTask()
 	{
+		boolean assigning = true;
+		while(assigning)
+		{
 		System.out.println("Issuing Next Task");
 		//Check work load of slaves
 		//If one is free, send next task in queue to it.
@@ -225,9 +228,15 @@ public class MasterCoordinator {
 			}
 		}
 		if(slaveNum < 0)
-			return;
+		{
+			assigning = false;
+			break;
+		}
 		if(minLoad + numberOfOutgoingJobs > Configuration.maxTasksPerHost)
-			return;
+		{
+			assigning = false;
+			break;
+		}
 		Tasks assigned = null;
 		//Should check that node has the necessary file if possible.
 		for(Tasks t: queueTasks)
@@ -264,7 +273,6 @@ public class MasterCoordinator {
 			msg.setType('t');
 			MasterConnection mc = connections.get(slaveNum);
 			mc.sendMessage(msg);
-			issueNextTask();
 		}
 		else{
 			String slave = slaveToAddress.get(slaveNum);
@@ -287,7 +295,7 @@ public class MasterCoordinator {
 				MasterConnection mc = connections.get(sourceNum);
 				mc.sendMessage(msg);
 			}
-			issueNextTask();
+		}
 		}
 	}
 	
