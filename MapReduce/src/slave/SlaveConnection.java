@@ -26,7 +26,7 @@ public class SlaveConnection implements Runnable {
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
-		//coord.dataNode.setAddr("a");
+		
 	}
 	
 	public void run()
@@ -126,6 +126,7 @@ public class SlaveConnection implements Runnable {
 		System.out.println("Message sent");
 		try {
 			Socket s = new Socket(MasterAddr, port);
+			coord.dataNode.setAddr("a");
 			ObjectInputStream in;
 			ObjectOutputStream out;
 			out = new ObjectOutputStream(s.getOutputStream());
