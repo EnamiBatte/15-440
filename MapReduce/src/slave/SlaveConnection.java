@@ -26,6 +26,10 @@ public class SlaveConnection implements Runnable {
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
+		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
+			if (Configuration.masterListenPorts[i] == port) 
+			coord.dataNode.setAddr(Configuration.slaveAddress[i]);
+		}
 	}
 	
 	public void run()
