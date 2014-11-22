@@ -124,6 +124,16 @@ public class SlaveCoordinator {
 		{
 			return resp;
 		}
+		if('f'== msg.getType())
+		{
+			try {
+				dataNode.sendFileToAddr(msg.getFileName(), msg.getAddr());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return resp;
+		}
 		else{
 			return null;
 		}
