@@ -41,6 +41,7 @@ public class SlaveController {
 		while (running) {
 			try {
 				String input = reader.readLine();
+				System.out.println(input);
 				String[] jobArgs = input.split(" ");
 				if(jobArgs[0].equals("start"))
 				{
