@@ -170,12 +170,12 @@ public class MasterCoordinator {
 			String partitionFile = String.valueOf(i)+"_"+j.getInputFile();
 			String inPartitionFile = "m"+partitionFile;
 			input.add(inPartitionFile);
-			t.in = input;
+			t.setInput(input);
 			//Needs inputFile for each mapper
 			List<String> output = new LinkedList<String>();
 			String outPartitionFile = "M"+partitionFile;
 			input.add(outPartitionFile);
-			t.in = output;
+			t.setOutput(output);
 			//Needs dfs output files
 			tasks.add(t);
 		}
@@ -192,10 +192,10 @@ public class MasterCoordinator {
 			{
 				input.add("RM"+String.valueOf(i)+correctHash);
 			}
-			t.in = input;
+			t.setInput( input);
 			List<String> out = new LinkedList<String>();
 			out.add(outputFiles.get(k));
-			t.fileout = out;
+			t.setOutput( out);
 			tasks.add(t);
 		}
 		System.out.println("numoftasks=" + tasks.size());
@@ -233,7 +233,7 @@ public class MasterCoordinator {
 		for(Tasks t: queueTasks)
 		{
 			
-			List<String> fileInputs = t.in;
+			List<String> fileInputs = t.getInput();
 			System.out.println(fileInputs.size());
 			boolean hasIt = true;
 			for(String file: fileInputs )

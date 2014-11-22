@@ -28,7 +28,7 @@ public class RunReduce extends RunTask {
 		task = r;
 		coord = coordinator;
 		List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
-		for(String read: reduce.in)
+		for(String read: reduce.getInput())
 			try {
 				readers.add(new RandomAccessFile(read,"r"));
 			} catch (FileNotFoundException e) {
@@ -63,7 +63,7 @@ public class RunReduce extends RunTask {
 			try {
 				Collections.sort(stringResults);
 				
-				out = new FileOutputStream(new File(reduce.fileout.get(0)));
+				out = new FileOutputStream(new File(reduce.getOutput().get(0)));
 				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
 				for(String res: stringResults)
 				{

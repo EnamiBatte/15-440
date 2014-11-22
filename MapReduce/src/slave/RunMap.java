@@ -28,7 +28,7 @@ public class RunMap extends RunTask {
 		coord = coordinator;
 		RandomAccessFile read;
 		try {
-			read = new RandomAccessFile((m.in).get(0),"r");
+			read = new RandomAccessFile((m.getInput()).get(0),"r");
 			List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
 			readers.add(read);
 			reader = new RecordReader(readers,m.recordlength,true);
@@ -70,7 +70,7 @@ public class RunMap extends RunTask {
 			int length = results.size();
 			FileOutputStream out;
 			try {
-				out = new FileOutputStream(new File(map.fileout.get(0)));
+				out = new FileOutputStream(new File(map.getOutput().get(0)));
 				BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(out));
 				for(Pair p: results)
 				{
