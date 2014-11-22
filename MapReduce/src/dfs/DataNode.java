@@ -8,7 +8,7 @@ import util.*;
 
 public class DataNode {
 	
-	String addr
+	String addr;
 	public DataNode(String addr) {	
 		this.addr = addr;
 	}
