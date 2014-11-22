@@ -229,8 +229,7 @@ public class MasterCoordinator {
 		{
 			return;
 		}
-		System.out.println(minLoad);
-		System.out.println(numberOfOutgoingJobs);
+		System.out.println(minLoad + "|" + numberOfOutgoingJobs + "|" + slaveNum);
 		if(minLoad + numberOfOutgoingJobs > Configuration.maxTasksPerHost)
 		{
 			return;
