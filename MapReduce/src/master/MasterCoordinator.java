@@ -94,12 +94,12 @@ public class MasterCoordinator {
 		if(connections.containsKey(nodeID))
 		{
 			MasterConnection con = connections.get(nodeID);
-			con.start();
 		}
 		else{
 			int listenPort = Configuration.masterListenPorts[nodeID];
 			MasterConnection newCon = new MasterConnection(slaveToAddress.get(nodeID),listenPort,this);
-			newCon.start();
+			Thread t = new Thread(newCon);
+			t.start();
 			connections.put(nodeID, newCon);
 		}
 	}

@@ -10,7 +10,7 @@ import dfs.*;
 import util.*;
 
 public class MasterConnection implements Runnable {
-	protected volatile Thread t;
+	private boolean run;
 	public String slaveAddr;
 	public int port;
 	public ServerSocket serverSoc;
@@ -22,23 +22,7 @@ public class MasterConnection implements Runnable {
 		port = masterListenPort;
 		coord = coordinator;
 	}
-	
-	public void start()
-	{
-		
-		t = new Thread();
-		serverSoc = null;
-		try {
-			serverSoc = new ServerSocket(port);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sendPort();
-		t.start();
-	}
-	
+
 	public void sendPort()
 	{
 		Message msg = new Message();
@@ -49,8 +33,18 @@ public class MasterConnection implements Runnable {
 	
 	public void run()
 	{
+		serverSoc = null;
+		try {
+			serverSoc = new ServerSocket(port);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendPort();
+		run = true;
 		System.out.println("Waiting for Connections");
-		while (this.t == Thread.currentThread ())
+		while (run)
 		{
 			Socket s;
 			try {
@@ -132,7 +126,7 @@ public class MasterConnection implements Runnable {
 		else if(msg.getType()=='c')
 		{
 			//Node is cleaned
-			t = null;
+			run = false;
 			return sendAck();
 		}
 		else if(msg.getType()=='n')
