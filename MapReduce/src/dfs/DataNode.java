@@ -97,6 +97,9 @@ public class DataNode {
 			dw.get(i).write(line);
 			dw.get(i).newLine();
 		}
+		for (BufferedWriter d : dw) {
+			d.close();
+		}
 		ArrayList<String> ret = new ArrayList<String>();
 		for (int i = 0; i < files.size(); i++) {
 			ret.add(lines[i] + "_" + files.get(i));
