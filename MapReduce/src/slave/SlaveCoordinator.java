@@ -21,9 +21,8 @@ public class SlaveCoordinator {
 	
 	public SlaveCoordinator()
 	{
-		conn = new SlaveConnection();
 		dataNode = new DataNode();
-
+		conn = new SlaveConnection();
 	}
 	
 	public void startConnection()
