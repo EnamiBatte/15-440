@@ -12,19 +12,21 @@ public abstract class Jobs {
 	private List<Tasks> runningTasks;
 	private int numFailures;
 	private String job;
+	private String inputFile;
+	private List<String> outFiles;
+	
 	
 	//Status = 3 means it started
 	//Status = 2 means it is running
 	//Status = 1 means it finished successfully
 	//Status = 0 means it finished due to a kill
 	
-	public Jobs(String j)
+	public Jobs()
 	{
 		allTasks = new LinkedList<Tasks>();
 		queueTasks = new LinkedList<Tasks>();
 		runningTasks = new LinkedList<Tasks>();
 		numFailures = 0;
-		job = j;
 	}
 	public int getStatus()
 	{
@@ -115,9 +117,33 @@ public abstract class Jobs {
 	public void setID(int ID){
 		id = ID;
 	}
-	
+	public void setString(String j)
+	{
+		job = j;
+	}
 	public String toString()
 	{
 		return job;
 	}
+	public void setInputFile(String in)
+	{
+		inputFile = in;
+	}
+	public String getInputFile()
+	{
+		return inputFile;
+	}
+	public void setOutputFiles(List<String> out)
+	{
+		outFiles = out;
+	}
+	public List<String> getOutputFiles()
+	{
+		return outFiles;
+	}
+	
+	
+	public abstract int getRecordSize();
+	public abstract void map(String key, String value, OutputCollector<String,String> output);
+	public abstract void reduce(String key, List<String> values, OutputCollector<String,String> output);
 }

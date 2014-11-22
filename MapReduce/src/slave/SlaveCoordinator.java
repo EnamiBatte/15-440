@@ -29,6 +29,7 @@ public class SlaveCoordinator {
 	public void setPort(int masterListenPort)
 	{
 		port = masterListenPort;
+		SlaveController.initSlave();
 	}
 	
 	public void start()
@@ -134,6 +135,7 @@ public class SlaveCoordinator {
 		{
 			stopTask(t);
 		}
+		SlaveController.stopSlave();
 	}
 	
 	private void stopTask(Tasks t) {
@@ -159,6 +161,15 @@ public class SlaveCoordinator {
 		
 	}
 
+	public void addJobs(Jobs j)
+	{
+		String input = j.getInputFile();
+		//Apply DFS then send
+		Message msg = new Message();
+		msg.setJob(j);
+		msg.setType('n');
+		sendMessage(msg);
+	}
 	//Sends Messages
 	//Sends a new job to Master to add to queue
 	// Sends acknowledgement of finished task (or killed)
