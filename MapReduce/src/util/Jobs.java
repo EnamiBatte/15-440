@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.io.*;
@@ -9,8 +10,8 @@ public abstract class Jobs implements Serializable {
 	private Integer stat;
 	private int id;
 	private List<Tasks> allTasks;
-	private volatile List<Tasks> queueTasks;
-	private volatile List<Tasks> runningTasks;
+	private List<Tasks> queueTasks;
+	private List<Tasks> runningTasks;
 	private int numFailures;
 	private String job;
 	private String inputFile;
@@ -25,8 +26,8 @@ public abstract class Jobs implements Serializable {
 	public Jobs()
 	{
 		allTasks = new LinkedList<Tasks>();
-		queueTasks = new LinkedList<Tasks>();
-		runningTasks = new LinkedList<Tasks>();
+		queueTasks =  Collections.synchronizedList(new LinkedList<Tasks>());
+		runningTasks = Collections.synchronizedList(new LinkedList<Tasks>());
 		numFailures = 0;
 	}
 	public int getStatus()
