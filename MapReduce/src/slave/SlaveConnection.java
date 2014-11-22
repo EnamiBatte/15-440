@@ -32,6 +32,7 @@ public class SlaveConnection implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		t.start();
 	}
 	
 	public void run()

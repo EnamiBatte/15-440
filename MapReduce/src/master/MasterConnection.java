@@ -36,7 +36,7 @@ public class MasterConnection implements Runnable {
 			e.printStackTrace();
 		}
 		sendPort();
-		run();
+		t.start();
 	}
 	
 	public void sendPort()
