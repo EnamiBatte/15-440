@@ -210,7 +210,7 @@ public class MasterCoordinator {
 	
 	public void issueNextTask()
 	{
-		
+		System.out.println("Issuing Next Task");
 		//Check work load of slaves
 		//If one is free, send next task in queue to it.
 		int minLoad = Configuration.maxTasksPerHost;

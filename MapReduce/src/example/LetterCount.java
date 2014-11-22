@@ -15,8 +15,11 @@ public class LetterCount extends Jobs {
 	@Override
 	public void map(String key, String value,
 			OutputCollector<String, String> output) {
-		if(Character.isLetter(key.charAt(0)))
-			output.collect(key, String.valueOf(1));
+		for(Character c: key.toCharArray())
+		{
+			if(Character.isLetter(c))
+				output.collect(String.valueOf(c), String.valueOf(1));
+		}
 	}
 
 	@Override

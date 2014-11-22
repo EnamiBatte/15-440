@@ -33,19 +33,7 @@ public class RecordReader {
 				{	
 					if(ismap)
 					{
-						String record;
-						if(recordLength < 20)
-						{	
-							System.out.println("record Length");
-							byte[] b = new byte[recordLength]; 
-							int bytesread = reader.read(b);
-							if(bytesread < recordLength)
-								return pairs;
-							record = new String(b);
-						}
-						else{
-							record = reader.readLine();
-						}
+						String record = reader.readLine();
 						List<String> values = pairs.get(record);
 						if(values == null)
 						{
