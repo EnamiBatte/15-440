@@ -104,7 +104,7 @@ public class DataNode {
 			localPartition = createLocalInputPartition(filename, numberOfLines);
 		} else {
 			int numberOfReducers = Configuration.numberOfReducers;
-			localPartition = createLocalInputPartition(filename, numberOfReducers);
+			localPartition = createLocalOutputPartition(filename, numberOfReducers);
 		}
 		for (int i = 0; i < localPartition.size(); i++) {
 			String a = localPartition.get(i);
