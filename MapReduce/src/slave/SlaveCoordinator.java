@@ -24,7 +24,7 @@ public class SlaveCoordinator {
 		conn = new SlaveConnection();
 		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
 			if (Configuration.masterListenPorts[i] == conn.port) 
-			dataNode = new DataNode(slaveAddress[i]);
+			dataNode = new DataNode(Configuration.slaveAddress[i]);
 		}
 	}
 	
