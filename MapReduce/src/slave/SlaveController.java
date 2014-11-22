@@ -36,7 +36,7 @@ public class SlaveController {
 	
 	public static void main(String[] args) {
 		SlaveCoordinator mc = new SlaveCoordinator();
-		mc.start();
+		mc.startConnection();
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		while (running) {
 			try {

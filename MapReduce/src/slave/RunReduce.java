@@ -79,14 +79,14 @@ public class RunReduce extends RunTask {
 				Message msg = new Message();
 				msg.setTask(reduce);
 				msg.setType('f');
-				coord.sendMessage(msg);
+				coord.conn.sendMessage(msg);
 				return;
 			}
 			reduce.setStatus(1);
 			Message msg = new Message();
 			msg.setTask(reduce);
 			msg.setType('f');
-			coord.sendMessage(msg);
+			coord.conn.sendMessage(msg);
 			
 	    }
 	}

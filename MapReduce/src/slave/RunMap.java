@@ -52,7 +52,7 @@ public class RunMap extends RunTask {
 				Message msg = new Message();
 				msg.setTask(map);
 				msg.setType('f');
-				coord.sendMessage(msg);
+				coord.conn.sendMessage(msg);
 				return;
 			}
 			OutputCollector<String,String> collect = new OutputCollector<String,String>();
@@ -85,14 +85,14 @@ public class RunMap extends RunTask {
 				Message msg = new Message();
 				msg.setTask(map);
 				msg.setType('f');
-				coord.sendMessage(msg);
+				coord.conn.sendMessage(msg);
 				return;
 			}
 			map.setStatus(1);
 			Message msg = new Message();
 			msg.setTask(map);
 			msg.setType('f');
-			coord.sendMessage(msg);
+			coord.conn.sendMessage(msg);
 	    }
 	}
 }

@@ -17,7 +17,7 @@ public abstract class RunTask implements Runnable{
 		task.setStatus(0);
 		msg.setTask(task);
 		msg.setType('f');
-		coord.sendMessage(msg);
+		coord.conn.sendMessage(msg);
 	}
 	public void finish()
 	{
