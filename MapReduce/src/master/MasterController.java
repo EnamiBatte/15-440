@@ -62,7 +62,8 @@ public class MasterController {
 						System.out.println("Kill not called on a valid job.");
 					}
 				}
-				else{
+				else if(arg.equals("start")){
+					mc.startSystem();
 					
 				}
 			}catch(IOException e) {
