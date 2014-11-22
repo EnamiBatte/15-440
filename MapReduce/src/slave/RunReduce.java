@@ -39,7 +39,7 @@ public class RunReduce extends RunTask {
 	}
 	@Override
 	public void run() {
-		
+		run = true;
 		while (run)
 	    {
 			//Figure out how to read input file

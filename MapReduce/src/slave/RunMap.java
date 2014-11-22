@@ -40,6 +40,7 @@ public class RunMap extends RunTask {
 	
 	public void run() {
 		// TODO Auto-generated method stub
+		run = true;
 		System.out.println("Running a map");
 		while (run)
 	    {
