@@ -13,7 +13,7 @@ public class DataNode {
 	public DataNode() {	
 	}
 	
-	public setAddr(String addr) {
+	public void setAddr(String addr) {
 		this.addr = addr;
 	}
 	
