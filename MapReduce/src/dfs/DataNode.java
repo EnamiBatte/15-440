@@ -107,9 +107,6 @@ public class DataNode {
 		System.out.println("Adding File to DFS");
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
-		Socket socket = new Socket(masterIP, Master_port);
-		ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 		
 		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
 			if (Master_port == Configuration.masterListenPorts[i]) {
@@ -128,6 +125,11 @@ public class DataNode {
 		}
 		System.out.println("Split Called");
 		for (int i = 0; i < localPartition.size(); i++) {
+			
+			Socket socket = new Socket(masterIP, Master_port);
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			
 			String a = localPartition.get(i);
 			String arr[] = a.split("_", 2);
 			int lines = Integer.parseInt(arr[0]);
@@ -167,9 +169,9 @@ public class DataNode {
 				} catch (EOFException e) {
 				}
 			}
-			
+			socket.close();
 		}
-		socket.close();
+		
 		return localPartition.size();
 	}
 	
