@@ -23,6 +23,7 @@ public class RecordReader {
 	}
 	
 	public Map<String,List<String>> getKeyValuePairs () {
+		System.out.println("Getting Key Value Pairs");
 		Map<String,List<String>> pairs = new HashMap<String,List<String>>();
 		int numLines = Configuration.mapPartitionSize;
 		try {
@@ -34,7 +35,9 @@ public class RecordReader {
 					{
 						String record;
 						if(recordLength < 20)
-						{	byte[] b = new byte[recordLength]; 
+						{	
+							System.out.println("record Length");
+							byte[] b = new byte[recordLength]; 
 							int bytesread = reader.read(b);
 							if(bytesread < recordLength)
 								return pairs;
