@@ -143,6 +143,7 @@ public class SlaveConnection implements Runnable {
 			in = new ObjectInputStream(s.getInputStream());
 			out.writeObject(msg);
 			out.flush();
+			System.out.println("serial?");
 			Message inMsg = (Message)in.readObject();
 			if('f' == inMsg.getType())
 			{
