@@ -40,7 +40,7 @@ public class RunReduce extends RunTask {
 	@Override
 	public void run() {
 		
-		while (this.t == Thread.currentThread ())
+		while (run)
 	    {
 			//Figure out how to read input file
 			//Evaluate it

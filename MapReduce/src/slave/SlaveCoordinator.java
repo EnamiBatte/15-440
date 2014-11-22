@@ -55,13 +55,15 @@ public class SlaveCoordinator {
 			MapTask m = (MapTask) t;
 			RunMap rm = new RunMap(m,this);
 			taskToThread.put(m, rm);
-			rm.run();
+			Thread th = new Thread(rm);
+			th.start();
 		}
 		else{
 			ReduceTask r = (ReduceTask) t;
 			RunReduce rr = new RunReduce(r,this);
 			taskToThread.put(r, rr);
-			rr.run();
+			Thread th = new Thread(rr);
+			th.start();
 		}
 		
 	}

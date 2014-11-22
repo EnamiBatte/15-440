@@ -32,7 +32,6 @@ public class RunMap extends RunTask {
 			List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
 			readers.add(read);
 			reader = new RecordReader(readers,m.recordlength,true);
-			this.t = new Thread();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,7 +41,7 @@ public class RunMap extends RunTask {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		while (this.t == Thread.currentThread ())
+		while (run)
 	    {
 			//Figure out how to read input file
 			//Evaluate it

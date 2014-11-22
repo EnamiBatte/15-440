@@ -4,16 +4,13 @@ import example.*;
 
 
 public abstract class RunTask implements Runnable{
-	protected volatile Thread t;
+	protected volatile boolean run;
 	protected Tasks task;
 	protected SlaveCoordinator coord;
 	
 	public void stop()
 	{
-		if(t!= null)
-		{
-			t = null;
-		}
+		run = false;
 		Message msg = new Message();
 		task.setStatus(0);
 		msg.setTask(task);
@@ -22,9 +19,6 @@ public abstract class RunTask implements Runnable{
 	}
 	public void finish()
 	{
-		if(t!= null)
-		{
-			t = null;
-		}
+		run = false;
 	}
 }
