@@ -22,6 +22,12 @@ public class SlaveConnection implements Runnable {
 	private boolean run;
 	public SlaveCoordinator coord;
 	
+	public SlaveConnection(String MasterAddr, SlaveCoordinator coord)
+	{
+		this.MasterAddr = MasterAddr;
+		this.coord = coord;
+	}
+
 	public void setPort(int masterListenPort)
 	{
 		port = masterListenPort;
