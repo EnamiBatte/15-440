@@ -73,12 +73,7 @@ public class MasterConnection implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		try {
-			serverSoc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public void sendMessage(Message msg)

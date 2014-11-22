@@ -24,10 +24,10 @@ public class SlaveConnection implements Runnable {
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
+		t = new Thread();
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(Configuration.slaveListenPort);
-			t = new Thread();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,13 +61,7 @@ public class SlaveConnection implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		try {
-			serverSoc.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
+		
 	}
 
 	public Message receiveMessage(Message msg)
