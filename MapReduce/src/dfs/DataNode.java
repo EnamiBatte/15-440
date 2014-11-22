@@ -25,6 +25,7 @@ public class DataNode {
 			line = dr.readLine();
 		}
 		dr.close();
+		System.out.println("The file had the following number of lines: "+String.valueOf(lines));
 		int numberOfFiles = (lines - 1) / numberOfLines + 1;
 		ArrayList<String> files = new ArrayList<String>();
 		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
@@ -35,6 +36,7 @@ public class DataNode {
 			myFile.createNewFile();
 			dw.add(new BufferedWriter(new FileWriter(name)));
 		}
+		System.out.println("Files are successfully created");
 		dr=new BufferedReader(new FileReader(filename));
 		lines = 0;
 		int i = 0;
@@ -53,6 +55,7 @@ public class DataNode {
 			dw.get(i).newLine();
 			lines++;
 		}
+		System.out.println("Files are successfully written");
 		ArrayList<String> ret = new ArrayList<String>();
 		for (String name : files) {
 			ret.add(numberOfLines + "_" + name);
