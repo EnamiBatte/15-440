@@ -308,6 +308,7 @@ public class MasterCoordinator {
 	
 	public void acknowledgeRunningTask(Tasks t)
 	{
+		System.out.println("Acknowledge the task is running");
 		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
 		if(check == 2)
@@ -325,6 +326,7 @@ public class MasterCoordinator {
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).remove(t);
 		
+		System.out.println("Acknowledge the task is finished");
 		
 		Jobs job = t.getJob();
 		int check = job.updateTasks(t);
