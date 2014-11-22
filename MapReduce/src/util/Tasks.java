@@ -1,9 +1,9 @@
 package util;
 
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.List;
 
-public abstract class Tasks {
+public abstract class Tasks implements Serializable {
 	public List<String> in;
 	public List<String> fileout;
 	private int stat;
