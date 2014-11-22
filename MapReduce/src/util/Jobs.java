@@ -54,6 +54,8 @@ public abstract class Jobs implements Serializable {
 				allTasks.add(t);
 			}
 		}
+		System.out.println("This Job has " + queueTasks.size() +" in queue");
+		System.out.println("This Job has " + allTasks.size() + " more tasks");
 	}
 	public List<Tasks> runningTasks()
 	{
@@ -81,7 +83,12 @@ public abstract class Jobs implements Serializable {
 			System.out.println("Checking a finished task");
 			if(taskStatus == 1)
 			{
+				if(queueTasks.contains(task))
+				{
+					queueTasks.remove(task);
+				}
 				if(queueTasks.isEmpty()&&runningTasks.isEmpty()){
+					System.out.println("Reached");
 					if(allTasks.isEmpty())
 					{
 						System.out.println("Checking a finished Job");
