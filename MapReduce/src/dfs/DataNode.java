@@ -13,10 +13,6 @@ public class DataNode {
 	public DataNode() {	
 	}
 	
-	public void setAddr(String addr) {
-		this.addr = addr;
-	}
-	
 	public int hash(String key, int num) {
 		return key.hashCode() % num;
 	}
@@ -114,6 +110,12 @@ public class DataNode {
 		Socket socket = new Socket(masterIP, Master_port);
 		ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+		
+		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
+			if (Master_port == Configuration.masterListenPorts[i]) {
+				addr = Configuration.slaveAddress[i];
+			}
+		}
 		
 		System.out.println("Socket Created");
 		ArrayList<String> localPartition = new ArrayList<String>();
