@@ -11,13 +11,13 @@ import java.util.HashMap;
 import dfs.*;
 import util.*;
 
-public class SlaveCoordinator {
+public class SlaveCoordinator implements Runnable {
 	public String MasterAddr;
 	public int port;
 	public ServerSocket serverSoc;
 	public HashMap<Tasks, RunTask> taskToThread;
 	public DataNode dataNode;
-	protected boolean run;
+	private Thread t;
 
 	
 	public SlaveCoordinator()
@@ -38,6 +38,7 @@ public class SlaveCoordinator {
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(Configuration.slaveListenPort);
+			t = new Thread();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -48,8 +49,7 @@ public class SlaveCoordinator {
 	
 	public void run()
 	{
-		run = true;
-		while (run)
+		while (this.t == Thread.currentThread ())
 		{
 			Socket s;
 			try {
@@ -143,10 +143,10 @@ public class SlaveCoordinator {
 	
 	public void stopServ()
 	{
-		run = false;
-		for(Tasks t: taskToThread.keySet())
+		t = null;
+		for(Tasks ti: taskToThread.keySet())
 		{
-			stopTask(t);
+			stopTask(ti);
 		}
 		SlaveController.stopSlave();
 	}
