@@ -9,12 +9,12 @@ import java.net.Socket;
 import dfs.*;
 import util.*;
 
-public class MasterConnection {
+public class MasterConnection implements Runnable {
+	protected volatile Thread t;
 	public String slaveAddr;
 	public int port;
 	public ServerSocket serverSoc;
 	public MasterCoordinator coord;
-	public boolean run;
 	
 	public MasterConnection(String sladdr, int masterListenPort, MasterCoordinator coordinator)
 	{
@@ -25,6 +25,7 @@ public class MasterConnection {
 	
 	public void start()
 	{
+		t = new Thread();
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(port);
@@ -47,8 +48,7 @@ public class MasterConnection {
 	
 	public void run()
 	{
-		run = true;
-		while(run)
+		while (this.t == Thread.currentThread ())
 		{
 			Socket s;
 			try {
@@ -135,7 +135,7 @@ public class MasterConnection {
 		else if(msg.getType()=='c')
 		{
 			//Node is cleaned
-			run = false;
+			t = null;
 			return sendAck();
 		}
 		else if(msg.getType()=='n')

@@ -40,6 +40,7 @@ public class SlaveController {
 		while(!init){
 			
 		}
+		System.out.println("System is Up.");
 		while (running) {
 			try {
 				String input = reader.readLine();
