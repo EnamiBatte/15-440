@@ -82,6 +82,7 @@ public class MasterConnection {
 	
 	public void sendMessage(Message msg)
 	{
+		System.out.println("Message sent");
 		try {
 			Socket s = new Socket(slaveAddr, Configuration.slaveListenPort);
 			ObjectInputStream in;
@@ -113,6 +114,7 @@ public class MasterConnection {
 	
 	public Message processMessage(Message msg)
 	{
+		System.out.println("Message received");
 		if(msg.getType()=='a')
 		{
 			//Response to an acknowledgement

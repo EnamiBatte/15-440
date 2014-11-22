@@ -87,6 +87,7 @@ public class SlaveCoordinator {
 	// New Task
 	public Message receiveMessage(Message msg)
 	{
+		System.out.println("Message received");
 		Message resp = new Message();
 		resp.setType('a');
 		if('a' == msg.getType())
@@ -193,6 +194,7 @@ public class SlaveCoordinator {
 	// Sends acknowledgement of finished task (or killed)
 	public void sendMessage(Message msg)
 	{
+		System.out.println("Message sent");
 		try {
 			Socket s = new Socket(MasterAddr, port);
 			ObjectInputStream in;
