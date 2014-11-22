@@ -28,7 +28,6 @@ public class MasterConnection {
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(port);
-			serverSoc.setSoTimeout(Configuration.timeout);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
