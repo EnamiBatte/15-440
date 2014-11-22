@@ -94,6 +94,8 @@ public class MasterCoordinator {
 		if(connections.containsKey(nodeID))
 		{
 			MasterConnection con = connections.get(nodeID);
+			Thread t = new Thread(con);
+			t.start();
 		}
 		else{
 			int listenPort = Configuration.masterListenPorts[nodeID];

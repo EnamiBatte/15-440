@@ -16,11 +16,13 @@ public class DataNode {
 	}
 	
 	public ArrayList<String> createLocalInputPartition(String filename, int numberOfLines) throws Exception {
+		System.out.println("Creating local partition");
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int lines = 0;
 		String line = dr.readLine();
 		while (line != "") {
 			lines++;
+			line = dr.readLine();
 		}
 		dr.close();
 		int numberOfFiles = (lines - 1) / numberOfLines + 1;
@@ -45,6 +47,7 @@ public class DataNode {
 				i++;
 				lines = 0;
 			}
+			line = dr.readLine();
 		}
 		while (lines < numberOfLines) {
 			dw.get(i).newLine();
