@@ -198,7 +198,7 @@ public class MasterCoordinator {
 			t.fileout = out;
 			tasks.add(t);
 		}
-		System.out.println("numoftasks=" + tasks.length);
+		System.out.println("numoftasks=" + tasks.size());
 		j.setTasks(tasks);
 		j.setID(next);
 		jobIDtoJobs.put(next,j);
@@ -234,7 +234,7 @@ public class MasterCoordinator {
 		{
 			
 			List<String> fileInputs = t.in;
-			System.out.println(fileInputs.lentgh);
+			System.out.println(fileInputs.size());
 			boolean hasIt = true;
 			for(String file: fileInputs )
 			{
