@@ -24,20 +24,14 @@ public class SlaveConnection implements Runnable {
 	{
 		port = masterListenPort;
 		SlaveController.initSlave();
-	}
-	
-	public void start()
-	{
-		t = new Thread();
 		serverSoc = null;
 		try {
 			serverSoc = new ServerSocket(Configuration.slaveListenPort);
-			
+			t = new Thread();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		run();
 	}
 	
 	public void run()

@@ -25,6 +25,7 @@ public class MasterConnection implements Runnable {
 	
 	public void start()
 	{
+		
 		t = new Thread();
 		serverSoc = null;
 		try {

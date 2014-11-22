@@ -25,7 +25,7 @@ public class SlaveCoordinator {
 	
 	public void startConnection()
 	{
-		conn.start();
+		conn.run();
 	}
 	
 	public void stopServ()
