@@ -50,6 +50,10 @@ public class SlaveCoordinator {
 
 	void startTask(Tasks t) {
 		t.setStatus(2);
+		Message msg = new Message();
+		msg.setType('r');
+		msg.setTask(t);
+		conn.sendMessage(msg);
 		if(t.getClass().equals(MapTask.class))
 		{
 			MapTask m = (MapTask) t;
@@ -65,10 +69,6 @@ public class SlaveCoordinator {
 			Thread th = new Thread(rr);
 			th.start();
 		}
-		Message msg = new Message();
-		msg.setType('r');
-		msg.setTask(t);
-		conn.sendMessage(msg);
 		
 	}
 
