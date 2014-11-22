@@ -153,6 +153,7 @@ public class MasterCoordinator {
 	
 	public void addJob(Jobs j, int Mappers)
 	{
+		System.out.println("num = " + Mappers);
 		int next = jobIDtoJobs.size();
 		Jobs addedJob = j;
 		String inputFile = j.getInputFile();
@@ -197,6 +198,7 @@ public class MasterCoordinator {
 			t.fileout = out;
 			tasks.add(t);
 		}
+		System.out.println("numoftasks=" + tasks.length);
 		j.setTasks(tasks);
 		j.setID(next);
 		jobIDtoJobs.put(next,j);
@@ -208,6 +210,7 @@ public class MasterCoordinator {
 	
 	public void issueNextTask()
 	{
+		
 		//Check work load of slaves
 		//If one is free, send next task in queue to it.
 		int minLoad = Configuration.maxTasksPerHost;
@@ -229,7 +232,9 @@ public class MasterCoordinator {
 		//Should check that node has the necessary file if possible.
 		for(Tasks t: queueTasks)
 		{
+			
 			List<String> fileInputs = t.in;
+			System.out.println(fileInputs.lentgh);
 			boolean hasIt = true;
 			for(String file: fileInputs )
 			{
