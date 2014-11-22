@@ -22,7 +22,7 @@ public class SlaveCoordinator {
 	public SlaveCoordinator()
 	{
 		conn = new SlaveConnection();
-		dataNode = new DataNode(Configuration.masterListenPorts.IndexOf(conn.port));
+		dataNode = new DataNode(Configuration.masterListenPorts.indexOf(conn.port));
 	}
 	
 	public void startConnection()
