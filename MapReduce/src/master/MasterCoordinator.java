@@ -3,9 +3,11 @@ package master;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import dfs.*;
@@ -257,13 +259,22 @@ public class MasterCoordinator {
 			assigned = queueTasks.get(0);
 			for (String file: assigned.in)
 			{
-				String loc = nameNode.require(file,slave);
+				int sourceNum = -1;
+				String addr = nameNode.require(file,slave);
+				Iterator<Entry<Integer,String>> it = slaveToAddress.entrySet().iterator();
+				while(it.hasNext()) {
+					Map.Entry<Integer,String> entry = (Map.Entry<Integer,String>)it.next();
+					 if(entry.getValue().equals(addr)) {
+						 sourceNum = entry.getKey();
+					 }
+				}
+				Message msg = new Message();
+				msg.setType('f');
+				msg.setFileName(file);
+				msg.setAddr(addr);
+				MasterConnection mc = connections.get(sourceNum);
+				mc.sendMessage(msg);
 			}
-			Message msg = new Message();
-			msg.setTask(assigned);
-			msg.setType('t');
-			MasterConnection mc = connections.get(slaveNum);
-			mc.sendMessage(msg);
 			issueNextTask();
 		}
 	}
