@@ -168,6 +168,7 @@ public class DataNode {
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		BufferedWriter dw=new BufferedWriter(new OutputStreamWriter(os));
 		for (int i = 0; i < lines; i++) {
+			System.out.println(i);
 			String line = dr.readLine();
 			dw.write(line);
 			dw.newLine();
