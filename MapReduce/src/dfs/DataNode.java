@@ -149,7 +149,10 @@ public class DataNode {
 				writeFileToStream(partitionFilename, lines, osDN);
 				
 				Thread.sleep(100);
-				socketDN.close();
+				try {
+					socketDN.close();
+				} catch (EOFException e) {
+				}
 			}
 			
 		}
