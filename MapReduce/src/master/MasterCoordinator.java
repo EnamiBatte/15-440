@@ -174,7 +174,7 @@ public class MasterCoordinator {
 			//Needs inputFile for each mapper
 			List<String> output = new LinkedList<String>();
 			String outPartitionFile = "M"+partitionFile;
-			input.add(outPartitionFile);
+			output.add(outPartitionFile);
 			t.setOutput(output);
 			//Needs dfs output files
 			tasks.add(t);
@@ -240,6 +240,7 @@ public class MasterCoordinator {
 			{
 				System.out.println(file);
 				ArrayList<String> slaveNodes= nameNode.findFile(file);
+				nameNode.listAll();
 				System.out.print(slaveNodes.size());
 				if(!slaveNodes.contains(slaveToAddress.get(slaveNum)))
 				{
