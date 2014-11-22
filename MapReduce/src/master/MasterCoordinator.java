@@ -252,6 +252,7 @@ public class MasterCoordinator {
 			
 			Message msg = new Message();
 			msg.setTask(assigned);
+			System.out.println(assigned.in);
 			msg.setType('t');
 			MasterConnection mc = connections.get(slaveNum);
 			mc.sendMessage(msg);
