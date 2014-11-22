@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public abstract class Jobs implements Serializable {
+public abstract class Jobs implements serializable {
 	private Integer stat;
 	private int id;
 	private List<Tasks> allTasks;
