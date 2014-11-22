@@ -66,6 +66,7 @@ public class SlaveCoordinator {
 
 	public void addJobs(Jobs j)
 	{
+		System.out.println("Adding job");
 		String input = j.getInputFile();
 		int num = 0;
 		try {

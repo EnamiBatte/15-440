@@ -90,14 +90,16 @@ public class DataNode {
 		return ret;
 	}
 	public int addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
+		System.out.println("Adding File to DFS");
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
 		Socket socket = new Socket(masterIP, Master_port);
-		InputStream is = socket.getInputStream();
 		OutputStream os = socket.getOutputStream();
-		ObjectInputStream ois = new ObjectInputStream(is);
+		InputStream is = socket.getInputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(os);
+		ObjectInputStream ois = new ObjectInputStream(is);
 		
+		System.out.println("Socket Created");
 		ArrayList<String> localPartition = new ArrayList<String>();
 		if (flag) {
 			int numberOfLines = Configuration.numberOfLines;
@@ -106,6 +108,7 @@ public class DataNode {
 			int numberOfReducers = Configuration.numberOfReducers;
 			localPartition = createLocalOutputPartition(filename, numberOfReducers);
 		}
+		System.out.println("Split Called");
 		for (int i = 0; i < localPartition.size(); i++) {
 			String a = localPartition.get(i);
 			String arr[] = a.split("_", 1);
