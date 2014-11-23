@@ -45,7 +45,6 @@ public class NameNode {
 		}
 		filenametoslaveaddr.put(filename, ret);
 		Message response = new Message();
-		response.setType('a');
 		response.setAddrList(ret);
 		return response;
 	}
@@ -102,6 +101,11 @@ public class NameNode {
 	
 	public String require(String filename, String addr) {
 		String source = filenametoslaveaddr.get(filename).get(0);
+		ArrayList<String> val = filenametoslaveaddr.get(filename);
+		if (!val.contains(addr)) {
+			val.add(addr);
+			filenametoslaveaddr.put(filename, val);
+		}
 		return source;
 	}
 	
@@ -125,5 +129,31 @@ public class NameNode {
 				System.out.print("\n");
 			}
 		}
+	}
+	
+	public String inputFileName(String partitionFileName) {
+		if (partitionFileName.startsWith("m")) {
+			String[] split = partitionFileName.split("_", 2);
+			return split[1];
+		} else {
+			String[] split = partitionFileName.split("_", 2);
+			return split[1].substring(0, split[1].lastIndexOf("_") - 1);
+		}
+	}
+	
+	
+	public void deleteJob(String filename) {
+		Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
+			String key = entry.getKey(); 
+			if (inputFileName(key).equals(filename)) {
+				filenametoslaveaddr.remove(key);
+			}
+		}
+
+	}
+	public void deleteAll() {
+		filenametoslaveaddr.clear();
 	}
 }
