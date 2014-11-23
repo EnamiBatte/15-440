@@ -64,8 +64,10 @@ public class SlaveConnection implements Runnable {
 					
 					coord.dataNode.receiveFileFromStream(msg.getFileName(), ins, msg.getLines());
 				} 
-				Message outMsg = receiveMessage(msg);
-				out.writeObject(outMsg);
+				else {
+					Message outMsg = receiveMessage(msg);
+					out.writeObject(outMsg);
+				}
 				in.close();
 				out.close();
 				s.close();	
