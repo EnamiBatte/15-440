@@ -209,7 +209,7 @@ public class DataNode {
 				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
 				InputStream isDN = socketDN.getInputStream();
-				ObjectInputStream oosDN = new ObjectInputStream(isDN);
+				ObjectInputStream oisDN = new ObjectInputStream(isDN);
 				OutputStream osDN = socketDN.getOutputStream();
 				ObjectOutputStream oosDN = new ObjectOutputStream(osDN);
 				
