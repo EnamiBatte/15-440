@@ -71,6 +71,7 @@ public class DataNode {
 		while (!line.equals("")) {
 			lines++;
 			line = dr.readLine();
+			System.out.println(line);
 		}
 		dr.close();
 		System.out.println("The file had the following number of lines: "+String.valueOf(lines));
@@ -90,7 +91,7 @@ public class DataNode {
 		lines = 0;
 		int i = 0;
 		line = dr.readLine();
-		//System.out.println(line);
+		System.out.println(line);
 		while (!line.equals("")) {
 			lines++;
 			dw.get(i).write(line);
@@ -100,7 +101,7 @@ public class DataNode {
 				lines = 0;
 			}
 			line = dr.readLine();
-			//System.out.println(line);
+			System.out.println(line);
 		}
 		while ((lines < numberOfLines) && (lines!=0)) {
 			dw.get(i).newLine();
