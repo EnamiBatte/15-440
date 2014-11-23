@@ -38,4 +38,4 @@ To start these choose a slave and run:
 	start example.LetterCount letter (output files...)
 		(This will run LetterCount which counts the number of times each letter appears).
 	start example.NumTimesLongest words (output files...)
-		
+		(This should output the longest word for each line and the number of times it was the longest word).
