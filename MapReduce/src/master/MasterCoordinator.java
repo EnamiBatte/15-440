@@ -251,7 +251,7 @@ public class MasterCoordinator {
 			for(String file: fileInputs )
 			{
 				ArrayList<String> slaveNodes = nameNode.findFile(file);
-				while (slaveNodes.isEmpty()) {
+				if (slaveNodes.isEmpty()) {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
@@ -283,7 +283,7 @@ public class MasterCoordinator {
 			assigned.getJob().setStatus(3);
 			Message msg = new Message();
 			msg.setTask(assigned);
-			System.out.println(assigned.in);
+			System.out.println(assigned.getInput());
 			msg.setType('t');
 			MasterConnection mc = connections.get(slaveNum);
 			mc.sendMessage(msg);
@@ -298,7 +298,7 @@ public class MasterCoordinator {
 		else{
 			String slave = slaveToAddress.get(slaveNum);
 			assigned = queueTasks.get(0);
-			for (String file: assigned.in)
+			for (String file: assigned.getInput())
 			{
 				int sourceNum = -1;
 				String addr = nameNode.require(file,slave);
