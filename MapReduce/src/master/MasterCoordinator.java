@@ -173,7 +173,7 @@ public class MasterCoordinator {
 			t.setStatus(1);
 			//Needs inputFile for each mapper
 			List<String> input = new LinkedList<String>();
-			String partitionFile = String.valueOf(i)+"_"+j.getInputFile();
+			String partitionFile = i+"_"+j.getInputFile();
 			String inPartitionFile = "m"+partitionFile;
 			input.add(inPartitionFile);
 			t.setInput(input);
@@ -193,7 +193,7 @@ public class MasterCoordinator {
 			t.setStatus(3);
 			//Needs DFS files associated with Hash
 			List<String> input = new LinkedList<String>();
-			String correctHash = "_"+j.getInputFile()+"_"+String.valueOf(k);
+			String correctHash = "_"+j.getInputFile()+"_"+k;
 			for(int i = 0; i< Mappers; i++)
 			{
 				input.add("rM"+String.valueOf(i)+correctHash);
