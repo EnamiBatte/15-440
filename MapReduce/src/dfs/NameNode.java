@@ -94,9 +94,8 @@ public class NameNode {
 		return ret;
 	}
 	
-	public Message recover(String addr) {
+	public void recover(String addr) {
 		slaveaddr.add(addr);
-		return null;
 	}
 	
 	public String require(String filename, String addr) {
@@ -110,7 +109,10 @@ public class NameNode {
 	}
 	
 	public ArrayList<String> findFile(String filename) {
-		return filenametoslaveaddr.get(filename);
+		if (filenametoslaveaddr.contains(filename)) {
+			return filenametoslaveaddr.get(filename);
+		}
+		return new ArrayList<String>();
 	}
 	
 	public void listAll() {
