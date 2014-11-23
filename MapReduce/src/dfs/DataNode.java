@@ -23,7 +23,7 @@ public class DataNode {
 			return split[1];
 		} else {
 			String[] split = partitionFileName.split("_", 2);
-			return split[1].substring(0, split[1].lastIndexOf("_") - 1);
+			return split[1].substring(0, split[1].lastIndexOf("_"));
 		}
 	}
 	
