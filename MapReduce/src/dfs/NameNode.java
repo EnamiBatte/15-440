@@ -53,13 +53,13 @@ public class NameNode {
 		Message response = new Message();
 		response.setAddrList(ret);
 		
-		if (updateLeft(String filename) == 0) {
+		if (updateLeft(filename) == 0) {
 			coord.canStartReduce();
 		}
 		
 		return response;
 	}
-	public int updateLeft(String filename);
+	public int updateLeft(String filename){
 		String origin = inputFileName(filename);
 		int ret = 0;
 		if (leftReduce.containsKey(origin)) {
