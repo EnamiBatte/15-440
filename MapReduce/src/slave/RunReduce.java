@@ -29,12 +29,14 @@ public class RunReduce extends RunTask {
 		coord = coordinator;
 		List<RandomAccessFile> readers = new LinkedList<RandomAccessFile>();
 		for(String read: reduce.getInput())
+		{	
 			try {
 				readers.add(new RandomAccessFile(read,"r"));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 		reader = new RecordReader(readers,reduce.recordlength,false);
 	}
 	@Override
