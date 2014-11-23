@@ -233,13 +233,7 @@ public class DataNode {
 		File myFile = new File(filename);
 		myFile.createNewFile();
 		
-		String origin = inputFileName(filename);
-		HashSet<String> val = new HashSet<String>();
-		if (fileMap.containsKey(origin)) {
-			val = fileMap.get(origin);
-		}
-		val.add(filename);
-		fileMap.put(origin, val);
+
 		
 		BufferedWriter dw = new BufferedWriter(new FileWriter(filename));
 		for (int i = 0; i < lines; i++) {
@@ -248,7 +242,13 @@ public class DataNode {
 		} 
 		dr.close();
 		dw.close();
-		
+		String origin = inputFileName(filename);
+		HashSet<String> val = new HashSet<String>();
+		if (fileMap.containsKey(origin)) {
+			val = fileMap.get(origin);
+		}
+		val.add(filename);
+		fileMap.put(origin, val);
 	}
 	
 	public void writeFileToStream(String filename, int lines, OutputStream os) throws Exception {
