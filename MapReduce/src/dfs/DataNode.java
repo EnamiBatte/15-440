@@ -56,7 +56,7 @@ public class DataNode {
 	}
 	
 	public int hash(String key, int num) {
-		System.out.print(key+" " + key.hashCode() % num + " ");
+		//System.out.print(key+" " + key.hashCode() % num + " ");
 		return key.hashCode() % num;
 	}
 	
