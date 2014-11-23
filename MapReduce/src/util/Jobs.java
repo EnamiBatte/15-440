@@ -22,12 +22,11 @@ public abstract class Jobs implements Serializable {
 	//Status = 2 means it is running
 	//Status = 1 means it finished successfully
 	//Status = 0 means it finished due to a kill
-	
 	public Jobs()
 	{
 		allTasks = new LinkedList<Tasks>();
-		queueTasks =  Collections.synchronizedList(new LinkedList<Tasks>());
-		runningTasks = Collections.synchronizedList(new LinkedList<Tasks>());
+		queueTasks =  new LinkedList<Tasks>();
+		runningTasks = new LinkedList<Tasks>();
 		numFailures = 0;
 	}
 	public int getStatus()
@@ -73,20 +72,14 @@ public abstract class Jobs implements Serializable {
 		if(taskStatus == 2)
 		{
 			System.out.println("Checking a running task");
-			synchronized(queueTasks){
 			queueTasks.remove(task);
-			}
-			synchronized(runningTasks){
 			runningTasks.add(task);
-			}
 			stat = 2;
 			return 1;
 		}
 		else
 		{	
-			synchronized(runningTasks){
-				runningTasks.remove(task);
-			}
+			runningTasks.remove(task);
 			if(taskStatus == 1)
 			{
 				System.out.println("Checking a finished task");

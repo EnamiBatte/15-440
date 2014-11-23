@@ -313,7 +313,14 @@ public class MasterCoordinator {
 	public void acknowledgeRunningTask(Tasks t)
 	{
 		Jobs job = t.getJob();
-		int check = job.updateTasks(t);
+		Integer i = 0;
+		while(!jobIDtoJobs.get(i).equals(job))
+		{
+			i++;
+		}
+		Jobs toUpdate = jobIDtoJobs.get(i);
+		int check = toUpdate.updateTasks(t);
+		jobIDtoJobs.put(i, toUpdate);
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).add(t);
 		numberOfOutgoingJobs--;
@@ -325,7 +332,15 @@ public class MasterCoordinator {
 		slaveToTasks.get(SlaveID).remove(t);
 		
 		Jobs job = t.getJob();
-		int check = job.updateTasks(t);
+		Integer i = 0;
+		while(!jobIDtoJobs.get(i).equals(job))
+		{
+			i++;
+		}
+		Jobs toUpdate = jobIDtoJobs.get(i);
+		int check = toUpdate.updateTasks(t);
+		jobIDtoJobs.put(i, toUpdate);
+		
 		if(check == 0)
 		{
 			System.out.println("Acknowledge the task is finished");
