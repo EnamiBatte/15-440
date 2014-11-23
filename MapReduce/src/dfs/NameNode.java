@@ -14,12 +14,14 @@ public class NameNode {
 	private int current;
 	private int availableReplication;
 	public MasterCoordinator coord;
+	HashMap<String, Integer> leftReduce;
 	
 	public NameNode(ArrayList<String> slaveaddr, int replication, MasterCoordinator coord) {
 		this.slaveaddr = slaveaddr;
 		this.replication = replication;
 		availableReplication = Math.min(replication, slaveaddr.size());
 		filenametoslaveaddr = new HashMap<String, ArrayList<String>>();
+		leftReduce = new HashMap<String, Integer>();
 		current = 0;
 		this.coord = coord;
 	}
@@ -51,28 +53,29 @@ public class NameNode {
 		Message response = new Message();
 		response.setAddrList(ret);
 		
-		String origin = inputFileName(filename);
-		int left = 0;
-		Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
-			String key = entry.getKey(); 
-			if (inputFileName(key).equals(origin)) {
-				if (key.startsWith("m")) {
-					left += Configuration.numberOfReducers;		
-				} else {
-					left--;
-				}
-			}
-		}
-		System.out.println(left + "left");
-		if (left == 0) {
+		if (updateLeft(String filename) == 0) {
 			coord.canStartReduce();
-			
 		}
+		
 		return response;
 	}
+	public int updateLeft(String filename);
+		String origin = inputFileName(filename);
+		int ret = 0;
+		if (leftReduce.containsKey(origin)) {
+			ret = leftReduce.get(origin);
+			if (filename.startsWith("m")) {
+				ret += Configuration.numberOfReducers;
+			} else {
+				ret--;
+			}
+		}
+		
+		leftReduce.put(origin, ret);
 	
+		return ret;
+	}
+		
 	public ArrayList<Message> slaveFailure(String slave) {
 		ArrayList<Message> ret = new ArrayList<Message>();
 		slaveaddr.remove(slave);
