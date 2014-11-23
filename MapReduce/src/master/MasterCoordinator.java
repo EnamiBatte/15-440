@@ -252,7 +252,12 @@ public class MasterCoordinator {
 			{
 				ArrayList<String> slaveNodes = nameNode.findFile(file);
 				while (slaveNodes.isEmpty()) {
-					Thread.sleep(100);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						
+					}
+					
 					slaveNodes = nameNode.findFile(file);
 				}
 				System.out.println(file);
