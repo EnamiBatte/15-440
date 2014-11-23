@@ -39,10 +39,11 @@ public class NameNode {
 			}
 		} else {
 			for (int i = 0; i < availableReplication; i++) {
-			ret.add(slaveaddr.get(current));
-			current += 1;
-			if (current >= slaveaddr.size()) {
+				ret.add(slaveaddr.get(current));
+				current += 1;
+				if (current >= slaveaddr.size()) {
 				current = 0;
+				}
 			}
 		}
 		filenametoslaveaddr.put(filename, ret);
@@ -57,7 +58,7 @@ public class NameNode {
 			String key = entry.getKey(); 
 			if (inputFileName(key).equals(origin)) {
 				if (key.startsWith("m")) {
-					left += Configuration.numberOfSlaves;		
+					left += Configuration.numberOfReducers;		
 				} else {
 					left--;
 				}
@@ -65,7 +66,7 @@ public class NameNode {
 		}
 		System.out.println(left + "");
 		if (left == 0) {
-			//coord.canStartReduce();
+			coord.canStartReduce();
 			
 		}
 		return response;
