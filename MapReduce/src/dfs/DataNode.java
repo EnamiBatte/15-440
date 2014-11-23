@@ -150,7 +150,8 @@ public class DataNode {
 		dr=new BufferedReader(new FileReader(filename));
 		line = dr.readLine();
 		while (!line.equals("")) {
-			String key = line.split("|")[0];
+			int j = line.indexOf("|");
+			String key = line.substring(0, j);
 			int i = hash(key, numberOfReducers);
 			dw.get(i).write(line);
 			dw.get(i).newLine();
