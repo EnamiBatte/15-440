@@ -45,16 +45,18 @@ public class RecordReader {
 					else
 					{
 						String record = reader.readLine();
-						int index = record.indexOf("|");
-						String key = record.substring(0,index).trim();
-						String value = record.substring(index+1,recordLength-1).trim();
-						List<String> values = pairs.get(key);
-						if(values == null)
-						{
-							values = new LinkedList<String>();
+						if(record != null){
+							int index = record.indexOf("|");
+							String key = record.substring(0,index).trim();
+							String value = record.substring(index+1,recordLength-1).trim();
+							List<String> values = pairs.get(key);
+							if(values == null)
+							{
+								values = new LinkedList<String>();
+							}
+							values.add(value);
+							pairs.put(key,values);
 						}
-						values.add(value);
-						pairs.put(key,values);
 					}
 				}
 			}
