@@ -252,6 +252,7 @@ public class MasterCoordinator {
 			{
 				ArrayList<String> slaveNodes= nameNode.findFile(file);
 				System.out.println(file);
+				nameNode.listAll();
 				if(!slaveNodes.contains(slaveToAddress.get(slaveNum)))
 				{
 					hasIt = false;
