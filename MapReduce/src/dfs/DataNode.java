@@ -131,6 +131,7 @@ public class DataNode {
 			String key = line.split("|")[0];
 			int i = hash(key, numberOfReducers);
 			lines[i]++;
+			line = dr.readLine();
 		}
 		dr.close();
 		ArrayList<String> files = new ArrayList<String>();
@@ -151,6 +152,7 @@ public class DataNode {
 			int i = hash(key, numberOfReducers);
 			dw.get(i).write(line);
 			dw.get(i).newLine();
+			line = dr.readLine();
 		}
 		for (BufferedWriter d : dw) {
 			d.close();
