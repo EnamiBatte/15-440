@@ -215,7 +215,12 @@ public class MasterCoordinator {
 	
 	
 	public void issueNextTask()
-	{
+	{	
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+				
+		}
 		System.out.println("Issuing Next Task");
 		//Check work load of slaves
 		//If one is free, send next task in queue to it.
