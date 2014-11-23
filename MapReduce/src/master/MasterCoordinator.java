@@ -385,7 +385,7 @@ public class MasterCoordinator {
 		issueNextTask();
 	}	
 	
-	void canStartReduce()
+	public void canStartReduce()
 	{
 		boolean canStart = true;
 		for(int i = 0; i< jobIDtoJobs.size(); i++)
