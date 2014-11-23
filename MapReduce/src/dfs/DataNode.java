@@ -231,7 +231,7 @@ public class DataNode {
 				oosDN.writeObject(message);
 				writeFileToStream(partitionFilename, lines, osDN);
 				
-				Message msg = (Message)oisDN.readObject();
+				//Message msg = (Message)oisDN.readObject();
 				socketDN.close();
 			}
 			socket.close();
