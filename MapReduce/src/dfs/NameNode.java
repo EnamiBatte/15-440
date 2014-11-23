@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import util.*;
+import master.*;
 
 public class NameNode {
 	ArrayList<String> slaveaddr;
