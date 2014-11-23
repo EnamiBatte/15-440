@@ -37,5 +37,5 @@ As Examples to Run we have provided you with LetterCount and NumTimesLongest
 To start these choose a slave and run:
 	start example.LetterCount letter (output files...)
 		(This will run LetterCount which counts the number of times each letter appears).
-	start example.NumTimesLongest word (output files...)
+	start example.NumTimesLongest words (output files...)
 		
