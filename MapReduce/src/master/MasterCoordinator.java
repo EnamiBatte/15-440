@@ -217,7 +217,7 @@ public class MasterCoordinator {
 	public void issueNextTask()
 	{	
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 				
 		}
@@ -256,18 +256,16 @@ public class MasterCoordinator {
 			for(String file: fileInputs )
 			{
 				ArrayList<String> slaveNodes = nameNode.findFile(file);
-				if (slaveNodes.isEmpty()) {
+				while (slaveNodes.isEmpty()) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						
 					}
+					
 					slaveNodes = nameNode.findFile(file);
 				}
-				if(slaveNodes.isEmpty())
-				{
-					break;
-				}
+				
 				System.out.println(file);
 				//nameNode.listAll();
 				if(!slaveNodes.contains(slaveToAddress.get(slaveNum)))
