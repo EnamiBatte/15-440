@@ -94,9 +94,8 @@ public class NameNode {
 		return ret;
 	}
 	
-	public Message recover(String addr) {
+	public void recover(String addr) {
 		slaveaddr.add(addr);
-		return null;
 	}
 	
 	public String require(String filename, String addr) {
