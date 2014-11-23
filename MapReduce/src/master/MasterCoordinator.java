@@ -257,8 +257,11 @@ public class MasterCoordinator {
 					} catch (InterruptedException e) {
 						
 					}
-					
 					slaveNodes = nameNode.findFile(file);
+				}
+				if(slaveNodes.isEmpty())
+				{
+					break;
 				}
 				System.out.println(file);
 				//nameNode.listAll();
