@@ -18,6 +18,7 @@ public class MasterCoordinator {
 	public Map<Integer,String> slaveToAddress;
 	public Map<Integer,List<Tasks>> slaveToTasks;
 	public Map<Integer,Jobs> jobIDtoJobs;
+	public Map<Integer,List<Tasks>> RunningTasksPerJob;
 	public List<Jobs> runningJobs;
 	public List<Jobs> queueJobs;
 	public List<Jobs> finishedJobs;
@@ -34,6 +35,7 @@ public class MasterCoordinator {
 		slaveToTasks = new HashMap<Integer,List<Tasks>>();
 		connections = new HashMap<Integer,MasterConnection>();
 		jobIDtoJobs = new HashMap<Integer,Jobs>();
+		RunningTasksPerJob = new HashMap<Integer,List<Tasks>>();
 		runningJobs = new LinkedList<Jobs>();
 		queueJobs = new LinkedList<Jobs>();
 		finishedJobs = new LinkedList<Jobs>();
@@ -140,7 +142,9 @@ public class MasterCoordinator {
 		Jobs toKill = j;
 		List<Tasks> removeTasks = toKill.getQueueTasks();
 		queueTasks.removeAll(removeTasks);
-		List<Tasks> toKillTasks = toKill.runningTasks();
+		int val = toKill.getID();
+		
+		List<Tasks> toKillTasks = RunningTasksPerJob.get(val);
 		for(Tasks t: toKillTasks)
 		{
 			Integer i = t.getSlaveID();
@@ -156,6 +160,7 @@ public class MasterCoordinator {
 	{
 		System.out.println("num = " + Mappers);
 		int next = jobIDtoJobs.size();
+		RunningTasksPerJob.put(next, new LinkedList<Tasks>());
 		Jobs addedJob = j;
 		String inputFile = j.getInputFile();
 		List<Tasks> tasks = new LinkedList<Tasks>();
@@ -313,16 +318,12 @@ public class MasterCoordinator {
 	public void acknowledgeRunningTask(Tasks t)
 	{
 		Jobs job = t.getJob();
-		Integer i = 0;
-		while(!jobIDtoJobs.get(i).equals(job))
-		{
-			i++;
-		}
-		Jobs toUpdate = jobIDtoJobs.get(i);
-		int check = toUpdate.updateTasks(t);
-		jobIDtoJobs.put(i, toUpdate);
 		int SlaveID = t.getSlaveID();
 		slaveToTasks.get(SlaveID).add(t);
+		int val = job.getID();
+		List<Tasks> running = RunningTasksPerJob.get(val);
+		running.add(t);
+		RunningTasksPerJob.put(val, running);
 		numberOfOutgoingJobs--;
 	}
 	
@@ -332,35 +333,36 @@ public class MasterCoordinator {
 		slaveToTasks.get(SlaveID).remove(t);
 		
 		Jobs job = t.getJob();
-		Integer i = 0;
-		while(!jobIDtoJobs.get(i).equals(job))
-		{
-			i++;
-		}
-		Jobs toUpdate = jobIDtoJobs.get(i);
-		int check = toUpdate.updateTasks(t);
-		jobIDtoJobs.put(i, toUpdate);
-		
-		if(check == 0)
-		{
-			System.out.println("Acknowledge the task is finished");
-			runningJobs.remove(job);
-			finishedJobs.add(job);		
-		}
-		if(check == 3)
-		{
-			System.out.println("Acknowledge the queue is finished");
-			queueTasks.addAll(job.getQueueTasks());
-		}
-		if(check == -1)
+		int val = job.getID();
+		List<Tasks> running = RunningTasksPerJob.get(val);
+		running.remove(t);
+		RunningTasksPerJob.put(val, running);
+		int runningTasks = RunningTasksPerJob.size();
+		if(t.getStatus() < 0)
 		{
 			System.out.println("Acknowledge the task failed");
 			queueTasks.add(t);
 		}
-		if(check == -2)
+		if(t.getStatus()==0)
 		{
 			System.out.println("Acknowledge the task was killed");
 			processKill(job);
+		}
+		if(t.getStatus()> 0)
+		{
+			System.out.println("Acknowledge the task is finished");
+			List<Tasks> remaining = jobIDtoJobs.get(val).getTasks();
+			if(remaining != null)
+			{
+				queueTasks.addAll(remaining);
+				jobIDtoJobs.get(val).setTasks(null);
+				System.out.println("Acknowledge the queue is finished");
+			}
+			else{
+				System.out.println("Acknowledge the task is finished");
+				runningJobs.remove(job);
+				finishedJobs.add(job);		
+			}	
 		}
 		issueNextTask();
 	}	

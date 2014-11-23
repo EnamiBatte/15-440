@@ -11,7 +11,6 @@ public abstract class Jobs implements Serializable {
 	private int id;
 	private List<Tasks> allTasks;
 	private List<Tasks> queueTasks;
-	private List<Tasks> runningTasks;
 	private int numFailures;
 	private String job;
 	private String inputFile;
@@ -26,7 +25,6 @@ public abstract class Jobs implements Serializable {
 	{
 		allTasks = new LinkedList<Tasks>();
 		queueTasks =  new LinkedList<Tasks>();
-		runningTasks = new LinkedList<Tasks>();
 		numFailures = 0;
 	}
 	public int getStatus()
@@ -43,6 +41,7 @@ public abstract class Jobs implements Serializable {
 	}
 	public void setTasks(List<Tasks> taskList)
 	{
+		if(taskList!=null){
 		for(Tasks t: taskList)
 		{
 			if(t.getStatus() < 3)
@@ -56,73 +55,16 @@ public abstract class Jobs implements Serializable {
 		}
 		System.out.println("This Job has " + queueTasks.size() +" in queue");
 		System.out.println("This Job has " + allTasks.size() + " more tasks");
-	}
-	public List<Tasks> runningTasks()
-	{
-		return runningTasks;
+		}
+		else{
+			allTasks = null;
+		}
 	}
 	public List<Tasks> getQueueTasks()
 	{
 		return queueTasks;
 	}
-	public int updateTasks(Tasks task)
-	{
-		int taskStatus = task.getStatus();
-		System.out.println("Task status was " + taskStatus);
-		if(taskStatus == 2)
-		{
-			System.out.println("Checking a running task");
-			queueTasks.remove(task);
-			runningTasks.add(task);
-			stat = 2;
-			return 1;
-		}
-		else
-		{	
-			runningTasks.remove(task);
-			if(taskStatus == 1)
-			{
-				System.out.println("Checking a finished task");
-				System.out.println(queueTasks.size());
-				System.out.println(runningTasks.size());
-				if(queueTasks.contains(task))
-				{
-					System.out.println("Task finished before run acknowledged");
-				}
-				if(queueTasks.isEmpty()&&runningTasks.isEmpty()){
-					System.out.println("Reached");
-					if(allTasks.isEmpty())
-					{
-						System.out.println("Checking a finished Job");
-						stat = 1;
-						return 0;
-					}
-					System.out.println("Queue needs to update");
-					queueTasks = allTasks;
-					return 3;
-				}
-				return 1;
-			}
-			else if(taskStatus == -1)
-			{
-				queueTasks.add(task);
-				if(numFailures < 1)
-					return -1;
-				return -2;
-			}
-			else if(taskStatus == 0){
-				if(runningTasks.isEmpty())
-				{
-					stat = 0;
-					return 0;
-				}
-				queueTasks = null;
-				allTasks = null;
-				return 1;
-			}
-			return -2;
-		}
-	}
+	
 	public Integer getID(){
 		return id;
 	}
