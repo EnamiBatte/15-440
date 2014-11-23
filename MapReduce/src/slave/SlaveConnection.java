@@ -57,6 +57,7 @@ public class SlaveConnection implements Runnable {
 				in = new ObjectInputStream(ins);
 				Message msg = (Message) in.readObject();
 				if (msg.getType() == 's') {
+					System.out.println("receiving");
 					String f = msg.getFileName();
 					int l = msg.getLines();
 					System.out.println(f+l);
