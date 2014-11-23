@@ -40,7 +40,7 @@ public class MasterCoordinator {
 		queueJobs = new LinkedList<Jobs>();
 		finishedJobs = new LinkedList<Jobs>();
 		queueTasks = new LinkedList<Tasks>();
-		nameNode = new NameNode(Configuration.Slave_Addresses, Configuration.replication);
+		nameNode = new NameNode(Configuration.Slave_Addresses, Configuration.replication, this);
 	}
 	
 	public void printQueue()
