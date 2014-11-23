@@ -12,13 +12,15 @@ public class NameNode {
 	private int replication;
 	private int current;
 	private int availableReplication;
+	public MasterCoordinator coord;
 	
-	public NameNode(ArrayList<String> slaveaddr, int replication) {
+	public NameNode(ArrayList<String> slaveaddr, int replication, MasterCoordinator coord) {
 		this.slaveaddr = slaveaddr;
 		this.replication = replication;
 		availableReplication = Math.min(replication, slaveaddr.size());
 		filenametoslaveaddr = new HashMap<String, ArrayList<String>>();
 		current = 0;
+		this.coord = coord;
 	}
 	
 	public Message decide(String filename) throws Exception {
@@ -31,12 +33,12 @@ public class NameNode {
 					filenametoslaveaddr.put(filename, ret);
 					Message response = new Message();
 					response.setAddrList(ret);
-					return response;
+					
 				}
 				
 			}
-		}
-		for (int i = 0; i < availableReplication; i++) {
+		} else {
+			for (int i = 0; i < availableReplication; i++) {
 			ret.add(slaveaddr.get(current));
 			current += 1;
 			if (current >= slaveaddr.size()) {
@@ -46,6 +48,24 @@ public class NameNode {
 		filenametoslaveaddr.put(filename, ret);
 		Message response = new Message();
 		response.setAddrList(ret);
+		
+		String origin = inputFileName(filename);
+		int left = 0;
+		Iterator<Entry<String, ArrayList<String>>> it = filenametoslaveaddr.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
+			String key = entry.getKey(); 
+			if (inputFileName(key).equals(origin)) {
+				if key.startsWith("m") {
+					left += slaveaddr.size();		
+				} else {
+					left--;
+				}
+			}
+		}
+		if (left == 0) {
+			coord.canStartReduce();
+		}
 		return response;
 	}
 	
