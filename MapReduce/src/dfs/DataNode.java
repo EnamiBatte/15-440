@@ -189,7 +189,7 @@ public class DataNode {
 		System.out.println("Split Called");
 		System.out.println(localPartition.size() + "");
 		for (int i = 0; i < localPartition.size(); i++) {
-			
+			System.out.println(Master_port+ "");
 			Socket socket = new Socket(masterIP, Master_port);
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
