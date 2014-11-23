@@ -167,7 +167,7 @@ public class DataNode {
 		return ret;
 	}
 	public int addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
-		System.out.println("Adding File to DFS");
+		System.out.println("Adding File " + filename + "to DFS");
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
 		String ad = new String();
@@ -189,23 +189,24 @@ public class DataNode {
 		System.out.println("Split Called");
 		System.out.println(localPartition.size() + "");
 		for (int i = 0; i < localPartition.size(); i++) {
-			
+			System.out.println(Master_port+ "");
 			Socket socket = new Socket(masterIP, Master_port);
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			
+			System.out.println("socket to master");
 			String a = localPartition.get(i);
 			String arr[] = a.split("_", 2);
 			int lines = Integer.parseInt(arr[0]);
 			String partitionFilename = arr[1];
+		
 			Message message = new Message();
 			message.setType('s');
 			message.setFileName(partitionFilename);
 			oos.writeObject(message);
-			
+			System.out.println("message sent");
 			Message response = (Message)ois.readObject();
 			ArrayList<String> addrList = response.getAddrList();
-			
+			System.out.println("list received");
 			for(String addr : addrList) {
 				if (addr.equals(ad)) {
 					continue;
@@ -225,10 +226,8 @@ public class DataNode {
 				oosDN.writeObject(message);
 				writeFileToStream(partitionFilename, lines, osDN);
 				
-				Thread.sleep(100);
 				socketDN.close();
 			}
-			Thread.sleep(100);
 			socket.close();
 		}
 		
