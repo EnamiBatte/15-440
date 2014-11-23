@@ -45,6 +45,7 @@ public class RunReduce extends RunTask {
 			//Figure out how to read input file
 			//Evaluate it
 			Map<String,List<String>> input = reader.getKeyValuePairs();
+			System.out.println("Found x number of distinct inputs" + input.size());
 			OutputCollector<String,String> collect = new OutputCollector<String,String>();
 			Set<String> keySet = input.keySet();
 			for(String key: keySet)

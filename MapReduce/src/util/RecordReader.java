@@ -47,8 +47,8 @@ public class RecordReader {
 						String record = reader.readLine();
 						if(record != null){
 							int index = record.indexOf("|");
-							String key = record.substring(0,index).trim();
-							String value = record.substring(index+1,recordLength-1).trim();
+							String key = record.substring(0,index);
+							String value = record.substring(index+1,record.length());
 							List<String> values = pairs.get(key);
 							if(values == null)
 							{
