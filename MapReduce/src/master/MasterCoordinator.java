@@ -196,7 +196,7 @@ public class MasterCoordinator {
 			String correctHash = "_"+j.getInputFile()+"_"+String.valueOf(k);
 			for(int i = 0; i< Mappers; i++)
 			{
-				input.add("RM"+String.valueOf(i)+correctHash);
+				input.add("rM"+String.valueOf(i)+correctHash);
 			}
 			t.setInput( input);
 			List<String> out = new LinkedList<String>();
@@ -252,7 +252,7 @@ public class MasterCoordinator {
 			{
 				ArrayList<String> slaveNodes= nameNode.findFile(file);
 				System.out.println(file);
-				nameNode.listAll();
+				//nameNode.listAll();
 				if(!slaveNodes.contains(slaveToAddress.get(slaveNum)))
 				{
 					hasIt = false;
