@@ -17,7 +17,6 @@ public class Configuration {
 	public static final int numberOfLines = 5;
 	public static final int numberOfReducers = 2;
 	public static final int maxTasksPerHost = 6;
-	public static final int mapPartitionSize = 1;
 	//public static final int mapRetries = 2;
 	//public static final int reducePartitionSize = 2000;
 	//Number of Reduces/Per Host

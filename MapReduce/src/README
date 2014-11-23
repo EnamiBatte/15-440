@@ -1,0 +1,41 @@
+Before compiling our code pick a master node and set it in the configuration file.
+Also choose the slave nodes and for each node choose an associated  master listen port.
+
+Then we have the number of lines to read at a time for map, and number of reducers and so on.
+
+Once you are happy with that open a shell for each node you are using.
+
+To run our code first run make all.
+Then move to the build directory it created.
+
+There you should see 2 files along with our compiled code.
+
+On the master node run master/MasterController.
+On each slave run slave/SlaveController.
+
+Type start into the master node.
+
+Now you should be able to add map-reduce jobs using the slave nodes.
+Type start followed by one of our examples and the input file and what output files you want.
+
+You should have 1 output file for each reducer you wish to run.
+
+On the master you should also be able to run certain administrative commands
+
+	print queue
+		(Prints the current jobs in queue).
+	print running
+		(Prints the currently running jobs).
+	print finished
+		(Prints the currently finished jobs).
+	kill (jid)
+		(Kills the job identified by the job id)
+	start
+		(Starts the system anew should it go down).
+		
+As Examples to Run we have provided you with LetterCount and NumTimesLongest
+To start these choose a slave and run:
+	start example.LetterCount letter (output files...)
+		(This will run LetterCount which counts the number of times each letter appears).
+	start example.NumTimesLongest word (output files...)
+		
