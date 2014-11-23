@@ -180,6 +180,7 @@ public class DataNode {
 			localPartition = createLocalOutputPartition(filename, numberOfReducers);
 		}
 		System.out.println("Split Called");
+		System.out.println(localPartition.size() + "");
 		for (int i = 0; i < localPartition.size(); i++) {
 			
 			Socket socket = new Socket(masterIP, Master_port);
