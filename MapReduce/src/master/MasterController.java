@@ -66,6 +66,10 @@ public class MasterController {
 					mc.startSystem();
 					
 				}
+				else if(arg.equals("stop"))
+				{
+					mc.stopSystem();
+				}
 			}catch(IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
