@@ -63,8 +63,10 @@ public class NameNode {
 				}
 			}
 		}
+		System.out.println(left + "");
 		if (left == 0) {
-			coord.canStartReduce();
+			//coord.canStartReduce();
+			
 		}
 		return response;
 	}
