@@ -368,20 +368,62 @@ public class MasterCoordinator {
 		}
 		if(t.getStatus()> 0)
 		{
-			System.out.println("Acknowledge the task is finished");
-			List<Tasks> remaining = jobIDtoJobs.get(val).getTasks();
-			if(remaining != null)
-			{
-				queueTasks.addAll(remaining);
-				jobIDtoJobs.get(val).setTasks(null);
-				System.out.println("Acknowledge the queue is finished");
-			}
-			else{
+			if(runningTasks == 0){
 				System.out.println("Acknowledge the task is finished");
-				runningJobs.remove(job);
-				finishedJobs.add(job);		
-			}	
+				List<Tasks> remaining = jobIDtoJobs.get(val).getTasks();
+				if(remaining != null)
+				{
+					System.out.println("Acknowledge the queue is finished");
+				}
+				else{
+					System.out.println("Acknowledge the job is finished");
+					runningJobs.remove(job);
+					finishedJobs.add(job);		
+				}
+			}
 		}
 		issueNextTask();
 	}	
+	
+	void canStartReduce()
+	{
+		boolean canStart = true;
+		for(int i = 0; i< jobIDtoJobs.size(); i++)
+		{
+			if(RunningTasksPerJob.size()==0){
+				Jobs j = jobIDtoJobs.get(i);
+				List<Tasks> remaning = j.getTasks();
+				if(remaning!=null){
+					boolean thisTask = true;
+					for(Tasks t: remaning)
+					{
+						List<String> fileInputs = t.getInput();
+						for(String file: fileInputs )
+						{
+							ArrayList<String> slaveNodes = nameNode.findFile(file);
+							if(slaveNodes.isEmpty())
+							{
+								canStart = false;
+								break;
+							}
+						}
+						if(!canStart)
+						{
+							thisTask = false;
+						}
+					}
+					if(thisTask)
+					{
+						queueTasks.addAll(remaning);
+						jobIDtoJobs.get(i).setTasks(null);
+						break;
+					}
+				}
+			}
+		}
+		if(canStart)
+		{
+			issueNextTask();
+		}
+	}
 }
