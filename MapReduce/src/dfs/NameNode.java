@@ -56,7 +56,7 @@ public class NameNode {
 			Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)it.next();  
 			String key = entry.getKey(); 
 			if (inputFileName(key).equals(origin)) {
-				if key.startsWith("m") {
+				if (key.startsWith("m")) {
 					left += Configuration.numberOfSlaves;		
 				} else {
 					left--;
