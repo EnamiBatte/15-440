@@ -57,7 +57,7 @@ public class NameNode {
 			String key = entry.getKey(); 
 			if (inputFileName(key).equals(origin)) {
 				if key.startsWith("m") {
-					left += slaveaddr.size();		
+					left += Configuration.numberOfSlaves;		
 				} else {
 					left--;
 				}
