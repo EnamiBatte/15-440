@@ -129,7 +129,8 @@ public class DataNode {
 		int[] lines = new int[numberOfReducers];
 		String line = dr.readLine();
 		while (!line.equals("")) {
-			String key = line.split("|")[0];
+			int j = line.indexOf("|");
+			String key = line.substring(0, j);
 			int i = hash(key, numberOfReducers);
 			lines[i]++;
 			line = dr.readLine();
