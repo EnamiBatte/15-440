@@ -207,10 +207,6 @@ public class DataNode {
 			Message response = (Message)ois.readObject();
 			ArrayList<String> addrList = response.getAddrList();
 			
-			message = new Message();
-			message.setType('a');
-			oos.writeObject(message);
-			
 			System.out.println("list received");
 			for(String addr : addrList) {
 				if (addr.equals(ad)) {
