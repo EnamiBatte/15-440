@@ -226,10 +226,8 @@ public class DataNode {
 				oosDN.writeObject(message);
 				writeFileToStream(partitionFilename, lines, osDN);
 				
-				Thread.sleep(100);
 				socketDN.close();
 			}
-			Thread.sleep(100);
 			socket.close();
 		}
 		
