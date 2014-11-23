@@ -3,14 +3,56 @@ package dfs;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import util.*;
 
 public class DataNode {
 	
-	public String addr;
+	Map<String, HashSet<String>> fileMap;
 	
-	public DataNode() {	
+	
+	public DataNode() {
+		fileMap = new HashMap<String, HashSet<String>>(); 
+	}
+	
+
+	public String inputFileName(String partitionFileName) {
+		if (partitionFileName.startsWith("m")) {
+			String[] split = partitionFileName.split("_", 2);
+			return split[1];
+		} else {
+			String[] split = partitionFileName.split("_", 2);
+			return split[1].substring(0, split[1].lastIndexOf("_") - 1);
+		}
+	}
+	
+	public void deleteFile(String filename) {
+		File f = new File(filename);
+		if (f.exists()) {
+			f.delete();
+		}
+	}
+	
+	public void deleteJob(String filename) {
+		if (fileMap.containsKey(filename)) {
+			HashSet<String> val = fileMap.get(filename);
+			for (String v : val) {
+				deleteFile(v);
+			}
+			fileMap.remove(filename);
+		}
+	}
+	public void deleteAll() {
+		Iterator<Entry<String, HashSet<String>>> it = fileMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, HashSet<String>> entry = (Map.Entry<String, HashSet<String>>)it.next();
+			HashSet<String> val = entry.getValue();
+			for (String v : val) {
+				deleteFile(v);
+			}
+		}
+		fileMap.clear();
 	}
 	
 	public int hash(String key, int num) {
@@ -19,6 +61,10 @@ public class DataNode {
 	
 	public ArrayList<String> createLocalInputPartition(String filename, int numberOfLines) throws Exception {
 		System.out.println("Creating local partition");
+		Set<String> fileSet = new HashSet<String>();
+		if (fileMap.containsKey("filename")) {
+			fileSet = fileMap.get(filename);
+		} 
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int lines = 0;
 		String line = dr.readLine();
@@ -33,11 +79,12 @@ public class DataNode {
 		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
 		for (int i = 0; i < numberOfFiles; i++) {
 			String name = "m" + i + "_" + filename;
-			files.add(name);
+			fileSet.add(name);
 			File myFile = new File(name);
 			myFile.createNewFile();
 			dw.add(new BufferedWriter(new FileWriter(name)));
 		}
+		fileMap.put(filename, (HashSet<String>)fileSet);
 		System.out.println("Files are successfully created");
 		dr=new BufferedReader(new FileReader(filename));
 		lines = 0;
@@ -71,6 +118,10 @@ public class DataNode {
 		return ret;
 	}
 	public ArrayList<String> createLocalOutputPartition(String filename, int numberOfReducers) throws Exception {
+		Set<String> fileSet = new HashSet<String>();
+		if (fileMap.containsKey("filename")) {
+			fileSet = fileMap.get(filename);
+		} 
 		BufferedReader dr=new BufferedReader(new FileReader(filename));
 		int[] lines = new int[numberOfReducers];
 		String line = dr.readLine();
@@ -84,11 +135,13 @@ public class DataNode {
 		ArrayList<BufferedWriter> dw = new ArrayList<BufferedWriter> ();
 		for (int i = 0; i < numberOfReducers; i++) {
 			String name = "r" + filename+ "_" + i;
+			fileSet.add(name);
 			files.add(name);
 			File myFile = new File(name);
 			myFile.createNewFile();
 			dw.add(new BufferedWriter(new FileWriter(name)));
 		}
+		fileMap.put(filename, (HashSet<String>)fileSet);
 		dr=new BufferedReader(new FileReader(filename));
 		line = dr.readLine();
 		while (!line.equals("")) {
@@ -110,10 +163,10 @@ public class DataNode {
 		System.out.println("Adding File to DFS");
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
-		
+		String ad = new String();
 		for (int i = 0; i < Configuration.masterListenPorts.length; i++) {
 			if (Master_port == Configuration.masterListenPorts[i]) {
-				addr = Configuration.slaveAddress[i];
+				ad = Configuration.slaveAddress[i];
 			}
 		}
 		
@@ -146,16 +199,12 @@ public class DataNode {
 			ArrayList<String> addrList = response.getAddrList();
 			
 			for(String addr : addrList) {
-				if (addr.equals(this.addr)) {
-					System.out.println("Addr:" + addr);
-					System.out.println("Addr:" + this.addr);
+				if (addr.equals(ad)) {
 					continue;
 				}
 				System.out.println("Addr:" + addr);
 				int slaveport = Configuration.slaveListenPort;
 				Socket socketDN = new Socket(addr, slaveport);
-				InputStream isDN = socketDN.getInputStream();
-				ObjectInputStream oisDN = new ObjectInputStream(isDN);
 				OutputStream osDN = socketDN.getOutputStream();
 				ObjectOutputStream oosDN = new ObjectOutputStream(osDN);
 				
@@ -180,6 +229,15 @@ public class DataNode {
 		BufferedReader dr=new BufferedReader(new InputStreamReader(is));
 		File myFile = new File(filename);
 		myFile.createNewFile();
+		
+		String origin = inputFileName(filename);
+		HashSet<String> val = new HashSet<String>();
+		if (fileMap.containsKey(origin)) {
+			val = fileMap.get(origin);
+		}
+		val.add(filename);
+		fileMap.put(origin, val);
+		
 		BufferedWriter dw = new BufferedWriter(new FileWriter(filename));
 		for (int i = 0; i < lines; i++) {
 			dw.write(dr.readLine());
