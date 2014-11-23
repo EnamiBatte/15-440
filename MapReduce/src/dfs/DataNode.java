@@ -167,7 +167,7 @@ public class DataNode {
 		return ret;
 	}
 	public int addFileToDFS(String filename, int Master_port, boolean flag) throws Exception {
-		System.out.println("Adding File to DFS");
+		System.out.println("Adding File " + filename + "to DFS");
 		//flag: true for map input, false for map output
 		String masterIP = Configuration.Master_Address;
 		String ad = new String();
