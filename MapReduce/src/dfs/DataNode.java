@@ -193,19 +193,20 @@ public class DataNode {
 			Socket socket = new Socket(masterIP, Master_port);
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			
+			System.out.println("socket to master");
 			String a = localPartition.get(i);
 			String arr[] = a.split("_", 2);
 			int lines = Integer.parseInt(arr[0]);
 			String partitionFilename = arr[1];
+		
 			Message message = new Message();
 			message.setType('s');
 			message.setFileName(partitionFilename);
 			oos.writeObject(message);
-			
+			System.out.println("message sent");
 			Message response = (Message)ois.readObject();
 			ArrayList<String> addrList = response.getAddrList();
-			
+			System.out.println("list received");
 			for(String addr : addrList) {
 				if (addr.equals(ad)) {
 					continue;
