@@ -109,7 +109,7 @@ public class NameNode {
 	}
 	
 	public ArrayList<String> findFile(String filename) {
-		if (filenametoslaveaddr.contains(filename) {
+		if (filenametoslaveaddr.contains(filename)) {
 			return filenametoslaveaddr.get(filename);
 		}
 		return new ArrayList<String>();
