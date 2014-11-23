@@ -65,7 +65,7 @@ public class NameNode {
 				}
 			}
 		}
-		System.out.println(left + "");
+		System.out.println(left + "left");
 		if (left == 0) {
 			coord.canStartReduce();
 			
