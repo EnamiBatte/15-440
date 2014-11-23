@@ -42,19 +42,19 @@ public abstract class Jobs implements Serializable {
 	public void setTasks(List<Tasks> taskList)
 	{
 		if(taskList!=null){
-		for(Tasks t: taskList)
-		{
-			if(t.getStatus() < 3)
+			for(Tasks t: taskList)
 			{
-				t.setStatus(3);
-				queueTasks.add(t);
+				if(t.getStatus() < 3)
+				{
+					t.setStatus(3);
+					queueTasks.add(t);
+				}
+				else{
+					allTasks.add(t);
+				}
 			}
-			else{
-				allTasks.add(t);
-			}
-		}
-		System.out.println("This Job has " + queueTasks.size() +" in queue");
-		System.out.println("This Job has " + allTasks.size() + " more tasks");
+			System.out.println("This Job has " + queueTasks.size() +" in queue");
+			System.out.println("This Job has " + allTasks.size() + " more tasks");
 		}
 		else{
 			allTasks = null;

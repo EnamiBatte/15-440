@@ -81,7 +81,8 @@ public class RunMap extends RunTask {
 				dw.flush();
 				dw.close();
 				out.close();
-			}  catch (IOException e) {
+				coord.dataNode.addFileToDFS(map.getOutput().get(0), coord.conn.port, false);
+			}  catch ( Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				map.setStatus(-1);
