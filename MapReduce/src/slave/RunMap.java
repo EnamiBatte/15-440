@@ -78,6 +78,7 @@ public class RunMap extends RunTask {
 					dw.append(p.toString());
 					dw.newLine();
 				}
+				dw.newLine();
 				dw.flush();
 				dw.close();
 				out.close();
