@@ -57,7 +57,7 @@ public class DataNode {
 	
 	public int hash(String key, int num) {
 		//System.out.print(key+" " + key.hashCode() % num + " ");
-		return key.hashCode() % num;
+		return Math.abs(key.hashCode()) % num;
 	}
 	
 	public ArrayList<String> createLocalInputPartition(String filename, int numberOfLines) throws Exception {
