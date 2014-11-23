@@ -259,6 +259,7 @@ public class MasterCoordinator {
 				while (slaveNodes.isEmpty()) {
 					try {
 						Thread.sleep(1000);
+						System.out.println("Sleep");
 					} catch (InterruptedException e) {
 						
 					}
