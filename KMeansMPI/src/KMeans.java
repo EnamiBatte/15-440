@@ -18,11 +18,8 @@ public class KMeans {
 		input.add(new Coordinate(11.3, -2.3));
 		input.add(new Coordinate(10.8, -2.4));
 		input.add(new Coordinate(11.0, -1.9));
-		
 		centriods.add(new Coordinate(0, 0));
 		centriods.add(new Coordinate(5, 5));
-		
-		
 		
 		List<Integer> as = assign(input, centriods);
 		List<Integer> bs = new LinkedList<Integer>();
@@ -35,19 +32,16 @@ public class KMeans {
 				for (int j = 0; j < as.size(); j++) {
 					if (i == as.get(j)) {
 						tmp.add(input.get(j));
-						
 					}
 				}				
 				centriods.add(cd.getCentroid(tmp));
 			}
-			
 			as = assign(input, centriods);	
 		}
 		
 		for (int i = 0; i < numOfInput; i++) {
 			System.out.println(bs.get(i));
 		}
-		
 	}
 	
 	public static List<Integer> assign(List<Datapoint> points, List<Datapoint> centriods) {
