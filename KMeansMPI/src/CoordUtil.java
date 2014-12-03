@@ -8,7 +8,7 @@ public class CoordUtil extends ClusterUtil {
 		List<String> aVal = a.getValue();
 		List<String> bVal = b.getValue();
 		double xDis = Double.valueOf(aVal.get(0))- Double.valueOf(bVal.get(0));
-		double yDis = Double.valueOf(aVal.get(1)) - Double.valueOf(bVal.get(0));
+		double yDis = Double.valueOf(aVal.get(1)) - Double.valueOf(bVal.get(1));
 		
 		return Math.sqrt(xDis*xDis + yDis*yDis);
 	}
