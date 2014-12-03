@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -19,13 +18,12 @@ public class DNAUtil extends ClusterUtil {
 			}
 			i++;
 		}
-		
 		return result;
 	}
 
 	@Override
 	public Datapoint getCentroid(List<Datapoint> cluster) {
-		int length = cluster.get(0).size();
+		int length = cluster.get(0).getValue().size();
 		int[][] dna = new int[4][length];
 		String[] ret = new String[length];
 		int[] max = new int[length];
@@ -52,22 +50,26 @@ public class DNAUtil extends ClusterUtil {
 				if (max[j] < dna[i][j]) {
 					max[j] = dna[i][j];
 					switch (i) {
-					case '0':
+					case 0:
 						ret[j] = "A";
 						break;
-					case '1':
+					case 1:
 						ret[j] = "T";
 						break;
-					case '2':
+					case 2:
 						ret[j] = "G";
 						break;
-					case '3':
+					case 3:
 						ret[j] = "C";
 					}
 				}
 			}
 		}
-		return Arrays.asList(ret);
+		StringBuffer re = new StringBuffer();
+		for (String s :ret) {
+			re.append(s);
+		}
+		
+		return new DNAStrand(re.toString());
 	}
-
 }
