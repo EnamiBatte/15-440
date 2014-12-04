@@ -8,14 +8,13 @@ import java.util.List;
 
 public class Master {
 	
-	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c)
+	
+	public static List<Integer> assign(List<Datapoint> input, List<Datapoint> centroids, char c)
 	{
-		List<Integer> bs = new LinkedList<Integer>();
-		List<Integer> as = new LinkedList<Integer>();
-		
 		int chunks = 1;
 		int k = 0;
 		Object[][] resps = new Object[chunks][1];
+		List<Integer> results = new LinkedList<Integer>();
 		for(int i = 0; i< chunks; i++)
 		{
 			List<Datapoint> chunkChoice = new LinkedList<Datapoint>();
@@ -27,7 +26,7 @@ public class Master {
 			Message msg = new Message();
 			msg.setType(c);
 			msg.setTask('a');
-			msg.setCentroids(centriods);
+			msg.setCentroids(centroids);
 			msg.setPoints(chunkChoice);
 			Message[] buf = new Message[1];
 			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
@@ -35,13 +34,30 @@ public class Master {
 		for(int i = 0; i< chunks; i++)
 		{
 			//MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-			as.addAll(((Message)resps[i][0]).getAssignments());
+			results.addAll(((Message)resps[i][0]).getAssignments());
 		}
+		return results;
+	}
+	
+	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, char c)
+	{
+		return null;
+	}
+	
+	
+	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c)
+	{
+		List<Datapoint> centroids = centriods;
+		List<Integer> bs = new LinkedList<Integer>();
+		List<Integer> as = assign(input,centroids,c);
+		
 		//Now need to merge the responses assignments to get as
 		
 		while(!endPoint(as,bs))
 		{
-			
+			bs = as;
+			centroids = newMeans(input,as,c);
+			as = assign(input,centroids,c);
 		}
 		
 		return centriods;
