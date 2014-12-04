@@ -39,9 +39,42 @@ public class Master {
 		return results;
 	}
 	
-	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, char c)
+	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c)
 	{
-		return null;
+		int chunks = 1;
+		int k = centroidSize/chunks;
+		Object[][] resps = new Object[chunks][1];
+		List<List<List<Datapoint>>> allChunks = new LinkedList<List<List<Datapoint>>>();
+		for(int j = 0; j<chunks; j++)
+		{
+			List<List<Datapoint>> chunkGroup = new LinkedList<List<Datapoint>>();
+			for(int i = 0; i < centroidSize/chunks; i++)
+			{
+				List<Datapoint> group = new LinkedList<Datapoint>();
+				chunkGroup.add(group);
+			}
+			allChunks.add(chunkGroup);
+		}
+		for(Integer i : assignments)
+		{
+			((allChunks.get(i/k)).get(i%k)).add(input.get(i));
+		}
+		for(int i = 0; i < chunks; i++)
+		{
+			Message msg = new Message();
+			msg.setType(c);
+			msg.setTask('k');
+			msg.setGroup(allChunks.get(i));
+			Message[] buf = new Message[1];
+			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+		}
+		List<Datapoint> results = new LinkedList<Datapoint>();
+		for(int i = 0; i< chunks; i++)
+		{
+			//MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			results.addAll(((Message)resps[i][0]).getCentroids());
+		}
+		return results;
 	}
 	
 	
@@ -56,7 +89,7 @@ public class Master {
 		while(!endPoint(as,bs))
 		{
 			bs = as;
-			centroids = newMeans(input,as,c);
+			centroids = newMeans(input,as,centroids.size(),c);
 			as = assign(input,centroids,c);
 		}
 		
