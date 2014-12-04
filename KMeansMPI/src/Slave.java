@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+//import mpi.*;
+
 
 public class Slave {
 	
@@ -29,7 +31,45 @@ public class Slave {
 		return centriods;
 	}
 	
-	
+	public static void run()
+	{
+		while(true)
+		{
+			Object[] message = new Object[1];
+			//MPI.COMM_WORLD.Recv(message,0,1,MPI.OBJECT,0,MPI.ANY_TAG);
+			Message msg = (Message)message[0];
+			ClusterUtil cUtil;
+			Message[] buf = new Message[1];
+			Message retMsg = new Message();
+			if(msg.getType()=='c')
+			{
+				cUtil = new CoordUtil();
+				retMsg.setType('c');
+			}
+			else if(msg.getType()=='d')
+			{
+				cUtil = new DNAUtil();
+				retMsg.setType('d');
+			}
+			else{
+				return;
+			}
+			if(msg.getTask()=='a')
+			{
+				retMsg.setTask('a');
+				List<Integer> assignments = assign(msg.getPoints(), msg.getCentroids(), cUtil);
+				retMsg.setAssignments(assignments);
+			}
+			else if(msg.getTask()=='k')
+			{
+				retMsg.setTask('k');
+				List<Datapoint> centroids = doKMeans(msg.getGroup(),cUtil);
+				retMsg.setCentroids(centroids);
+			}
+			buf[0] = retMsg;
+			//MPI.COMM_WORLD.Send(buf,0,1,MPI.OBJECT,0,MPI.COMM_WORD.Rank());
+		}
+	}
 	
 	
 
