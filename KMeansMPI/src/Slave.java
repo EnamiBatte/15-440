@@ -31,7 +31,7 @@ public class Slave {
 		return centriods;
 	}
 	
-	public static void run()
+	public static void run() throws Exception
 	{
 		while(true)
 		{
@@ -67,7 +67,7 @@ public class Slave {
 				retMsg.setCentroids(centroids);
 			}
 			buf[0] = retMsg;
-			//MPI.COMM_WORLD.Send(buf,0,1,MPI.OBJECT,0,MPI.COMM_WORD.Rank());
+			//MPI.COMM_WORLD.Send(buf,0,1,MPI.OBJECT,0,MPI.COMM_WORLD.Rank());
 		}
 	}
 	
