@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-//import mpi.*;
+import mpi.*;
 
 
 public class Slave {
@@ -36,7 +36,7 @@ public class Slave {
 		while(true)
 		{
 			Object[] message = new Object[1];
-			//MPI.COMM_WORLD.Recv(message,0,1,MPI.OBJECT,0,MPI.ANY_TAG);
+			MPI.COMM_WORLD.Recv(message,0,1,MPI.OBJECT,0,MPI.ANY_TAG);
 			Message msg = (Message)message[0];
 			ClusterUtil cUtil;
 			Message[] buf = new Message[1];
@@ -67,7 +67,7 @@ public class Slave {
 				retMsg.setCentroids(centroids);
 			}
 			buf[0] = retMsg;
-			//MPI.COMM_WORLD.Send(buf,0,1,MPI.OBJECT,0,MPI.COMM_WORLD.Rank());
+			MPI.COMM_WORLD.Send(buf,0,1,MPI.OBJECT,0,MPI.COMM_WORLD.Rank());
 		}
 	}
 	

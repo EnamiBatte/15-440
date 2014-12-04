@@ -5,11 +5,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-
+import mpi.*;
 public class Master {
 	
 	
-	public static List<Integer> assign(List<Datapoint> input, List<Datapoint> centroids, char c)
+	public static List<Integer> assign(List<Datapoint> input, List<Datapoint> centroids, char c) throws Exception
 	{
 		int chunks = 1;
 		int k = 0;
@@ -29,17 +29,17 @@ public class Master {
 			msg.setCentroids(centroids);
 			msg.setPoints(chunkChoice);
 			Message[] buf = new Message[1];
-			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
 		}
 		for(int i = 0; i< chunks; i++)
 		{
-			//MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 			results.addAll(((Message)resps[i][0]).getAssignments());
 		}
 		return results;
 	}
 	
-	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c)
+	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c) throws Exception
 	{
 		int chunks = 1;
 		int k = centroidSize/chunks;
@@ -66,19 +66,19 @@ public class Master {
 			msg.setTask('k');
 			msg.setGroup(allChunks.get(i));
 			Message[] buf = new Message[1];
-			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
 		}
 		List<Datapoint> results = new LinkedList<Datapoint>();
 		for(int i = 0; i< chunks; i++)
 		{
-			//MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 			results.addAll(((Message)resps[i][0]).getCentroids());
 		}
 		return results;
 	}
 	
 	
-	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c)
+	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c) throws Exception
 	{
 		List<Datapoint> centroids = centriods;
 		List<Integer> bs = new LinkedList<Integer>();
@@ -109,6 +109,7 @@ public class Master {
 	}
 
 	public static void run(String[] args) throws Exception {
+		System.out.println("run Master");
 		if(args.length < 1)
 		{
 			System.out.println("Help");
