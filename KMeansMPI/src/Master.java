@@ -48,17 +48,32 @@ public class Master {
 		for(int j = 0; j<chunks; j++)
 		{
 			List<List<Datapoint>> chunkGroup = new ArrayList<List<Datapoint>>();
-			for(int i = 0; i < centroidSize/chunks; i++)
+			for(int i = 0; i < k; i++)
 			{
 				List<Datapoint> group = new ArrayList<Datapoint>();
 				chunkGroup.add(group);
+			}
+			if(j == chunks -1)
+			{
+				int l = 0;
+				while(j*k+l < centroidSize)
+				{
+					chunkGroup.add(new ArrayList<Datapoint>());
+					l++;
+				}
 			}
 			allChunks.add(chunkGroup);
 		}
 		int j = 0;
 		for(Integer i : assignments)
 		{
-			((allChunks.get(i/k)).get(i%k)).add(input.get(j));
+			if(i/k == k)
+			{
+				allChunks.get(chunks-1).get((i%k)+k).add(input.get(j));
+			}
+			else{
+				((allChunks.get(i/k)).get(i%k)).add(input.get(j));
+			}
 			j++;
 		}
 		for(int i = 0; i < chunks; i++)
