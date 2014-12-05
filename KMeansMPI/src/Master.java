@@ -86,7 +86,7 @@ public class Master {
 	{
 		List<Datapoint> centroids = centriods;
 		List<Integer> bs = new LinkedList<Integer>();
-		List<Integer> as = assign(input,centroids,c);
+		List<Integer> as = assign(input,centroids,c,size);
 		
 		//Now need to merge the responses assignments to get as
 		
