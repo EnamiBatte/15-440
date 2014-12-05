@@ -112,6 +112,7 @@ public class Master {
 			as = assign(input,centroids,c,size);
 			for (int i = 0; i < centriods.size(); i++) {
 				if (!as.contains(i)) {
+					Random r = new Random();
 					as.set(r.nextInt(as.size()), i);
 				}
 			}

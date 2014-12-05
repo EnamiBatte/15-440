@@ -41,6 +41,10 @@ public class Slave {
 			ClusterUtil cUtil;
 			Message[] buf = new Message[1];
 			Message retMsg = new Message();
+			if(msg.getType()=='k')
+			{
+				return;
+			}
 			if(msg.getType()=='c')
 			{
 				cUtil = new CoordUtil();
