@@ -38,7 +38,6 @@ public class Slave {
 			Object[] message = new Object[1];
 			MPI.COMM_WORLD.Recv(message,0,1,MPI.OBJECT,0,MPI.ANY_TAG);
 			Message msg = (Message)message[0];
-			System.out.println(message);
 			ClusterUtil cUtil;
 			Message[] buf = new Message[1];
 			Message retMsg = new Message();

@@ -20,6 +20,7 @@ public class Master {
 			List<Datapoint> chunkChoice = new LinkedList<Datapoint>();
 			for(int j = 0; j<input.size()/chunks; j++)
 			{
+				System.out.println(k+j);
 				chunkChoice.add(input.get(k+j));
 			}
 			k+= input.size()/chunks;
@@ -56,9 +57,11 @@ public class Master {
 			}
 			allChunks.add(chunkGroup);
 		}
+		int j = 0;
 		for(Integer i : assignments)
 		{
-			((allChunks.get(i/k)).get(i%k)).add(input.get(i));
+			((allChunks.get(i/k)).get(i%k)).add(input.get(j));
+			j++;
 		}
 		for(int i = 0; i < chunks; i++)
 		{
@@ -74,8 +77,8 @@ public class Master {
 		for(int i = 0; i< chunks; i++)
 		{
 			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i+1, MPI.ANY_TAG);
-			System.out.println(resps[i]);
 			results.addAll(((Message)resps[i][0]).getCentroids());
+			System.out.println(results.get(0));
 		}
 		return results;
 	}
@@ -93,10 +96,11 @@ public class Master {
 		{
 			bs = as;
 			centroids = newMeans(input,as,centroids.size(),c);
+			System.out.println(centroids.get(0));
 			as = assign(input,centroids,c);
 		}
 		
-		return centriods;
+		return centroids;
 	}
 	
 	public static boolean endPoint(List<Integer> as, List<Integer> bs) {
