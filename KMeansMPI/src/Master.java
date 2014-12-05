@@ -56,7 +56,7 @@ public class Master {
 			}
 			if(j == chunks -1)
 			{
-				int l = 0;
+				int l = k;
 				while(j*k+l < centroidSize)
 				{
 					chunkGroup.add(new ArrayList<Datapoint>());
