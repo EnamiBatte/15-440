@@ -76,7 +76,6 @@ public class Master {
 		{
 			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i+1, MPI.ANY_TAG);
 			results.addAll(((Message)resps[i][0]).getCentroids());
-			System.out.println(results.get(0));
 		}
 		return results;
 	}
@@ -179,7 +178,7 @@ public class Master {
 						output = KMeans.doKMeans(input, centriods, cd);
 					}
 					else{
-						output = doKMeans(input, centriods, c,size);
+						output = doKMeans(input, centriods, c,size-1);
 					}
 					for (Datapoint d : output) {
 						System.out.println(d.getValue());
