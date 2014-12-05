@@ -94,8 +94,7 @@ public class Master {
 		{
 			bs = as;
 			centroids = newMeans(input,as,centroids.size(),c,size);
-			System.out.println(centroids.get(0));
-			as = assign(input,centroids,c);
+			as = assign(input,centroids,c,size);
 		}
 		
 		return centroids;
