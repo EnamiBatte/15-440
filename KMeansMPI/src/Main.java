@@ -14,6 +14,7 @@ public class Main {
 		}
 		else{
 			System.out.println("Slave");
+			System.out.println(rank);
 			Slave.run();
 		}
 		

@@ -29,11 +29,12 @@ public class Master {
 			msg.setCentroids(centroids);
 			msg.setPoints(chunkChoice);
 			Message[] buf = new Message[1];
-			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			buf[0]=msg;
+			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i+1, chunks);
 		}
 		for(int i = 0; i< chunks; i++)
 		{
-			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i+1, MPI.ANY_TAG);
 			results.addAll(((Message)resps[i][0]).getAssignments());
 		}
 		return results;
@@ -66,12 +67,13 @@ public class Master {
 			msg.setTask('k');
 			msg.setGroup(allChunks.get(i));
 			Message[] buf = new Message[1];
-			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			buf[0] = msg;
+			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i+1, chunks);
 		}
 		List<Datapoint> results = new LinkedList<Datapoint>();
 		for(int i = 0; i< chunks; i++)
 		{
-			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i+1, MPI.ANY_TAG);
 			System.out.println(resps[i]);
 			results.addAll(((Message)resps[i][0]).getCentroids());
 		}
