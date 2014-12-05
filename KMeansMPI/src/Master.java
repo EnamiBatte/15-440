@@ -29,7 +29,8 @@ public class Master {
 			msg.setCentroids(centroids);
 			msg.setPoints(chunkChoice);
 			Message[] buf = new Message[1];
-			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			MPI.COMM_WORLD.Send(buf, 0, buf.length, MPI.Object, i, chunks); 
 		}
 		for(int i = 0; i< chunks; i++)
 		{
@@ -66,7 +67,8 @@ public class Master {
 			msg.setTask('k');
 			msg.setGroup(allChunks.get(i));
 			Message[] buf = new Message[1];
-			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			//MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, chunks);
+			MPI.COMM_WORLD.Send(buf, 0, buf.length, MPI.Object, i, chunks); 
 		}
 		List<Datapoint> results = new LinkedList<Datapoint>();
 		for(int i = 0; i< chunks; i++)
@@ -151,3 +153,4 @@ public class Master {
 	}
 
 }
+
