@@ -92,6 +92,7 @@ public class KMeans {
 			for (int i = 1; i < centriods.size(); i++) {
 				if (distance > cd.getDistance(p, centriods.get(i))) {					
 					index = i;
+					distance = cd.getDistance(p, centriods.get(i));
 				}
 			}
 			ret.add(index);
