@@ -18,11 +18,11 @@ public class Master {
 		for(int i = 0; i< chunks; i++)
 		{
 			List<Datapoint> chunkChoice = new LinkedList<Datapoint>();
-			for(int j = 0; j<input.size()/i; j++)
+			for(int j = 0; j<input.size()/chunks; j++)
 			{
 				chunkChoice.add(input.get(k+j));
 			}
-			k+= input.size()/i;
+			k+= input.size()/chunks;
 			Message msg = new Message();
 			msg.setType(c);
 			msg.setTask('a');
@@ -72,6 +72,7 @@ public class Master {
 		for(int i = 0; i< chunks; i++)
 		{
 			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+			System.out.println(resps[i]);
 			results.addAll(((Message)resps[i][0]).getCentroids());
 		}
 		return results;
