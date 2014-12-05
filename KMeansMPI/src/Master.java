@@ -42,7 +42,7 @@ public class Master {
 	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c, int chunks) throws Exception
 	{
 		int k = centroidSize/chunks;
-		System.out.println(k);
+		System.out.println("Size of " + k);
 		Object[][] resps = new Object[chunks][1];
 		List<List<List<Datapoint>>> allChunks = new ArrayList<List<List<Datapoint>>>();
 		for(int j = 0; j<chunks; j++)
@@ -150,7 +150,7 @@ public class Master {
 							float xVal = Float.parseFloat(line.split(",")[0]);
 							float yVal = Float.parseFloat(line.split(",")[1]);
 							input.add(new Coordinate(xVal, yVal));
-							if (count++ % numClusters == 0) {
+							if (count++ < numClusters) {
 								centriods.add(new Coordinate(xVal, yVal));
 							}
 								
@@ -165,7 +165,7 @@ public class Master {
 							}
 							
 							input.add(new DNAStrand(line));
-							if (count++ % numClusters == 0) {
+							if (count++ < numClusters) {
 								centriods.add(new DNAStrand(line));
 							}
 								
