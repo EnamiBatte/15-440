@@ -3,50 +3,6 @@ import java.util.*;
 
 
 public class KMeans {
-	public static void main(String[] args) {
-		List<Datapoint> input = new LinkedList<Datapoint>();
-		List<Datapoint> centriods = new LinkedList<Datapoint>();
-		ClusterUtil cd;
-
-		
-		cd = new CoordUtil();
-		input.add(new Coordinate(1.1, 2.1));
-		input.add(new Coordinate(1.2, 2.2));
-		input.add(new Coordinate(1.3, 2.3));
-		input.add(new Coordinate(0.8, 2.4));
-		input.add(new Coordinate(1, 1.9));
-		input.add(new Coordinate(11.1, -2.1));
-		input.add(new Coordinate(11.2, -2.2));
-		input.add(new Coordinate(11.3, -2.3));
-		input.add(new Coordinate(10.8, -2.4));
-		input.add(new Coordinate(11.0, -1.9));
-		centriods.add(new Coordinate(0, 0));
-		centriods.add(new Coordinate(5, 5));
-		/*
-		cd = new DNAUtil();
-		input.add(new DNAStrand("AAAAAA"));
-		input.add(new DNAStrand("ATTAAA"));
-		input.add(new DNAStrand("AAAGAA"));
-		input.add(new DNAStrand("CAAAAA"));
-		input.add(new DNAStrand("GAGCGG"));
-		input.add(new DNAStrand("GGTCGG"));
-		input.add(new DNAStrand("GATCGG"));
-		input.add(new DNAStrand("GATAGG"));
-		input.add(new DNAStrand("GATCCG"));
-		input.add(new DNAStrand("CCAATA"));
-		input.add(new DNAStrand("CCAATT"));
-		input.add(new DNAStrand("CCAATG"));
-		centriods.add(new DNAStrand("AAAAAA"));
-		centriods.add(new DNAStrand("CCCATC"));
-		centriods.add(new DNAStrand("GGGGGG"));
-		*/
-		
-		
-		List<Datapoint> output = doKMeans(input, centriods, cd);
-		for (Datapoint d : output) {
-			System.out.println(d.getValue());
-		}
-	}
 	
 	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, ClusterUtil cd) {
 		List<Integer> as = assign(input, centriods, cd);

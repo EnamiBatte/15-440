@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import mpi.*;
@@ -23,7 +23,7 @@ public class Slave {
 	}
 	
 	public static List<Datapoint> doKMeans(List<List <Datapoint>> input, ClusterUtil cd) {
-		List<Datapoint> centriods = new LinkedList<Datapoint>();
+		List<Datapoint> centriods = new ArrayList<Datapoint>();
 		for (List<Datapoint> cluster : input)
 		{
 			centriods.add(cd.getCentroid(cluster));

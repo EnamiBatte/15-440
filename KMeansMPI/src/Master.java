@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import mpi.*;
@@ -13,13 +13,12 @@ public class Master {
 	{
 		int k = 0;
 		Object[][] resps = new Object[chunks][1];
-		List<Integer> results = new LinkedList<Integer>();
+		List<Integer> results = new ArrayList<Integer>();
 		for(int i = 0; i< chunks; i++)
 		{
-			List<Datapoint> chunkChoice = new LinkedList<Datapoint>();
+			List<Datapoint> chunkChoice = new ArrayList<Datapoint>();
 			for(int j = 0; j<input.size()/chunks; j++)
 			{
-				System.out.println(k+j);
 				chunkChoice.add(input.get(k+j));
 			}
 			k+= input.size()/chunks;
@@ -43,14 +42,15 @@ public class Master {
 	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c, int chunks) throws Exception
 	{
 		int k = centroidSize/chunks;
+		System.out.println(k);
 		Object[][] resps = new Object[chunks][1];
-		List<List<List<Datapoint>>> allChunks = new LinkedList<List<List<Datapoint>>>();
+		List<List<List<Datapoint>>> allChunks = new ArrayList<List<List<Datapoint>>>();
 		for(int j = 0; j<chunks; j++)
 		{
-			List<List<Datapoint>> chunkGroup = new LinkedList<List<Datapoint>>();
+			List<List<Datapoint>> chunkGroup = new ArrayList<List<Datapoint>>();
 			for(int i = 0; i < centroidSize/chunks; i++)
 			{
-				List<Datapoint> group = new LinkedList<Datapoint>();
+				List<Datapoint> group = new ArrayList<Datapoint>();
 				chunkGroup.add(group);
 			}
 			allChunks.add(chunkGroup);
@@ -71,7 +71,7 @@ public class Master {
 			buf[0] = msg;
 			MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i+1, chunks);
 		}
-		List<Datapoint> results = new LinkedList<Datapoint>();
+		List<Datapoint> results = new ArrayList<Datapoint>();
 		for(int i = 0; i< chunks; i++)
 		{
 			MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i+1, MPI.ANY_TAG);
@@ -85,7 +85,7 @@ public class Master {
 	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c,int size) throws Exception
 	{
 		List<Datapoint> centroids = centriods;
-		List<Integer> bs = new LinkedList<Integer>();
+		List<Integer> bs = new ArrayList<Integer>();
 		List<Integer> as = assign(input,centroids,c,size);
 		
 		//Now need to merge the responses assignments to get as
@@ -131,8 +131,8 @@ public class Master {
 					BufferedReader read = new BufferedReader(new InputStreamReader(inputStream));
 					int numClusters = Integer.parseInt(args[3]);
 					//Assignments
-					List<Datapoint> input = new LinkedList<Datapoint>();
-					List<Datapoint> centriods = new LinkedList<Datapoint>();
+					List<Datapoint> input = new ArrayList<Datapoint>();
+					List<Datapoint> centriods = new ArrayList<Datapoint>();
 		
 					List<Datapoint> output;
 					ClusterUtil cd;
@@ -151,7 +151,7 @@ public class Master {
 							float xVal = Float.parseFloat(line.split(",")[0]);
 							float yVal = Float.parseFloat(line.split(",")[1]);
 							input.add(new Coordinate(xVal, yVal));
-							if (count++ < numClusters) {
+							if (count++ % numClusters == 0) {
 								centriods.add(new Coordinate(xVal, yVal));
 							}
 								
@@ -166,7 +166,7 @@ public class Master {
 							}
 							
 							input.add(new DNAStrand(line));
-							if (count++ < numClusters) {
+							if (count++ % numClusters == 0) {
 								centriods.add(new DNAStrand(line));
 							}
 								

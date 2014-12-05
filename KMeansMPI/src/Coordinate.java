@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,7 +14,7 @@ public class Coordinate implements Datapoint {
 	
 	@Override
 	public List<String> getValue() {
-		List<String> result = new LinkedList<String>();
+		List<String> result = new ArrayList<String>();
 		result.add(Double.toString(x));
 		result.add(Double.toString(y));
 		return result;
