@@ -1,4 +1,4 @@
-import mpi.*
+import mpi.*;
 class Hello {
     static public void main(String[] args) {
         MPI.Init(args) ;
