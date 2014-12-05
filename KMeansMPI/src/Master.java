@@ -136,26 +136,44 @@ public class Master {
 		
 					List<Datapoint> output;
 					ClusterUtil cd;
+					
+					String line;
+					int count = 0;
+					
 					if(c == 'c')
 					{
 						cd = new CoordUtil();
-						input.add(new Coordinate(1.1, 2.1));
-						input.add(new Coordinate(1.2, 2.2));
-						input.add(new Coordinate(1.3, 2.3));
-						input.add(new Coordinate(0.8, 2.4));
-						input.add(new Coordinate(1, 1.9));
-						input.add(new Coordinate(11.1, -2.1));
-						input.add(new Coordinate(11.2, -2.2));
-						input.add(new Coordinate(11.3, -2.3));
-						input.add(new Coordinate(10.8, -2.4));
-						input.add(new Coordinate(11.0, -1.9));
-						centriods.add(new Coordinate(0, 0));
-						centriods.add(new Coordinate(5, 5));
+
+						while ((line = read.readLine()) != null) {
+							if (line.length() == 0) {
+								continue;
+							}
+							float xVal = Float.parseFloat(line.split(",")[0]);
+							float yVal = Float.parseFloat(line.split(",")[1]);
+							input.add(new Coordinate(xVal, yVal));
+							if (count++ < numClusters) {
+								centriods.add(new Coordinate(xVal, yVal));
+							}
+								
+						}
 					}
 					else
 					{
 						cd = new DNAUtil();
+						while ((line = read.readLine()) != null) {
+							if (line.length() == 0) {
+								continue;
+							}
+							
+							input.add(new DNAStrand(line));
+							if (count++ < numClusters) {
+								centriods.add(new DNAStrand(line));
+							}
+								
+						}
 					}
+					read.close();
+					inputStream.close();
 					if(type == 's')
 					{
 						output = KMeans.doKMeans(input, centriods, cd);
