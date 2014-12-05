@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import mpi.*;
 public class Master {
@@ -109,6 +110,11 @@ public class Master {
 			bs = as;
 			centroids = newMeans(input,as,centroids.size(),c,size);
 			as = assign(input,centroids,c,size);
+			for (int i = 0; i < centriods.size(); i++) {
+				if (!as.contains(i)) {
+					as.set(r.nextInt(as.size()), i);
+				}
+			}
 		}
 		
 		return centroids;
