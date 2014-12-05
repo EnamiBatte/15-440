@@ -108,14 +108,14 @@ public class Master {
 		while(!endPoint(as,bs))
 		{
 			bs = as;
-			centroids = newMeans(input,as,centroids.size(),c,size);
-			as = assign(input,centroids,c,size);
 			for (int i = 0; i < centriods.size(); i++) {
 				if (!as.contains(i)) {
 					Random r = new Random();
 					as.set(r.nextInt(as.size()), i);
 				}
 			}
+			centroids = newMeans(input,as,centroids.size(),c,size);
+			as = assign(input,centroids,c,size);
 		}
 		
 		return centroids;
