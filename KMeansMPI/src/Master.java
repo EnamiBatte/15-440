@@ -67,7 +67,7 @@ public class Master {
 		int j = 0;
 		for(Integer i : assignments)
 		{
-			if(i/k == k)
+			if(i/k == chunks)
 			{
 				allChunks.get(chunks-1).get((i%k)+k).add(input.get(j));
 			}
