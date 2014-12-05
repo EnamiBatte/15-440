@@ -7,10 +7,11 @@ public class Main {
 		
 		int rank;
 		rank = MPI.COMM_WORLD.Rank();
+		int size = MPI.COMM_WORLD.Size();
 		if(rank == 0)
 		{
 			System.out.println("Master");
-			Master.run(args);
+			Master.run(args,size);
 		}
 		else{
 			System.out.println("Slave");

@@ -9,9 +9,8 @@ import mpi.*;
 public class Master {
 	
 	
-	public static List<Integer> assign(List<Datapoint> input, List<Datapoint> centroids, char c) throws Exception
+	public static List<Integer> assign(List<Datapoint> input, List<Datapoint> centroids, char c, int chunks) throws Exception
 	{
-		int chunks = 1;
 		int k = 0;
 		Object[][] resps = new Object[chunks][1];
 		List<Integer> results = new LinkedList<Integer>();
@@ -41,9 +40,8 @@ public class Master {
 		return results;
 	}
 	
-	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c) throws Exception
+	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c, int chunks) throws Exception
 	{
-		int chunks = 1;
 		int k = centroidSize/chunks;
 		Object[][] resps = new Object[chunks][1];
 		List<List<List<Datapoint>>> allChunks = new LinkedList<List<List<Datapoint>>>();
@@ -84,7 +82,7 @@ public class Master {
 	}
 	
 	
-	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c) throws Exception
+	public static List<Datapoint> doKMeans(List<Datapoint> input, List<Datapoint> centriods, char c,int size) throws Exception
 	{
 		List<Datapoint> centroids = centriods;
 		List<Integer> bs = new LinkedList<Integer>();
@@ -95,7 +93,7 @@ public class Master {
 		while(!endPoint(as,bs))
 		{
 			bs = as;
-			centroids = newMeans(input,as,centroids.size(),c);
+			centroids = newMeans(input,as,centroids.size(),c,size);
 			System.out.println(centroids.get(0));
 			as = assign(input,centroids,c);
 		}
@@ -115,41 +113,61 @@ public class Master {
 		return (ret <= maxDifference);
 	}
 
-	public static void run(String[] args) throws Exception {
+	public static void run(String[] args,int size) throws Exception {
 		System.out.println("run Master");
 		if(args.length < 1)
 		{
 			System.out.println("Help");
+			System.out.println("First argument should be c or d");
+			System.out.println("First argument should be s or p");
 			return;
 		}
 		else{
-			//args[0] = dna or coord
-			//args[1] = seq or distr
-			FileInputStream inputStream = new FileInputStream(args[2]);
-			BufferedReader read = new BufferedReader(new InputStreamReader(inputStream));
-			int numClusters = Integer.parseInt(args[3]);
-			//Assignments
-			List<Datapoint> input = new LinkedList<Datapoint>();
-			List<Datapoint> centriods = new LinkedList<Datapoint>();
-			ClusterUtil cd;
-
-			
-			input.add(new Coordinate(1.1, 2.1));
-			input.add(new Coordinate(1.2, 2.2));
-			input.add(new Coordinate(1.3, 2.3));
-			input.add(new Coordinate(0.8, 2.4));
-			input.add(new Coordinate(1, 1.9));
-			input.add(new Coordinate(11.1, -2.1));
-			input.add(new Coordinate(11.2, -2.2));
-			input.add(new Coordinate(11.3, -2.3));
-			input.add(new Coordinate(10.8, -2.4));
-			input.add(new Coordinate(11.0, -1.9));
-			centriods.add(new Coordinate(0, 0));
-			centriods.add(new Coordinate(5, 5));
-			
-			List<Datapoint> output = doKMeans(input, centriods, 'c');
-			for (Datapoint d : output) {
-				System.out.println(d.getValue());
+			char c = args[0].charAt(0);
+			char type = args[1].charAt(0);
+			if(c=='c' || c=='d')
+			{
+				if(type =='s' || type =='p'){
+					FileInputStream inputStream = new FileInputStream(args[2]);
+					BufferedReader read = new BufferedReader(new InputStreamReader(inputStream));
+					int numClusters = Integer.parseInt(args[3]);
+					//Assignments
+					List<Datapoint> input = new LinkedList<Datapoint>();
+					List<Datapoint> centriods = new LinkedList<Datapoint>();
+		
+					List<Datapoint> output;
+					ClusterUtil cd;
+					if(c == 'c')
+					{
+						cd = new CoordUtil();
+						input.add(new Coordinate(1.1, 2.1));
+						input.add(new Coordinate(1.2, 2.2));
+						input.add(new Coordinate(1.3, 2.3));
+						input.add(new Coordinate(0.8, 2.4));
+						input.add(new Coordinate(1, 1.9));
+						input.add(new Coordinate(11.1, -2.1));
+						input.add(new Coordinate(11.2, -2.2));
+						input.add(new Coordinate(11.3, -2.3));
+						input.add(new Coordinate(10.8, -2.4));
+						input.add(new Coordinate(11.0, -1.9));
+						centriods.add(new Coordinate(0, 0));
+						centriods.add(new Coordinate(5, 5));
+					}
+					else
+					{
+						cd = new DNAUtil();
+					}
+					if(type == 's')
+					{
+						output = KMeans.doKMeans(input, centriods, cd);
+					}
+					else{
+						output = doKMeans(input, centriods, c,size);
+					}
+					for (Datapoint d : output) {
+						System.out.println(d.getValue());
+					}
+				}
 			}
 		}	
 		
