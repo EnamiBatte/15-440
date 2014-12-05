@@ -21,6 +21,12 @@ public class KMeans {
 				}
 				centriods.add(cd.getCentroid(tmp));
 			}
+			for (int i = 0; i < centriods.size(); i++) {
+				if (!as.contains(i)) {
+					Random r = new Random();
+					as.set(r.nextInt(as.size()), i);
+				}
+			}
 			
 			as = assign(input, centriods, cd);	
 		}
