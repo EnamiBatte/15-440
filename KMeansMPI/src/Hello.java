@@ -1,6 +1,6 @@
 import mpi.*;
 class Hello {
-    static public void main(String[] args) {
+    static public void main(String[] args) throws Exception {
         MPI.Init(args) ;
         int myrank = MPI.COMM_WORLD.Rank() ;
         if(myrank == 0) {
