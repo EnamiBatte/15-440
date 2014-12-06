@@ -1,4 +1,8 @@
-First make the program compilable by running make all.
+First make the program compilable by running 
+	make all
+	
+You can clean up our code by running make clean.
+
 
 Then to run the program call 
 	mpirun -machinefile file -np (#) java Main (c/d) (s/p) Inputfile n
@@ -26,6 +30,12 @@ Then to run the program call
 	
 	Note due to a random assignment to centroids it is possible for the program 
 	to throw an index out of bounds exception. If this occurs run it again, and it should go away.
+	
+	For specific examples we provided CoordTest for a coordinate testing:
+		mpirun -machinefile file -np # c (p/s) CoordTest 2
+	And for DNATesting:
+		mpirun -machinefile file -np # d (p/s) DNATest 4
+	
 	
 I also wrote a program to test mpi:
 	mpirun -machinefile file -np (#) java Hello.
