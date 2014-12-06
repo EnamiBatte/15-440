@@ -40,3 +40,9 @@ Then to run the program call
 I also wrote a program to test mpi:
 	mpirun -machinefile file -np (#) java Hello.
 	If this runs correctly then the # of hosts in the file should work for our KMeans.
+	
+
+Parallel 2 Nodes DNA largeDNA:		6395660428
+Parallel 3 Nodes DNA largeDNA:		5530891736
+Parallel 4 Nodes DNA largeDNA:		4516932677
+Sequential 4 Nodes DNA largeDNA: 	1009811433
