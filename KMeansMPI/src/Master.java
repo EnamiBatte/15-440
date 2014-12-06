@@ -172,10 +172,13 @@ public class Master {
 							float xVal = Float.parseFloat(line.split(",")[0]);
 							float yVal = Float.parseFloat(line.split(",")[1]);
 							input.add(new Coordinate(xVal, yVal));
-							if (count++ < numClusters) {
-								centriods.add(new Coordinate(xVal, yVal));
-							}
+							count++;
 								
+						}
+						while (count-- > 0) {
+							if (count % numClusters == 0) {
+								centriods.add(input.get(count));
+							}
 						}
 					}
 					else
@@ -187,10 +190,13 @@ public class Master {
 							}
 							
 							input.add(new DNAStrand(line));
-							if (count++ < numClusters) {
-								centriods.add(new DNAStrand(line));
-							}
+							count++;
 								
+						}
+						while (count-- > 0) {
+							if (count % numClusters == 0) {
+								centriods.add(input.get(count));
+							}
 						}
 					}
 					read.close();
