@@ -43,7 +43,6 @@ public class Master {
 	public static List<Datapoint> newMeans(List<Datapoint> input, List<Integer> assignments, int centroidSize, char c, int chunks) throws Exception
 	{
 		int k = centroidSize/chunks;
-		System.out.println("Size of " + k);
 		Object[][] resps = new Object[chunks][1];
 		List<List<List<Datapoint>>> allChunks = new ArrayList<List<List<Datapoint>>>();
 		for(int j = 0; j<chunks; j++)
@@ -176,7 +175,7 @@ public class Master {
 								
 						}
 						while (count-- > 0) {
-							if (count % numClusters == 0) {
+							if (count % (input.size()/numClusters) == 0) {
 								centriods.add(input.get(count));
 							}
 						}
@@ -194,20 +193,25 @@ public class Master {
 								
 						}
 						while (count-- > 0) {
-							if (count % numClusters == 0) {
+							if (count % (input.size()/numClusters) == 0) {
 								centriods.add(input.get(count));
 							}
 						}
 					}
 					read.close();
 					inputStream.close();
-					if(type == 's')
-					{
-						output = KMeans.doKMeans(input, centriods, cd);
-					}
-					else{
-						output = doKMeans(input, centriods, c,size-1);
-					}
+					long startTime = System.nanoTime();
+                    if(type == 's')
+                    {
+                            output = KMeans.doKMeans(input, centriods, cd);
+                    }
+                    else{
+                            output = doKMeans(input, centriods, c,size-1);
+                    }
+                    long endTime = System.nanoTime();
+                    long duration = (endTime - startTime);
+                    System.out.println(duration);
+
 					for (Datapoint d : output) {
 						System.out.println(d.getValue());
 					}
