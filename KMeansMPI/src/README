@@ -1,0 +1,32 @@
+First make the program compilable by running make all.
+
+Then to run the program call 
+	mpirun -machinefile file -np (#) java Main (c/d) (s/p) Inputfile n
+	
+	where # is the number of processes you wish to start
+	file is a list of hosts you wish to connect to.
+	c or d represents coordinate or dna
+	s or p represents sequential or parallel
+	Inputfile is the input file for the data (Should match the c or d chosen)
+	n is the number of centroids you wish to use.
+	
+	
+	We recommend you start this on ghc02.ghc.andrew.cmu.edu with:
+			ghc29.ghc.andrew.cmu.edu
+			ghc30.ghc.andrew.cmu.edu
+			ghc31.ghc.andrew.cmu.edu 
+		as the other nodes in the file list.
+	This will allow you to start up to 4 processes.
+	
+	Around half of the GHC computers are down, so we can't test them
+	ghc27 manages to screw up your permissions.
+	ghc03 has only a partial install of MPI so it fails
+	ghc06 has a different version of java than most other in the cluster
+	Another one does not have mpirun (I mentioned this to a TA in office hours).
+	
+	Note due to a random assignment to centroids it is possible for the program 
+	to throw an index out of bounds exception. If this occurs run it again, and it should go away.
+	
+I also wrote a program to test mpi:
+	mpirun -machinefile file -np (#) java Hello.
+	If this runs correctly then the # of hosts in the file should work for our KMeans.
