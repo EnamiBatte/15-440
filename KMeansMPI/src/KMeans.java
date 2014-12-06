@@ -11,6 +11,12 @@ public class KMeans {
 		
 		while (!endPoint(as, bs)) {
 			bs = as;
+			for (int i = 0; i < centriods.size(); i++) {
+				if (!as.contains(i)) {
+					Random r = new Random();
+					as.set(r.nextInt(as.size()), i);
+				}
+			}
 			centriods = new LinkedList<Datapoint>();
 			for (int i = 0; i < numOfCluster; i++) {
 				List<Datapoint> tmp = new LinkedList<Datapoint>();
@@ -21,12 +27,7 @@ public class KMeans {
 				}
 				centriods.add(cd.getCentroid(tmp));
 			}
-			for (int i = 0; i < centriods.size(); i++) {
-				if (!as.contains(i)) {
-					Random r = new Random();
-					as.set(r.nextInt(as.size()), i);
-				}
-			}
+			
 			
 			as = assign(input, centriods, cd);	
 		}
